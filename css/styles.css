@@ -64,7 +64,7 @@ input, textarea {
 button {
     padding: 0.7em;
     color: #fff;
-    background-color: #333;
+    background-color: #8eb4aace;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -72,7 +72,7 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #b08f8f;
 }
 
 #time-icon {
