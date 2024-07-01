@@ -1,93 +1,9 @@
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-main {
-    padding: 20px;
-}
-
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1rem 0;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 1em;
-    background: #f9f9f9;
-    border-radius: 5px;
-}
-
-label {
-    margin-top: 1em;
-    display: block;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 0.5em;
-    margin-top: 0.5em;
-}
-
-button {
-    padding: 0.7em;
-    color: #fff;
-    background-color: #8eb4aace;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 1em;
-}
-
-button:hover {
-    background-color: #b08f8f;
-}
-
-#time-icon {
-    width: 32px;
-    height: 32px;
-    position: absolute;
-    left: 20px;
-    top: 20px;
-}
-
 /* styles.css */
 
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    padding-top: 60px; /* Adjust based on header height */
 }
 
 header {
@@ -162,4 +78,14 @@ nav {
     .hamburger {
         display: flex;
     }
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #f1f1f1;
 }
