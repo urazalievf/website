@@ -4,38 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Referrals - Feruz Urazaliev</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="https://urazalievf.github.io/your-repo/assets/daytime-icon.ico" type="image/x-icon">
-    <link rel="icon" href="https://urazalievf.github.io/your-repo/assets/nighttime-icon.ico" type="image/x-icon" media="(prefers-color-scheme: dark)">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXQRZ31KSJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RXQRZ31KSJ');
-    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">
-                <img src="https://urazalievf.github.io/assets/logo.png" alt="Logo">
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="bio.html">Bio</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="referrals.html">Referrals</a></li>
-                </ul>
-                <div class="hamburger">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </nav>
+        <div class="logo" onclick="location.href='index.html'">
+            <img src="assets/logo.png" alt="Logo">
+            <h1>Feruz Urazaliev</h1>
         </div>
+        <nav>
+            <ul>
+                <li><a href="bio.html">Bio</a></li>
+                <li><a href="referrals.html">Referrals</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
+        <h2>Referrals</h2>
+        <div class="referral-links">
+            <a href="credit-cards.html">Credit Cards</a>
+            <a href="checking-accounts.html">Checking Accounts</a>
+            <a href="coupons.html">Coupons</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <img src="assets/logo.png" alt="Logo">
+        </div>
+        <div class="social-links">
+            <a href="https://x.com/urazaliev_f"><img src="assets/x-icon.png" alt="X"></a>
+            <a href="https://linkedin.com/in/urazalievf"><img src="assets/linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="https://medium.feruzurazaliev.com"><img src="assets/medium-icon.png" alt="Medium"></a>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
