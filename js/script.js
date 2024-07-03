@@ -25,9 +25,9 @@ function changeFavicon() {
     var hour = today.getHours();
     var favicon = document.getElementById('favicon');
     if (hour >= 18 || hour <= 6) {
-        favicon.href = 'favicon-night.ico';
+        favicon.href = 'assets/favicon-night.ico';
     } else {
-        favicon.href = 'favicon-day.ico';
+        favicon.href = 'assets/favicon-day.ico';
     }
 }
 
