@@ -4,42 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - Feruz Urazaliev</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="assets/daytime-icon.ico" type="image/x-icon">
-    <link rel="icon" href="assets/nighttime-icon.ico" type="image/x-icon" media="(prefers-color-scheme: dark)">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXQRZ31KSJ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RXQRZ31KSJ');
-    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" id="favicon" href="favicon-day.ico">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <header></header>
-
+    <div id="header"></div>
     <main>
-        <section>
-            <h2>Contact Me</h2>
-            <form id="contact-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <br>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <br>
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
-                <br>
-                <button type="submit">Submit</button>
-            </form>
-            <p id="form-response"></p>
-        </section>
+        <h1>Contact</h1>
+        <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
     </main>
-
-    <footer></footer>
-    <script src="js/load-components.js"></script>
-    <script src="js/scripts.js"></script>
+    <div id="footer"></div>
 </body>
 </html>
