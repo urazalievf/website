@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feruz Urazaliev</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="assets/daytime-icon.ico" type="image/x-icon">
-    <link rel="icon" href="assets/nighttime-icon.ico" type="image/x-icon" media="(prefers-color-scheme: dark)">
-    <!-- Google tag (gtag.js) -->
+    <link rel="stylesheet" href="styles.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXQRZ31KSJ"></script>
+    <script src="script.js" defer></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -17,16 +15,15 @@
     </script>
 </head>
 <body>
-    <header></header>
-
+    <div id="header"></div>
     <main>
-        <section>
-            <h1>Welcome to My Personal Website</h1>
-            <p>This is the main content area for the home page.</p>
-        </section>
+        <!-- Main content goes here -->
     </main>
-
-    <footer></footer>
-    <script src="js/load-components.js"></script>
+    <div id="footer"></div>
+    <script>
+        document.getElementById('header').innerHTML='<object type="text/html" data="header.html" ></object>';
+        document.getElementById('footer').innerHTML='<object type="text/html" data="footer.html" ></object>';
+    </script>
 </body>
+<script src="script.js" defer></script>
 </html>
