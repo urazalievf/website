@@ -8,6 +8,7 @@ window.onload = function() {
             return response.text();
         })
         .then(data => {
+            console.log('Header loaded successfully');
             document.getElementById('header').innerHTML = data;
         })
         .catch(error => console.error('Error loading the header:', error));
@@ -21,6 +22,7 @@ window.onload = function() {
             return response.text();
         })
         .then(data => {
+            console.log('Footer loaded successfully');
             document.getElementById('footer').innerHTML = data;
         })
         .catch(error => console.error('Error loading the footer:', error));
@@ -39,7 +41,7 @@ window.onload = function() {
 })();
 
 // Handle contact form submission (example for Google Sheets)
-document.getElementById('contact-form').addEventListener('submit', function(event) {
+document.getElementById('contact-form')?.addEventListener('submit', function(event) {
     event.preventDefault();
     // Example Google Sheets integration will go here
     alert('Form submitted!');
