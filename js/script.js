@@ -1,8 +1,12 @@
-// Load header and footer dynamically
 window.onload = function() {
     // Load the header
     fetch('header.html')
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
         .then(data => {
             document.getElementById('header').innerHTML = data;
         })
@@ -10,7 +14,12 @@ window.onload = function() {
 
     // Load the footer
     fetch('footer.html')
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
         .then(data => {
             document.getElementById('footer').innerHTML = data;
         })
@@ -18,7 +27,7 @@ window.onload = function() {
 };
 
 // Change favicon based on time
-window.onload = function() {
+(function() {
     var today = new Date();
     var hour = today.getHours();
     var favicon = document.getElementById('favicon');
@@ -27,7 +36,7 @@ window.onload = function() {
     } else {
         favicon.href = 'favicon-day.ico';
     }
-};
+})();
 
 // Handle contact form submission (example for Google Sheets)
 document.getElementById('contact-form').addEventListener('submit', function(event) {
