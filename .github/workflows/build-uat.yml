@@ -1,0 +1,37 @@
+name: build-uat
+
+on:
+  push:
+    branches: ["uat"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-uat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Jekyll site
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload site artifact for release
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-site
+          path: ./_site
+
+      - name: Deploy to UAT preview (Pages)
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: jekyll-site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
