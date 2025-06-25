@@ -1,5 +1,5 @@
 # Deploy Production with Jekyll
-name: Deploy Jekyll Production
+name: deploy-prod
 
 on:
   push:
