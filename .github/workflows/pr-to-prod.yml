@@ -1,4 +1,4 @@
-name: pr-to-prod
+name: Auto PR from UAT to PROD
 
 on:
   push:
@@ -10,14 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Create pull request
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: uat
-          destination_branch: prod
-          pr_title: "Promote UAT to PROD"
-          pr_body: "This is an automated pull request promoting the latest build to production."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install GitHub CLI
+        uses: cli/cli-action@v2
+
+      - name: Create PR using gh cli
+        run: |
+          echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
+          gh pr create \
+            --base prod \
+            --head uat \
+            --title "Promote UAT to PROD" \
+            --body "Automated PR promoting latest UAT build to production."
