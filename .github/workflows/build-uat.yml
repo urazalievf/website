@@ -14,24 +14,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build Jekyll site
+      - name: Build Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
 
-      - name: Upload site artifact for release
+      - name: Archive _site as tar.gz
+        run: |
+          mkdir -p upload
+          tar -czf upload/jekyll-site.tar.gz -C _site .
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: jekyll-site
-          path: ./_site
-
-      - name: Deploy to UAT preview (Pages)
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: jekyll-site
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: upload/jekyll-site.tar.gz
