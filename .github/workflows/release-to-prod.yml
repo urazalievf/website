@@ -30,3 +30,22 @@ jobs:
           artifact_name: jekyll-site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  tag-release:
+    needs: deploy-prod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Create and push tag
+        run: |
+          TAG="v$(date +'%Y%m%d%H%M%S')"
+          echo "Tag: $TAG"
+          git tag $TAG
+          git push origin $TAG
