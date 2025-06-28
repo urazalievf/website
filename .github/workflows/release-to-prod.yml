@@ -1,7 +1,9 @@
 name: release-to-prod
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # you can trigger manually from GitHub UI
+  push:
+    branches: ["prod"] # adjust if you're pushing to a different prod branch
 
 permissions:
   contents: read
@@ -9,43 +11,36 @@ permissions:
   id-token: write
 
 jobs:
-  deploy-prod:
+  deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Download Artifact
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download site artifact from UAT
         uses: actions/download-artifact@v4
         with:
           name: jekyll-site
-          path: ./upload
+          path: upload
 
-      - name: Extract Artifact
+      - name: Extract site from tar.gz
         run: |
-          mkdir _site
-          tar -xzf ./upload/jekyll-site.tar.gz -C _site
+          mkdir -p _site
+          tar -xzf upload/jekyll-site.tar.gz -C _site
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: jekyll-site
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  tag-release:
-    needs: deploy-prod
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-
-      - name: Create and push tag
-        run: |
-          TAG="v$(date +'%Y%m%d%H%M%S')"
-          echo "Tag: $TAG"
-          git tag $TAG
-          git push origin $TAG
