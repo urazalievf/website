@@ -12,15 +12,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Download site artifact from UAT
-        uses: actions/download-artifact@v4
-        with:
-          name: jekyll-site
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Extract site from tar.gz
-        run: |
-          mkdir -p _site
-          tar -xzf jekyll-site.tar.gz -C _site
+      - name: Build Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
