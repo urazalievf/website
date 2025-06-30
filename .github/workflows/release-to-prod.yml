@@ -10,22 +10,18 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout uat branch
         uses: actions/checkout@v4
-
-      - name: Download artifact from UAT
-        uses: actions/download-artifact@v4
         with:
-          name: jekyll-site
+          ref: uat
 
-      - name: Extract site from tar.gz
-        run: |
-          mkdir -p _site
-          tar -xzf jekyll-site.tar.gz -C _site
+      - name: Build Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
