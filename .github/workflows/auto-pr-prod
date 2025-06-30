@@ -1,0 +1,20 @@
+name: Auto PR to PROD
+
+on:
+  push:
+    branches:
+      - uat
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create PR to PROD
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "prod"
+          pr_title: "Promote UAT to PROD"
+          pr_body: "Auto PR from UAT to PROD"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
