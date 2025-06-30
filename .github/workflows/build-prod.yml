@@ -1,8 +1,9 @@
-name: build-prod
+name: Deploy PROD to GitHub Pages
 
 on:
   push:
-    branches: ["prod"]
+    branches:
+      - prod
 
 permissions:
   contents: read
@@ -11,12 +12,16 @@ permissions:
 
 jobs:
   deploy:
+    environment:
+      name: PROD  # 👈 This is critical. Do NOT use "github-pages"
+      url: https://feruzurazaliev.com
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Jekyll
+      - name: Build site with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
@@ -25,10 +30,8 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload site to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
+      - name: Upload built site
+        uses: actions/upload-pages-artifact@v2  # ✅ upgraded version
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
