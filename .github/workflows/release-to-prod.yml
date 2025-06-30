@@ -1,9 +1,7 @@
 name: release-to-prod
 
 on:
-  workflow_dispatch: # you can trigger manually from GitHub UI
-  push:
-    branches: ["prod"] # adjust if you're pushing to a different prod branch
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,35 +10,25 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Download site artifact from UAT
         uses: actions/download-artifact@v4
         with:
           name: jekyll-site
-          path: upload
 
       - name: Extract site from tar.gz
         run: |
           mkdir -p _site
-          tar -xzf upload/jekyll-site.tar.gz -C _site
+          tar -xzf jekyll-site.tar.gz -C _site
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v4
 
       - name: Upload site to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_site
+          path: _site
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
