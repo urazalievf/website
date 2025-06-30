@@ -1,0 +1,35 @@
+name: build-uat
+
+on:
+  push:
+    branches: ["uat"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-uat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Archive _site as tar.gz
+        run: |
+          mkdir -p upload
+          tar -czf upload/jekyll-site.tar.gz -C _site .
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-site
+          path: upload/jekyll-site.tar.gz
