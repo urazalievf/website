@@ -5,8 +5,12 @@
   <title>Protected page</title>
   <meta content="Protected page" property="og:title">
   <meta content="Protected page" property="twitter:title">
+  <meta content="This page is password protected" name="description">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/feruzs-urazaliev.webflow.css" rel="stylesheet" type="text/css">
@@ -44,7 +48,7 @@
 <body>
   <div class="utility-page-wrap">
     <div class="utility-page-content w-password-page w-form">
-      <form action="/.wf_auth" method="post" id="email-form" name="email-form" data-name="Email Form" class="utility-page-form w-password-page" data-wf-page-id="66a194c6263ba8855fc011ce" data-wf-element-id="66a194c6263ba8855fc011d100000000000c"><img src="https://d3e54v103j8qbb.cloudfront.net/static/utility-lock.ae54711958.svg" alt="">
+      <form action="/.wf_auth" method="post" id="email-form" name="email-form" data-name="Email Form" class="utility-page-form w-password-page" data-wf-page-id="66a194c6263ba8855fc011ce" data-wf-element-id="66a194c6263ba8855fc011d100000000000c"><img src="https://d3e54v103j8qbb.cloudfront.net/static/utility-lock.ae54711958.svg" alt="Password protected">
         <h2>Protected Page</h2><label for="pass" class="w-password-page">Password</label><input class="w-password-page w-input" autofocus="true" maxlength="256" name="pass" data-name="field" placeholder="Enter your password" type="password" id="pass"><input type="submit" data-wait="Please wait..." class="w-password-page w-button" value="Submit">
         <div class="w-password-page w-form-fail">
           <div>Incorrect password. Please try again.</div>
