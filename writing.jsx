@@ -30,7 +30,11 @@ function WritingApp() {
                      || cats[0] || 'engineering';
             const d = new Date(item.pubDate);
             const date = d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-            return { date, title: item.title, sum: snippet, tag, href: item.link, thumb: item.thumbnail };
+            // Estimate read time at ~220 wpm from the (HTML-stripped) content length.
+            const plain = (item.content || item.description || '').replace(/<[^>]+>/g, ' ');
+            const words = plain.trim().split(/\s+/).filter(Boolean).length;
+            const read  = words > 0 ? Math.max(1, Math.round(words / 220)) + ' min' : '';
+            return { date, title: item.title, sum: snippet, tag, href: item.link, thumb: item.thumbnail, read };
           });
           setPosts(mapped);
         }
@@ -39,11 +43,14 @@ function WritingApp() {
       .catch(() => setLoading(false));
   }, []);
 
-  const tags = ["all", ...Array.from(new Set(posts.map(p => p.tag)))];
   const [filter, setFilter] = wUseState("all");
+  const tags = wUseMemo(
+    () => ["all", ...Array.from(new Set(posts.map(p => p.tag)))],
+    [posts]
+  );
   const visible = wUseMemo(
     () => filter === "all" ? posts : posts.filter(p => p.tag === filter),
-    [filter]
+    [filter, posts]
   );
 
   return (
@@ -56,7 +63,7 @@ function WritingApp() {
         <section className="wr-hero" data-screen-label="Writing Hero">
           <div className="hero-stamp" style={{marginBottom:16}}>
             <span><span className="num">004</span> / Writing</span>
-            <span>{posts.length > 0 ? posts.length + ' entries' : '—'} entries</span>
+            <span>{loading ? '…' : posts.length + ' entries'}</span>
             <span style={{color:'var(--lumen-2)'}}>· on Medium</span>
           </div>
           <h1>Notes, drafts,<br/><em>marginalia</em>.</h1>
@@ -79,21 +86,27 @@ function WritingApp() {
 
         <section data-screen-label="Index">
           <div className="wr-list">
-            {visible.map((p, i) => (
-              <a key={p.title} className="wr-row" href="https://medium.feruzurazaliev.com" target="_blank" rel="noreferrer">
+            {visible.map((p) => (
+              <a key={p.href} className="wr-row" href={p.href} target="_blank" rel="noreferrer">
                 <span className="date">{p.date}</span>
                 <span className="title">{p.title}</span>
                 <span className="summary">{p.sum}</span>
                 <span className="meta">
-                  <div>{p.read} · {p.tag}</div>
-                  <div className={p.status === "draft" ? "draft" : ""}>● {p.status}</div>
+                  <div>{p.read ? p.read + ' · ' : ''}{p.tag}</div>
                 </span>
                 <span className="arr">↗</span>
               </a>
             ))}
-            {visible.length === 0 && (
+            {!loading && visible.length === 0 && (
               <div style={{padding: '60px 14px', fontFamily: 'var(--font-mono)', color: 'var(--fg-faint)', textAlign: 'center'}}>
-                Nothing here under "{filter}" — yet.
+                {posts.length === 0
+                  ? 'Could not load posts from Medium right now — try refresh.'
+                  : `Nothing here under "${filter}" — yet.`}
+              </div>
+            )}
+            {loading && (
+              <div style={{padding: '60px 14px', fontFamily: 'var(--font-mono)', color: 'var(--fg-faint)', textAlign: 'center'}}>
+                Loading posts from Medium…
               </div>
             )}
           </div>
@@ -108,13 +121,15 @@ function WritingApp() {
               </div>
               <h3>One letter, <em>a month</em>. No more.</h3>
               <p>What I read, what I built, what I'd rebuild. Short, low-pressure, never sold. Unsubscribe with one click.</p>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                window.open("https://medium.feruzurazaliev.com/subscribe", "_blank");
-              }}>
-                <input type="email" placeholder="you@somewhere.tld" required />
-                <button type="submit" className="btn btn-primary">Subscribe</button>
-              </form>
+              <a
+                className="btn btn-primary"
+                href="https://medium.feruzurazaliev.com/subscribe"
+                target="_blank"
+                rel="noreferrer"
+                style={{display:'inline-block', marginTop: 14}}
+              >
+                Subscribe on Medium →
+              </a>
             </div>
 
             <aside className="wr-side glass">
