@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-aesthetic="glass">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chess · Feruz Urazaliev</title>
+  <meta name="description" content="A small in-browser chess game — you play white against a JavaScript minimax engine." />
+  <meta property="og:title" content="Chess · Feruz Urazaliev" />
+  <meta property="og:description" content="A small in-browser chess game — you play white against a JavaScript minimax engine." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chess · Feruz Urazaliev" />
+  <meta name="twitter:description" content="A small in-browser chess game — you play white against a JavaScript minimax engine." />
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon" />
+  <link href="images/webclip.png" rel="apple-touch-icon" />
+
+  <link rel="stylesheet" href="colors_and_type.css" />
+  <link rel="stylesheet" href="field-notebook.css" />
+  <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="globals.css" />
+  <link rel="stylesheet" href="chess.css" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" crossorigin="anonymous"></script>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/viewer/build/spline-viewer.js"></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXQRZ31KSJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-RXQRZ31KSJ');
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="site-shell.jsx"></script>
+  <script type="text/babel" src="globals.jsx"></script>
+  <script type="text/babel" src="chess.jsx"></script>
+</body>
+</html>

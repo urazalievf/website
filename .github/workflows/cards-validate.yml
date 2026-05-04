@@ -1,0 +1,83 @@
+name: Validate cards
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  pull_request:
+    paths:
+      - 'rewards-cards.jsx'
+      - 'images/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  models: read
+
+jobs:
+  image-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify referenced images exist on disk
+        run: |
+          set -euo pipefail
+          missing=$(grep -oE '^[[:space:]]*image:[[:space:]]*"[^"]+"' rewards-cards.jsx \
+            | sed -E 's/.*image:[[:space:]]*"([^"]+)".*/\1/' \
+            | sort -u \
+            | while read -r p; do [ -f "$p" ] || echo "$p"; done)
+          if [ -n "$missing" ]; then
+            echo "::error::Missing image files referenced from rewards-cards.jsx:"
+            echo "$missing"
+            exit 1
+          fi
+          echo "All referenced images exist."
+
+  llm-diff-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build prompt from diff
+        run: |
+          set -euo pipefail
+          {
+            echo "You are reviewing a change to a credit-card list (rewards-cards.jsx)."
+            echo "Each card object has: brand, name, image, af, welcome, desc, benefits[], href."
+            echo
+            echo "Flag anything suspicious. Examples of suspicious changes:"
+            echo "- Annual fee dropped to \$0 on a premium card."
+            echo "- Welcome offer above 500k points or below 5k for a known premium card."
+            echo "- A signature permanent benefit removed (e.g. lounge access on Platinum)."
+            echo "- Referral href belongs to a different brand than the card."
+            echo "- Image path no longer matches the card name."
+            echo
+            echo "Reply with a short bullet list of concerns. If nothing is suspicious,"
+            echo "reply exactly: Looks fine."
+            echo
+            echo "DIFF:"
+            git diff "${{ github.event.pull_request.base.sha }}" \
+                    "${{ github.event.pull_request.head.sha }}" \
+                    -- rewards-cards.jsx | head -c 12000
+          } > prompt.txt
+      - id: ai
+        uses: actions/ai-inference@v1
+        with:
+          model: openai/gpt-4o-mini
+          prompt-file: prompt.txt
+      - name: Comment review on PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          {
+            echo "**Card-diff review** (gpt-4o-mini via GitHub Models)"
+            echo
+            echo "${{ steps.ai.outputs.response }}"
+          } > review.md
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --body-file review.md
