@@ -1056,11 +1056,6 @@ function WireGlobe({ size = 420 }) {
 
   return (
     <div className="wire-globe" style={{ width:size, height:size }}>
-      <div className="wire-globe-ring" aria-hidden="true" />
-      <span className="wire-globe-tick wg-n" aria-hidden="true" />
-      <span className="wire-globe-tick wg-e" aria-hidden="true" />
-      <span className="wire-globe-tick wg-s" aria-hidden="true" />
-      <span className="wire-globe-tick wg-w" aria-hidden="true" />
       <div ref={mountRef} className="wire-globe-mount" style={{ width:size, height:size }} />
       <div className="wire-globe-hud">
         {hud.city && <span className="wg-hud-city">{hud.city}</span>}

@@ -83,15 +83,17 @@ html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; fil
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 1;
 }
 .spline-bg spline-viewer {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
   background: transparent;
 }
-html[data-aesthetic="paper"] .spline-bg { opacity: 0.35; }
+html[data-aesthetic="paper"] .spline-bg { opacity: 0.5; }
 
 /* ─────────────────────────────────────────────────────────────────────
    WIREGLOBE — instrument frame around the globe.gl canvas.
@@ -112,36 +114,6 @@ html[data-aesthetic="paper"] .spline-bg { opacity: 0.35; }
     inset 0 0 80px -20px rgba(0, 0, 0, 0.7);
 }
 .wire-globe-mount:active { cursor: grabbing; }
-.wire-globe-ring {
-  position: absolute;
-  inset: -10px;
-  border-radius: 50%;
-  border: 1px solid rgba(245, 244, 255, 0.10);
-  pointer-events: none;
-  z-index: 3;
-}
-.wire-globe-ring::before {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  border-radius: 50%;
-  border: 1px dashed rgba(166, 132, 255, 0.18);
-  pointer-events: none;
-}
-.wire-globe-tick {
-  position: absolute;
-  background: rgba(166, 132, 255, 0.55);
-  pointer-events: none;
-  z-index: 3;
-}
-.wire-globe-tick.wg-n,
-.wire-globe-tick.wg-s { width: 1px; height: 10px; left: 50%; transform: translateX(-50%); }
-.wire-globe-tick.wg-n { top: -22px; }
-.wire-globe-tick.wg-s { bottom: -22px; }
-.wire-globe-tick.wg-e,
-.wire-globe-tick.wg-w { width: 10px; height: 1px; top: 50%; transform: translateY(-50%); }
-.wire-globe-tick.wg-e { right: -22px; }
-.wire-globe-tick.wg-w { left: -22px; }
 
 .wire-globe-hud {
   position: absolute;
