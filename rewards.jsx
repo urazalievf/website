@@ -38,11 +38,11 @@ function RewardsApp() {
               <div className="label">Categories</div>
             </div>
             <div className="rw-stat glass">
-              <div className="num"><CountUp to={10} /></div>
+              <div className="num"><CountUp to={15} /></div>
               <div className="label">Cards in wallet</div>
             </div>
             <div className="rw-stat glass">
-              <div className="num"><em><CountUp to={22} /></em></div>
+              <div className="num"><em><CountUp to={27} /></em></div>
               <div className="label">Active referrals</div>
             </div>
           </div>
@@ -66,8 +66,8 @@ function RewardsApp() {
             <a className="rw-route glass" href="rewards-cards.html">
               <span className="num">02 / Credit cards</span>
               <h3>Get a <em>card</em>.</h3>
-              <div className="desc">Ten cards I'd recommend to a friend — Amex Platinum, Gold, and Blue Cash; Chase Sapphire Reserve, Prime Visa, United Club; Capital One Venture X and VentureOne; Bilt; Apple Card. Each with the perks I'd actually call out.</div>
-              <div className="meta"><span>10 cards</span><span>·</span><span>credit pull required</span></div>
+              <div className="desc">Fifteen cards I'd recommend to a friend — Amex Platinum, Gold, Hilton Aspire, Blue Business Plus, Blue Cash; Chase Sapphire Reserve & Preferred, Freedom Unlimited, United, Marriott Bountiful, Prime Visa; Capital One Venture X & VentureOne; Bilt 2.0; Apple Card; Rakuten. Each with the current welcome offer and the perks I'd actually call out.</div>
+              <div className="meta"><span>15 cards</span><span>·</span><span>credit pull required</span></div>
               <span className="arrow">See cards <span className="arr">→</span></span>
             </a>
 
