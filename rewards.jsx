@@ -66,7 +66,7 @@ function RewardsApp() {
             <a className="rw-route glass" href="rewards-cards.html">
               <span className="num">02 / Credit cards</span>
               <h3>Get a <em>card</em>.</h3>
-              <div className="desc">Fifteen cards I'd recommend to a friend — Amex Platinum, Gold, Hilton Aspire, Blue Business Plus, Blue Cash; Chase Sapphire Reserve & Preferred, Freedom Unlimited, United, Marriott Bountiful, Prime Visa; Capital One Venture X & VentureOne; Bilt 2.0; Apple Card; Rakuten. Each with the current welcome offer and the perks I'd actually call out.</div>
+              <div className="desc">Fifteen cards I'd recommend to a friend — Amex Platinum, Gold, Hilton Aspire, Blue Business Plus, Blue Cash; Chase Sapphire Reserve, Freedom Unlimited, United, Marriott Bountiful, Prime Visa; Capital One Venture X & VentureOne; Bilt 2.0; Apple Card; Rakuten. Each with the current welcome offer and the perks I'd actually call out.</div>
               <div className="meta"><span>15 cards</span><span>·</span><span>credit pull required</span></div>
               <span className="arrow">See cards <span className="arr">→</span></span>
             </a>
