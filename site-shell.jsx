@@ -108,19 +108,4 @@ function SiteFooter() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   AestheticToggle — Tweaks-driven swap between Glasswork & Paper
-   ───────────────────────────────────────────────────────────────── */
-function useAestheticTweak() {
-  /* Read default from <html data-aesthetic>; sync on storage events.
-     Persist via __edit_mode_set_keys is handled in the per-page Tweaks panel. */
-  const [aesthetic, setAesthetic] = useState(() =>
-    document.documentElement.getAttribute("data-aesthetic") || "glass"
-  );
-  useEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", aesthetic);
-  }, [aesthetic]);
-  return [aesthetic, setAesthetic];
-}
-
-Object.assign(window, { SiteNav, SiteFooter, useAestheticTweak });
+Object.assign(window, { SiteNav, SiteFooter });

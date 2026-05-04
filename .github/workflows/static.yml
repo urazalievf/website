@@ -30,6 +30,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Auto-enable Pages on first run + ensure the Source is "GitHub
+          # Actions" so the workflow doesn't 404 when the repo's Pages
+          # config hasn't been touched yet.
+          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

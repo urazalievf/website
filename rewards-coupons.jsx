@@ -155,7 +155,7 @@ function CouponCard({ c }) {
         )}
         {c.code && (
           <div style={{marginTop: 10}}>
-            <button onClick={copy} className={"rw-coupon-code " + (copied ? "is-copied" : "")}>
+            <button type="button" onClick={copy} className={"rw-coupon-code " + (copied ? "is-copied" : "")}>
               <span>{c.code}</span>
               <span className="copy-tip">{copied ? "✓ COPIED" : "CLICK TO COPY"}</span>
             </button>

@@ -654,7 +654,7 @@ function ChessBoard() {
                 <div key={m.ply}>{m.ply}. {m.t === "w" ? "" : "… "}{m.n}</div>
               ))}
         </div>
-        <button className="chess-reset" onClick={reset}>↻ Reset</button>
+        <button type="button" className="chess-reset" onClick={reset}>↻ Reset</button>
         <a className="link-amber" href="https://www.chess.com/" target="_blank" rel="noreferrer" style={{borderBottom:0, fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", color:"var(--violet)"}}>
           Real game on Chess.com →
         </a>
@@ -1068,6 +1068,7 @@ function WireGlobe({ size = 420 }) {
           : <span>UTC <em>{hud.utc}</em></span>}
       </div>
       <button
+        type="button"
         className="wire-globe-locate"
         onClick={locate}
         disabled={locState==="locating"||locState==="located"}
@@ -1114,6 +1115,7 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
       <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12, marginTop:16}}>
         <div className="attrib">— {q.attrib}</div>
         <button
+          type="button"
           onClick={cycle}
           style={{
             fontFamily: "var(--font-mono)",
@@ -1154,6 +1156,10 @@ function SplineScene({ url = "https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.
     && window.matchMedia
     && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) return null;
+  // Opt-out: <html data-no-spline> hides the backdrop site-wide for slow
+  // devices / debugging without touching JS or the per-page Tweaks panel.
+  if (typeof document !== "undefined"
+      && document.documentElement.hasAttribute("data-no-spline")) return null;
   return (
     <div className="spline-bg" aria-hidden="true">
       <spline-viewer
