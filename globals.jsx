@@ -956,8 +956,8 @@ function WireGlobe({ size = 420 }) {
       .showGlobe(true)
       .globeImageUrl('')
       .showAtmosphere(true)
-      .atmosphereColor('rgba(100,140,255,0.7)')
-      .atmosphereAltitude(0.15)
+      .atmosphereColor('rgba(120,150,220,0.35)')
+      .atmosphereAltitude(0.08)
       .pointOfView({ lat: 10, lng: -80, altitude: 1.55 }, 0); // start on Americas
 
     // Set dark globe surface color after init
@@ -1057,7 +1057,6 @@ function WireGlobe({ size = 420 }) {
       <button onClick={locate} disabled={locState==="locating"||locState==="located"} style={{ position:"absolute", bottom:14, left:14, zIndex:2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:"0.1em", textTransform:"uppercase", color:locColor, background:"rgba(5,8,14,0.75)", border:"1px solid "+locColor, borderRadius:99, padding:"6px 12px", cursor:locState==="located"?"default":"pointer", backdropFilter:"blur(8px)", transition:"all 0.2s ease" }}>
         {locState==="idle"?"📍 ":""}{locLabel}
       </button>
-      <div style={{ position:"absolute", inset:-6, borderRadius:"50%", zIndex:2, background:"radial-gradient(circle, transparent 49%, rgba(60,100,255,0.2) 68%, rgba(20,60,200,0.08) 82%, transparent 100%)", pointerEvents:"none" }} />
     </div>
   );
 }
