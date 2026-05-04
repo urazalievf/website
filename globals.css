@@ -476,6 +476,12 @@ html[data-aesthetic="paper"] .chess-cell .piece.black { color: #15171a; text-sha
   line-height: 1.6;
 }
 html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); }
+.chess-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-self: flex-start;
+}
 .chess-reset {
   font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
@@ -488,9 +494,9 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   color: var(--lumen);
   cursor: pointer;
   transition: all var(--dur-quick) var(--ease-out);
-  align-self: flex-start;
 }
-.chess-reset:hover { border-color: var(--amber); color: var(--amber); }
+.chess-reset:hover:not(:disabled) { border-color: var(--amber); color: var(--amber); }
+.chess-reset:disabled { opacity: 0.4; cursor: not-allowed; }
 
 @media (max-width: 720px) {
   .chess-wrap { grid-template-columns: 1fr; }
