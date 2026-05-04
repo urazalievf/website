@@ -91,7 +91,7 @@ const CARDS = [
   {
     brand: "Chase",
     name: "Sapphire Reserve",
-    image: "images/CSR.png",
+    image: "images/Chase-Sapphire-Reserve.jpg",
     af: "$795",
     welcome: "150,000 pts",
     desc: "Premium travel card, freshly refreshed in 2025. The Points Boost redemptions and Priority Pass / Sapphire Lounge access are the real value; the credit stack covers most of the AF for anyone who actually travels.",
@@ -106,9 +106,7 @@ const CARDS = [
   {
     brand: "Chase",
     name: "Freedom Unlimited",
-    image: null,
-    mark: "F",
-    color: "m-emerald",
+    image: "images/Chase-Freedom-Unlimited.png",
     af: "$0",
     welcome: "$200 cash back",
     desc: "The no-fee everyday card that quietly beats most 2% flat-cash cards once you stack the points with a Sapphire. Same referral covers Freedom Flex.",
