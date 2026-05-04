@@ -33,12 +33,14 @@ const ProfileIcon = ({ name }) => {
 /* ── Larger brand glyphs for the off-grid logbook tiles ─────────────── */
 const BrandGlyph = ({ brand }) => {
   if (brand === "chess") {
+    // Cburnett chess-knight silhouette — the standard SVG used on
+    // Wikipedia, lichess, and most public-domain chess sets.
     return (
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-        <path d="M19 44h22v3H19zM21 41h18v3H21z" fill="currentColor"/>
-        <path d="M22 41c0-9 4-13 7-15.5 1.6-1.3 2-2.5 1.5-4.2-.4-1.4-1.5-2.4-2.7-2.6L26 18l1.5-3 1.6.3c2.3.3 4.4 1.6 5.6 3.6 2 3.4 4.5 6.4 4.5 12.1 0 5-2 8-2 10H22z" fill="currentColor"/>
-        <circle cx="34" cy="24" r="1.1" fill="#0e0e10"/>
-        <path d="M22 33c.5-2 2.5-3.5 4.5-3.5" stroke="#0e0e10" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+      <svg width="56" height="56" viewBox="0 0 45 45" aria-hidden="true">
+        <path d="M 22 10 C 32.5 11 38.5 18 38 39 L 15 39 C 15 30 25 32.5 23 18" fill="currentColor"/>
+        <path d="M 24 18 C 24.38 20.91 18.45 25.37 16 27 C 13 29 13.18 31.34 11 31 C 9.96 30.06 12.41 27.96 11 28 C 10 28 11.19 29.23 10 30 C 9 30 6 31 6 26 C 6 24 12 14 12 14 C 12 14 13.89 12.1 14 10.5 C 13.27 9.51 13.5 8.5 13.5 7.5 C 14.5 5.5 16.5 4.5 16.5 4.5 L 18 6.5 L 21 5.5 L 22.5 5.5 Z" fill="currentColor"/>
+        <circle cx="9.5" cy="25.5" r="0.7" fill="rgba(0,0,0,0.85)"/>
+        <ellipse cx="14" cy="15.5" rx="0.5" ry="1.5" transform="rotate(30 14 15.5)" fill="rgba(0,0,0,0.85)"/>
       </svg>
     );
   }
