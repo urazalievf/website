@@ -76,6 +76,7 @@ function WritingApp() {
             {tags.map(tag => (
               <button
                 key={tag}
+                type="button"
                 className={"tag-filter " + (filter === tag ? "is-active" : "")}
                 onClick={() => setFilter(tag)}
               >
