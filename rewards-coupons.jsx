@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, SplineScene */
 
 const RP_DEFAULTS = /*EDITMODE-BEGIN*/{
   "aesthetic": "glass",
@@ -191,6 +191,7 @@ function RewardsCouponsApp() {
 
   return (
     <>
+      <SplineScene />
       {t.showOrbs && <OrbField count={5} />}
       {t.showStatusBar && <StatusBar />}
       <SiteNav active="rewards" />

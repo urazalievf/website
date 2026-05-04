@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, SplineScene */
 const { useState: wUseState, useMemo: wUseMemo, useEffect: wUseEffect } = React;
 
 const WR_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -55,6 +55,7 @@ function WritingApp() {
 
   return (
     <>
+      <SplineScene />
       {t.showOrbs && <OrbField count={6} />}
       {t.showStatusBar && <StatusBar />}
       <SiteNav active="writing" />
