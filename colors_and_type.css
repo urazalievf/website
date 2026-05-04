@@ -1,0 +1,510 @@
+/* =====================================================================
+   FERUZ — "GLASSWORK" DESIGN SYSTEM
+   ---------------------------------------------------------------------
+   A web3-inspired editorial system. Deep cosmic base, glass surfaces
+   (iOS 26 / visionOS-style refractive panels), saturated violet accent
+   with cyan secondary, oversized Fraunces serif display, Bricolage sans
+   body, JetBrains Mono for figures and metadata.
+
+   Mental model: a darkroom gallery where every panel is etched glass
+   floating over a deep field. Light passes through. Type is sharp.
+   ===================================================================== */
+
+/* ─────────────────────────────────────────────────────────────────────
+   FONT FACES
+   ───────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces-VariableFont.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces-Italic-VariableFont.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/BricolageGrotesque-VariableFont_opszwdthwght.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("fonts/InstrumentSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("fonts/InstrumentSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   TOKENS
+   ───────────────────────────────────────────────────────────────────── */
+:root {
+  /* ─── COSMIC BASE (deep, slightly violet-shifted) ─── */
+  --void:        #07070b;   /* page bg, deepest */
+  --void-1:      #0c0c12;   /* primary surface */
+  --void-2:      #14141d;   /* lifted surface (behind glass) */
+  --void-3:      #1d1d29;   /* card / inset */
+  --void-4:      #2a2a3a;   /* divider strong */
+  --void-5:      #3a3a4f;   /* hairline subtle */
+
+  /* ─── LUMINOUS TEXT ─── */
+  --lumen:       #f5f4ff;   /* primary text — slight violet cast */
+  --lumen-2:     #d8d6e8;   /* sustained body */
+  --lumen-3:     #9794ad;   /* meta, captions */
+  --lumen-4:     #61607a;   /* hint text, disabled */
+  --lumen-line:  rgba(245, 244, 255, 0.08);  /* default hairline */
+  --lumen-line-strong: rgba(245, 244, 255, 0.18);
+
+  /* ─── ACCENT — VIOLET (primary punch) ─── */
+  --violet:       #8b5cff;   /* the accent */
+  --violet-bright:#a684ff;   /* hover */
+  --violet-deep:  #6a3ee0;   /* press */
+  --violet-glow:  rgba(139, 92, 255, 0.35);
+  --violet-wash:  rgba(139, 92, 255, 0.10);
+
+  /* ─── SECONDARY — ICE CYAN (used sparingly, for data viz / chart) ─── */
+  --ice:          #6ee7ff;
+  --ice-glow:     rgba(110, 231, 255, 0.25);
+
+  /* ─── TERTIARY — WARM AMBER (warnings, "live" indicators) ─── */
+  --amber:        #ffb454;
+  --amber-glow:   rgba(255, 180, 84, 0.25);
+
+  /* ─── GLASS (the iOS 26 / visionOS refractive panel) ─── */
+  /* Use these together: backdrop-filter + tint + border + inner highlight */
+  --glass-tint:        rgba(255, 255, 255, 0.04);  /* base panel tint */
+  --glass-tint-strong: rgba(255, 255, 255, 0.07);  /* heavier glass */
+  --glass-tint-violet: rgba(139, 92, 255, 0.08);   /* violet-cast glass */
+  --glass-blur:        20px;
+  --glass-blur-strong: 32px;
+  --glass-saturate:    1.4;
+
+  /* The signature refractive border — a hairline that catches light on
+     two edges. Use as `border-image` source or a 1px gradient border. */
+  --glass-border:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(255, 255, 255, 0.02) 60%,
+      rgba(255, 255, 255, 0.18) 100%);
+
+  --glass-border-violet:
+    linear-gradient(135deg,
+      rgba(166, 132, 255, 0.45) 0%,
+      rgba(139, 92, 255, 0.05) 50%,
+      rgba(166, 132, 255, 0.35) 100%);
+
+  /* Inner highlight — a rim of bright pixels along the top edge, like
+     light catching the top of a real piece of glass. */
+  --glass-rim-top:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+  --glass-rim-full:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.05),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.03);
+
+  /* ─── SEMANTIC ─── */
+  --bg:           var(--void);
+  --surface-1:    var(--void-1);
+  --surface-2:    var(--void-2);
+  --surface-3:    var(--void-3);
+  --fg:           var(--lumen);
+  --fg-body:      var(--lumen-2);
+  --fg-muted:     var(--lumen-3);
+  --fg-faint:     var(--lumen-4);
+  --hairline:     var(--lumen-line);
+  --hairline-strong: var(--lumen-line-strong);
+  --accent:       var(--violet);
+  --accent-fg:    #ffffff;
+
+  --selection-bg: var(--violet);
+  --selection-fg: #ffffff;
+
+  /* ─── COSMIC GLOW BACKDROPS ─── */
+  /* Big, slow violet aurora used behind hero sections. */
+  --aurora:
+    radial-gradient(70% 55% at 18% 12%, rgba(139, 92, 255, 0.22) 0%, transparent 60%),
+    radial-gradient(45% 40% at 82% 88%, rgba(110, 231, 255, 0.10) 0%, transparent 65%),
+    radial-gradient(60% 50% at 50% 100%, rgba(139, 92, 255, 0.08) 0%, transparent 70%);
+
+  /* ─── TYPE FAMILIES ─── */
+  /* Display switched to Helvetica Neue / grotesk per user request */
+  --font-display: "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
+  --font-serif:   "Instrument Serif", Georgia, serif;
+  --font-sans:    "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ─── TYPE SIZES ─── */
+  --fs-mono-xs:   11px;
+  --fs-mono-sm:   13px;
+  --fs-mono-md:   14px;
+  --fs-body-sm:   14px;
+  --fs-body:      16px;
+  --fs-body-lg:   19px;
+  --fs-lead:      clamp(20px, 1.6vw, 24px);
+  --fs-h6:        18px;
+  --fs-h5:        24px;
+  --fs-h4:        clamp(28px, 2.4vw, 36px);
+  --fs-h3:        clamp(40px, 4.2vw, 64px);
+  --fs-h2:        clamp(56px, 7vw, 104px);
+  --fs-h1:        clamp(72px, 11vw, 184px);
+  --fs-mega:      clamp(120px, 22vw, 360px);
+
+  /* ─── LINE-HEIGHT / TRACKING ─── */
+  --lh-display:   0.94;
+  --lh-tight:     1.08;
+  --lh-snug:      1.25;
+  --lh-normal:    1.5;
+  --lh-mono:      1.45;
+  --tr-display:   -0.03em;
+  --tr-body:      -0.01em;
+  --tr-mono-up:   0.12em;
+  --tr-mono:      0;
+
+  --w-thin: 250; --w-regular: 400; --w-medium: 500; --w-semibold: 600; --w-bold: 700;
+
+  /* Display = Fraunces, low weight, high opsz — the signature voice */
+  --display-weight: 380;
+  --display-opsz:   144;
+
+  /* ─── SPACING ─── */
+  --s-1:  4px;   --s-2: 8px;   --s-3: 16px;  --s-4: 24px;
+  --s-5: 32px;   --s-6: 48px;  --s-7: 64px;  --s-8: 96px;
+  --s-9: 128px;  --s-10: 192px;
+
+  --gutter: 28px;
+  --max-w:  1320px;
+
+  /* ─── RADII (4-6 range, with explicit larger panel + pill) ─── */
+  --r-1: 4px;     /* inputs, tags, small cards */
+  --r-2: 6px;     /* buttons, medium cards */
+  --r-3: 12px;    /* large cards, glass panels */
+  --r-4: 20px;    /* hero panels */
+  --r-5: 28px;    /* mega panels, modals */
+  --r-pill: 999px;
+
+  /* ─── BORDERS ─── */
+  --border-w:        1px;
+  --border:          var(--border-w) solid var(--hairline);
+  --border-strong:   var(--border-w) solid var(--hairline-strong);
+  --border-violet:   var(--border-w) solid var(--violet);
+
+  /* ─── ELEVATION ─── */
+  /* Shadows here are soft and atmospheric — like glass casting a colored
+     bloom, not floating UI. */
+  --shadow-glow-violet:
+    0 8px 40px -12px var(--violet-glow),
+    0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-glow-ice:
+    0 8px 40px -12px var(--ice-glow),
+    0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-panel:
+    0 24px 60px -28px rgba(0, 0, 0, 0.7),
+    0 2px 8px -4px rgba(0, 0, 0, 0.5);
+  --shadow-press:
+    0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
+    0 8px 24px -8px rgba(0, 0, 0, 0.6);
+
+  /* ─── MOTION ─── */
+  --ease-out:    cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-quick:   140ms;
+  --dur-base:    240ms;
+  --dur-slow:    480ms;
+  --dur-aurora:  20s;
+
+  /* ─── Z ─── */
+  --z-aurora: 0; --z-base: 1; --z-glass: 5; --z-nav: 20; --z-over: 50;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   ELEMENT DEFAULTS
+   ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+::selection { color: var(--selection-fg); background: var(--selection-bg); }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--tr-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* DISPLAY — Fraunces, low weight, high opsz, tight tracking. */
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-style: normal;
+  font-variation-settings: "opsz" var(--display-opsz);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  color: var(--lumen);
+  margin: 0;
+  text-wrap: balance;
+}
+h1, .display-1 { font-size: var(--fs-h1); }
+h2, .display-2 { font-size: var(--fs-h2); }
+h3, .display-3 { font-size: var(--fs-h3); }
+
+/* Italic display variant — used for a single word inside a headline */
+.italic-emph, em.display, .display em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--display-weight);
+  font-variation-settings: "opsz" var(--display-opsz);
+}
+
+/* SUBHEADINGS — sans, structural */
+h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--w-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-body);
+  color: var(--lumen);
+  margin: 0;
+}
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: var(--fs-h5); }
+h6 { font-size: var(--fs-h6); }
+
+/* PROSE — Bricolage sans, sustained */
+p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: pretty; }
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  color: var(--lumen-2);
+  font-weight: var(--w-regular);
+}
+
+/* LABEL / KICKER — mono uppercase, tracked, the system's metadata voice */
+.label, .kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: var(--w-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tr-mono-up);
+  color: var(--fg-muted);
+}
+.label--lumen { color: var(--lumen); }
+.label--violet { color: var(--violet); }
+.label--ice { color: var(--ice); }
+
+/* INDEX — tiny mono, used as a number stamp */
+.index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  font-weight: var(--w-medium);
+  letter-spacing: var(--tr-mono-up);
+  color: var(--fg-faint);
+  text-transform: uppercase;
+}
+
+/* FIGURE / NUMERIC — for prices, balances, addresses */
+.figure {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-md);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--lumen);
+}
+
+/* MONO INLINE / CODE */
+code, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-md);
+  letter-spacing: 0;
+  color: var(--lumen);
+}
+pre {
+  background: var(--surface-2);
+  border: var(--border);
+  padding: var(--s-3);
+  border-radius: var(--r-2);
+  overflow: auto;
+}
+
+/* PULL QUOTE — Instrument Serif italic, oversized */
+.pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(28px, 3.4vw, 52px);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--lumen);
+  text-wrap: balance;
+}
+
+/* LINKS — luminous, hairline underline, violet on hover */
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--dur-quick) var(--ease-out),
+              border-color var(--dur-quick) var(--ease-out);
+}
+a:hover {
+  color: var(--violet-bright);
+  border-bottom-color: var(--violet-bright);
+}
+
+/* HAIRLINE */
+hr, .rule {
+  border: 0;
+  border-top: var(--border);
+  margin: 0;
+}
+.rule--strong { border-top: var(--border-strong); }
+.rule--violet { border-top: var(--border-violet); }
+
+/* ─────────────────────────────────────────────────────────────────────
+   GLASS SURFACES — the system's signature
+   ───────────────────────────────────────────────────────────────────── */
+
+/* .glass — the basic refractive panel.
+   Combines: subtle tint + heavy backdrop blur + saturated saturation +
+   gradient hairline border + top-edge rim highlight + soft drop. */
+.glass {
+  position: relative;
+  background: var(--glass-tint);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border-radius: var(--r-3);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: var(--glass-rim-full), var(--shadow-panel);
+}
+/* Refractive border via a layered pseudo-element */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--glass-border);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass--strong {
+  background: var(--glass-tint-strong);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+}
+
+.glass--violet {
+  background: var(--glass-tint-violet);
+}
+.glass--violet::before {
+  background: var(--glass-border-violet);
+}
+
+.glass--pill   { border-radius: var(--r-pill); }
+.glass--lg     { border-radius: var(--r-4); }
+.glass--xl     { border-radius: var(--r-5); }
+
+/* Glass icon — a small refractive square used for nav/feature icons.
+   The visionOS / iOS 26 vibe: rounded-square, refractive border,
+   light catching the corner. */
+.glass-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(255, 255, 255, 0.02) 55%,
+    rgba(139, 92, 255, 0.08) 100%);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 8px 24px -10px rgba(139, 92, 255, 0.35);
+  color: var(--lumen);
+}
+.glass-icon::after {
+  /* the catch-light: a slim diagonal gleam on the top-left corner */
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0) 30%);
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   ATMOSPHERE — backgrounds for hero / featured regions
+   ───────────────────────────────────────────────────────────────────── */
+.aurora {
+  background-color: var(--void);
+  background-image: var(--aurora);
+}
+.aurora--animated {
+  background-color: var(--void);
+  background-image: var(--aurora);
+  background-size: 200% 200%;
+  animation: aurora-drift var(--dur-aurora) var(--ease-in-out) infinite alternate;
+}
+@keyframes aurora-drift {
+  0%   { background-position:   0% 0%, 100% 100%, 50% 100%; }
+  100% { background-position: 100% 50%,  20%  20%, 60%  80%; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   THE PUNCH — single violet element per layout
+   ───────────────────────────────────────────────────────────────────── */
+.violet      { color: var(--violet); }
+.violet-bg   { background: var(--violet); color: #ffffff; }
+.violet-glow {
+  text-shadow: 0 0 24px var(--violet-glow);
+}
+
+/* Tick — a small violet bar used as an indicator (active nav, "live") */
+.tick {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 12px var(--violet-glow);
+  vertical-align: 0.1em;
+}
+.tick--ice   { background: var(--ice);   box-shadow: 0 0 12px var(--ice-glow); }
+.tick--amber { background: var(--amber); box-shadow: 0 0 12px var(--amber-glow); }
