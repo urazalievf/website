@@ -1001,7 +1001,7 @@ function WireGlobe({ size = 420 }) {
 
     globeRef.current = globe;
     return () => { clearInterval(hudInt); };
-  }, []);
+  }, [size]);
 
   const locate = () => {
     if (!navigator.geolocation) return;
@@ -1075,7 +1075,7 @@ const TALEB_QUOTES = [
   { text: "The difference between technology and slavery is that slaves are fully aware that they are not free.", attrib: "Nassim Nicholas Taleb" },
 ];
 
-function GoodreadsQuote({ num = "004" }) {
+function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
   const [idx, setIdx] = gUseState(() => Math.floor(Math.random() * TALEB_QUOTES.length));
 
   const q = TALEB_QUOTES[idx];
@@ -1085,7 +1085,12 @@ function GoodreadsQuote({ num = "004" }) {
     <div className="bio-quote glass glass--violet">
       <div className="hero-stamp" style={{ marginBottom: 16 }}>
         <span><span className="num">{num}</span> / Liked quotes</span>
-        <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— {idx + 1} / {TALEB_QUOTES.length}</span>
+        <a
+          href={`https://www.goodreads.com/${user}`}
+          target="_blank"
+          rel="noreferrer"
+          style={{marginLeft: 'auto', color: 'var(--fg-faint)', borderBottom: 0, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 'var(--tr-mono-up)', textTransform: 'uppercase'}}
+        >—— {idx + 1} / {TALEB_QUOTES.length} · Goodreads ↗</a>
       </div>
       <p className="pull-quote">{q.text}</p>
       <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12, marginTop:16}}>

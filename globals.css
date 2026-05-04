@@ -290,7 +290,7 @@ html[data-aesthetic="paper"] .tag.tag--amber {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   GLOBAL CHESS BOARD — used on bio
+   GLOBAL CHESS BOARD — playable mini-board, embedded on the home page
    ───────────────────────────────────────────────────────────────────── */
 .chess-wrap {
   display: grid;

@@ -46,7 +46,7 @@ function RewardsBankingApp() {
           <div className="hero-stamp">
             <span><span className="num">005</span> / Rewards / Banking</span>
             <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-mono)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
-            <span style={{color:'var(--lumen-2)'}}>{BANKS.length} account</span>
+            <span style={{color:'var(--lumen-2)'}}>{BANKS.length} account{BANKS.length === 1 ? '' : 's'}</span>
           </div>
           <h1>Open an <em>account</em>.</h1>
           <p className="lead">

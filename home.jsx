@@ -231,12 +231,9 @@ function HomeApp() {
           </div>
         </section>
 
-        {/* QUOTE ─ live from Goodreads liked quotes ───────────── */}
+        {/* QUOTE ─ rotating Taleb quotes ──────────────────────── */}
         <section data-screen-label="Quote">
-          <GoodreadsQuote num="004" user="urazaliev_f" fallback={{
-            text: "A Stoic is someone who transforms fear into prudence, pain into transformation, mistakes into initiation, and desire into undertaking.",
-            attrib: "Nassim Nicholas Taleb · The Bed of Procrustes"
-          }} />
+          <GoodreadsQuote num="004" user="urazaliev_f" />
         </section>
 
         {/* READING NOW ─────────────────────────────────────────── */}
