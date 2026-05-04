@@ -635,6 +635,7 @@ function ChessBoard() {
   const [turn, setTurn] = gUseState("w");
   const [moves, setMoves] = gUseState([]);   // log of "e2-e4"
   const [thinking, setThinking] = gUseState(false);
+  const [history, setHistory] = gUseState([]); // snapshots taken before each white move
 
   gUseEffect(() => {
     if (turn !== "b" || thinking) return;
@@ -664,6 +665,7 @@ function ChessBoard() {
       if (isLegal) {
         const captured = board[r][c];
         const note = `${squareName(sel[0], sel[1])}${captured ? "x" : "-"}${squareName(r, c)}`;
+        setHistory(h => [...h, { board, moves }]);
         setBoard(applyMove(board, { from: sel, to: [r, c] }));
         setMoves(m => [...m, { ply: m.length + 1, t: "w", n: note }]);
         setSel(null);
@@ -683,6 +685,18 @@ function ChessBoard() {
   const reset = () => {
     setBoard(INITIAL.map(row => row.slice()));
     setSel(null); setLegal([]); setTurn("w"); setMoves([]); setThinking(false);
+    setHistory([]);
+  };
+
+  const takeBack = () => {
+    if (thinking || history.length === 0) return;
+    const prev = history[history.length - 1];
+    setBoard(prev.board);
+    setMoves(prev.moves);
+    setHistory(h => h.slice(0, -1));
+    setTurn("w");
+    setSel(null);
+    setLegal([]);
   };
 
   return (
@@ -741,7 +755,10 @@ function ChessBoard() {
                 <div key={m.ply}>{m.ply}. {m.t === "w" ? "" : "… "}{m.n}</div>
               ))}
         </div>
-        <button type="button" className="chess-reset" onClick={reset}>↻ Reset</button>
+        <div className="chess-actions">
+          <button type="button" className="chess-reset" onClick={reset}>↻ Reset</button>
+          <button type="button" className="chess-reset" onClick={takeBack} disabled={thinking || history.length === 0}>↶ Take back</button>
+        </div>
         <a className="link-amber" href="https://www.chess.com/" target="_blank" rel="noreferrer" style={{borderBottom:0, fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", color:"var(--violet)"}}>
           Real game on Chess.com →
         </a>
