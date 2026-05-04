@@ -93,37 +93,40 @@
 
   /* ─── GLASS (the iOS 26 / visionOS refractive panel) ─── */
   /* Use these together: backdrop-filter + tint + border + inner highlight */
-  --glass-tint:        rgba(255, 255, 255, 0.04);  /* base panel tint */
-  --glass-tint-strong: rgba(255, 255, 255, 0.07);  /* heavier glass */
-  --glass-tint-violet: rgba(139, 92, 255, 0.08);   /* violet-cast glass */
-  --glass-blur:        20px;
-  --glass-blur-strong: 32px;
-  --glass-saturate:    1.4;
+  --glass-tint:        rgba(255, 255, 255, 0.06);  /* base panel tint */
+  --glass-tint-strong: rgba(255, 255, 255, 0.10);  /* heavier glass */
+  --glass-tint-violet: rgba(139, 92, 255, 0.10);   /* violet-cast glass */
+  --glass-blur:        24px;
+  --glass-blur-strong: 40px;
+  --glass-saturate:    1.8;
 
   /* The signature refractive border — a hairline that catches light on
-     two edges. Use as `border-image` source or a 1px gradient border. */
+     opposing corners. Now reads as a real edge bevel: bright at top-left
+     and bottom-right, dim through the middle. */
   --glass-border:
     linear-gradient(135deg,
-      rgba(255, 255, 255, 0.22) 0%,
-      rgba(255, 255, 255, 0.05) 40%,
-      rgba(255, 255, 255, 0.02) 60%,
-      rgba(255, 255, 255, 0.18) 100%);
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0.06) 28%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(255, 255, 255, 0.06) 72%,
+      rgba(255, 255, 255, 0.34) 100%);
 
   --glass-border-violet:
     linear-gradient(135deg,
-      rgba(166, 132, 255, 0.45) 0%,
-      rgba(139, 92, 255, 0.05) 50%,
-      rgba(166, 132, 255, 0.35) 100%);
+      rgba(166, 132, 255, 0.55) 0%,
+      rgba(139, 92, 255, 0.06) 30%,
+      rgba(166, 132, 255, 0.06) 70%,
+      rgba(166, 132, 255, 0.45) 100%);
 
-  /* Inner highlight — a rim of bright pixels along the top edge, like
-     light catching the top of a real piece of glass. */
+  /* Inner highlight — a rim of bright pixels along the top edge, plus a
+     soft bottom shadow that suggests real thickness. */
   --glass-rim-top:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.30);
   --glass-rim-full:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
-    inset 1px 0 0 0 rgba(255, 255, 255, 0.05),
-    inset -1px 0 0 0 rgba(255, 255, 255, 0.05),
-    inset 0 -1px 0 0 rgba(255, 255, 255, 0.03);
+    inset 0  1px 0 0 rgba(255, 255, 255, 0.30),
+    inset  1px 0 0 0 rgba(255, 255, 255, 0.08),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.20);
 
   /* ─── SEMANTIC ─── */
   --bg:           var(--void);
@@ -389,12 +392,28 @@ hr, .rule {
    GLASS SURFACES — the system's signature
    ───────────────────────────────────────────────────────────────────── */
 
-/* .glass — the basic refractive panel.
-   Combines: subtle tint + heavy backdrop blur + saturated saturation +
-   gradient hairline border + top-edge rim highlight + soft drop. */
+/* .glass — the iOS 26 "Liquid Glass" refractive panel.
+   Layers stacked from front to back:
+     1. Top-left catchlight (sun glinting off the curved edge)
+     2. Top-edge specular highlight (the bright lip of curved glass)
+     3. Base tint (the body of the glass)
+   Combined with a heavily-saturated backdrop-filter, a refractive
+   gradient border (::before), and an inset rim shadow that gives the
+   surface real thickness. */
 .glass {
   position: relative;
-  background: var(--glass-tint);
+  background:
+    /* Top-left catchlight */
+    radial-gradient(120% 100% at 0% 0%,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0) 50%),
+    /* Top-edge specular highlight */
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.02) 18%,
+      transparent 38%),
+    /* Base tint */
+    var(--glass-tint);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   border-radius: var(--r-3);
