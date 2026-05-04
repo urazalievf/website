@@ -11,20 +11,11 @@ const DATACAMP_URL = "https://www.datacamp.com/portfolio/urazalievf";
 
 function ProjectsApp() {
   const [t, setTweak] = useTweaks(PROJ_DEFAULTS);
-  const [count, setCount] = React.useState(5);
 
   React.useEffect(() => {
     document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
     document.documentElement.setAttribute("data-font", t.font);
   }, [t]);
-
-  React.useEffect(() => {
-    if (count <= 0) return;
-    const id = setTimeout(() => setCount(c => c - 1), 1000);
-    return () => clearTimeout(id);
-  }, [count]);
-
-  const goNow = () => { window.open(DATACAMP_URL, "_blank", "noopener"); };
 
   return (
     <>
@@ -36,8 +27,8 @@ function ProjectsApp() {
         <section className="proj-hero" data-screen-label="Projects redirect" style={{paddingTop: 40, paddingBottom: 80}}>
           <div className="hero-stamp" style={{marginBottom: 24}}>
             <span><span className="num">003</span> / Projects</span>
-            <span>Permanent redirect</span>
-            <span style={{color: 'var(--lumen-2)'}}>{count > 0 ? `auto in ${count}s` : "go ahead"}</span>
+            <span>Lives on DataCamp</span>
+            <span style={{color: 'var(--lumen-2)'}}>portfolio + writeups</span>
           </div>
 
           <h1 style={{marginBottom: 16}}>
@@ -64,7 +55,6 @@ function ProjectsApp() {
               href={DATACAMP_URL}
               target="_blank"
               rel="noreferrer"
-              onClick={() => setCount(0)}
               style={{
                 background: "var(--duotone)",
                 fontSize: 18,
@@ -75,9 +65,6 @@ function ProjectsApp() {
             </a>
             <a className="btn btn-ghost" href="index.html">Back to home</a>
           </div>
-
-          {/* Auto-redirect script */}
-          <RedirectAfter seconds={5} url={DATACAMP_URL} active={count > 0} />
 
           {/* Decorative card */}
           <div style={{
@@ -178,15 +165,6 @@ function ProjectsApp() {
       </TweaksPanel>
     </>
   );
-}
-
-function RedirectAfter({ seconds, url, active }) {
-  React.useEffect(() => {
-    if (!active) return;
-    const id = setTimeout(() => { window.location.href = url; }, seconds * 1000);
-    return () => clearTimeout(id);
-  }, [active, seconds, url]);
-  return null;
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<ProjectsApp />);
