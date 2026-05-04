@@ -100,7 +100,6 @@ function SiteFooter() {
 
           <div className="foot-meta">
             <span>© {time.getFullYear()} — F.U.</span>
-            <span>Built in glass · v3.0</span>
             <span>{fmt} CT · <span style={{ color: "var(--violet)" }}>● online</span></span>
           </div>
         </div>
