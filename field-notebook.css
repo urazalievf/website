@@ -1,0 +1,119 @@
+/* =====================================================================
+   Field Notebook — alternate aesthetic
+   Activated by `<html data-aesthetic="paper">`. Overrides Glasswork tokens
+   to render the same DOM as the README's paper / cobalt system.
+   ===================================================================== */
+
+html[data-aesthetic="paper"] {
+  /* Paper tones */
+  --void:        #fbfbf7;
+  --void-1:      #f3f2eb;
+  --void-2:      #e6e4d8;
+  --void-3:      #e6e4d8;
+  --void-4:      #c8c4b1;
+  --void-5:      #d5d6d8;
+
+  /* Graphite text */
+  --lumen:       #15171a;
+  --lumen-2:     #2c2f33;
+  --lumen-3:     #4a4e54;
+  --lumen-4:     #767a82;
+  --lumen-line:  rgba(21, 23, 26, 0.10);
+  --lumen-line-strong: rgba(21, 23, 26, 0.25);
+
+  /* Cobalt — the single mark */
+  --violet:       #1f3fc4;
+  --violet-bright:#3252d8;
+  --violet-deep:  #1a36a8;
+  --violet-glow:  rgba(31, 63, 196, 0.30);
+  --violet-wash:  rgba(31, 63, 196, 0.12);
+
+  /* Glass becomes ink-washed paper */
+  --glass-tint:        rgba(21, 23, 26, 0.02);
+  --glass-tint-strong: rgba(21, 23, 26, 0.04);
+  --glass-tint-violet: rgba(31, 63, 196, 0.05);
+
+  /* Aurora becomes a quiet wash */
+  --aurora:
+    radial-gradient(70% 55% at 18% 12%, rgba(31, 63, 196, 0.05) 0%, transparent 60%),
+    radial-gradient(45% 40% at 82% 88%, rgba(21, 23, 26, 0.03) 0%, transparent 65%);
+
+  /* Refractive border becomes a flat hairline */
+  --glass-border:
+    linear-gradient(135deg,
+      rgba(21, 23, 26, 0.18) 0%,
+      rgba(21, 23, 26, 0.10) 100%);
+  --glass-border-violet:
+    linear-gradient(135deg,
+      rgba(31, 63, 196, 0.5) 0%,
+      rgba(31, 63, 196, 0.2) 100%);
+}
+
+/* Field-notebook surface treatments */
+html[data-aesthetic="paper"] body {
+  background: var(--void);
+  background-image:
+    var(--aurora),
+    linear-gradient(rgba(21,23,26,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(21,23,26,0.04) 1px, transparent 1px);
+  background-size: auto, 8px 8px, 8px 8px;
+  background-position: 0 0, 0 0, 0 0;
+  color: var(--lumen);
+}
+html[data-aesthetic="paper"] body::before { display: none; }
+
+html[data-aesthetic="paper"] h1,
+html[data-aesthetic="paper"] h2,
+html[data-aesthetic="paper"] h3,
+html[data-aesthetic="paper"] .display { color: var(--lumen); }
+
+html[data-aesthetic="paper"] .nav-inner {
+  background: rgba(251,251,247,0.85);
+  backdrop-filter: blur(12px);
+}
+html[data-aesthetic="paper"] .nav-link.is-active {
+  background: rgba(31,63,196,0.06);
+}
+html[data-aesthetic="paper"] .nav-link:hover {
+  background: rgba(21,23,26,0.04);
+}
+
+html[data-aesthetic="paper"] .glass {
+  background: var(--void-1);
+  backdrop-filter: none;
+  box-shadow: none;
+  border: 1px solid var(--lumen-line-strong);
+}
+html[data-aesthetic="paper"] .glass::before { display: none; }
+html[data-aesthetic="paper"] .glass-icon {
+  background: var(--void-1);
+  box-shadow: inset 0 0 0 1px var(--lumen-line-strong);
+}
+html[data-aesthetic="paper"] .glass-icon::after { display: none; }
+
+html[data-aesthetic="paper"] .marquee-item {
+  -webkit-text-stroke: 1px var(--lumen-line-strong);
+  color: transparent;
+}
+html[data-aesthetic="paper"] .marquee-item.is-fill {
+  color: var(--lumen);
+  -webkit-text-stroke: 0;
+}
+
+html[data-aesthetic="paper"] .btn-primary {
+  background: var(--violet);
+  box-shadow: none;
+}
+
+html[data-aesthetic="paper"] code,
+html[data-aesthetic="paper"] pre,
+html[data-aesthetic="paper"] .mono { color: var(--lumen); }
+
+html[data-aesthetic="paper"] p {
+  color: var(--lumen-2);
+}
+html[data-aesthetic="paper"] .lead { color: var(--lumen-2); }
+
+html[data-aesthetic="paper"] .tag {
+  background: var(--void-1);
+}
