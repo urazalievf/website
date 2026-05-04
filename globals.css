@@ -303,6 +303,7 @@ html[data-aesthetic="paper"] .tag.tag--amber {
 .chess-board {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   width: min(100%, 360px);
   aspect-ratio: 1;
   border: 1px solid var(--hairline-strong);
@@ -310,6 +311,7 @@ html[data-aesthetic="paper"] .tag.tag--amber {
   overflow: hidden;
   user-select: none;
 }
+.chess-cell { aspect-ratio: 1; }
 .chess-cell {
   display: grid;
   place-items: center;
