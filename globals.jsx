@@ -560,14 +560,101 @@ function squareName(r, c) {
   return "abcdefgh"[c] + (8 - r);
 }
 
+const PIECE_VALUE = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
+
+function evalBoard(board) {
+  let s = 0;
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const p = board[r][c];
+      if (!p) continue;
+      s += (isWhite(p) ? 1 : -1) * PIECE_VALUE[p.toLowerCase()];
+    }
+  }
+  return s;
+}
+
+function applyMove(board, m) {
+  const next = board.map(row => row.slice());
+  let piece = next[m.from[0]][m.from[1]];
+  next[m.from[0]][m.from[1]] = "";
+  if (piece === "P" && m.to[0] === 0) piece = "Q";
+  else if (piece === "p" && m.to[0] === 7) piece = "q";
+  next[m.to[0]][m.to[1]] = piece;
+  return next;
+}
+
+function allMoves(board, side) {
+  const out = [];
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const p = board[r][c];
+      if (!p) continue;
+      if ((side === "w") !== isWhite(p)) continue;
+      for (const [tr, tc] of pieceMoves(board, r, c)) {
+        out.push({ from: [r, c], to: [tr, tc] });
+      }
+    }
+  }
+  return out;
+}
+
+function searchBest(board, side, depth, alpha, beta) {
+  if (depth === 0) return [evalBoard(board), null];
+  const moves = allMoves(board, side);
+  if (!moves.length) return [side === "w" ? -1e6 : 1e6, null];
+  for (let i = moves.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [moves[i], moves[j]] = [moves[j], moves[i]];
+  }
+  let best = null;
+  if (side === "w") {
+    let value = -Infinity;
+    for (const m of moves) {
+      const [v] = searchBest(applyMove(board, m), "b", depth - 1, alpha, beta);
+      if (v > value) { value = v; best = m; }
+      if (value > alpha) alpha = value;
+      if (alpha >= beta) break;
+    }
+    return [value, best];
+  }
+  let value = Infinity;
+  for (const m of moves) {
+    const [v] = searchBest(applyMove(board, m), "w", depth - 1, alpha, beta);
+    if (v < value) { value = v; best = m; }
+    if (value < beta) beta = value;
+    if (alpha >= beta) break;
+  }
+  return [value, best];
+}
+
 function ChessBoard() {
   const [board, setBoard] = gUseState(INITIAL.map(row => row.slice()));
   const [sel, setSel]   = gUseState(null);   // [r,c]
   const [legal, setLegal] = gUseState([]);
   const [turn, setTurn] = gUseState("w");
   const [moves, setMoves] = gUseState([]);   // log of "e2-e4"
+  const [thinking, setThinking] = gUseState(false);
+
+  gUseEffect(() => {
+    if (turn !== "b" || thinking) return;
+    setThinking(true);
+    const handle = setTimeout(() => {
+      const [, m] = searchBest(board, "b", 2, -Infinity, Infinity);
+      if (m) {
+        const captured = board[m.to[0]][m.to[1]];
+        const note = `${squareName(m.from[0], m.from[1])}${captured ? "x" : "-"}${squareName(m.to[0], m.to[1])}`;
+        setBoard(applyMove(board, m));
+        setMoves(ms => [...ms, { ply: ms.length + 1, t: "b", n: note }]);
+        setTurn("w");
+      }
+      setThinking(false);
+    }, 60);
+    return () => clearTimeout(handle);
+  }, [turn]);
 
   const click = (r, c) => {
+    if (thinking || turn !== "w") return;
     const p = board[r][c];
     if (sel) {
       if (sel[0] === r && sel[1] === c) {
@@ -575,17 +662,13 @@ function ChessBoard() {
       }
       const isLegal = legal.some(([rr, cc]) => rr === r && cc === c);
       if (isLegal) {
-        const next = board.map(row => row.slice());
-        const piece = next[sel[0]][sel[1]];
-        const captured = next[r][c];
-        next[r][c] = piece;
-        next[sel[0]][sel[1]] = "";
-        const note = `${piece.toUpperCase() === piece && piece.toLowerCase() !== piece ? "" : ""}${squareName(sel[0], sel[1])}${captured ? "x" : "-"}${squareName(r, c)}`;
-        setBoard(next);
-        setMoves(m => [...m, { ply: m.length + 1, t: turn, n: note }]);
+        const captured = board[r][c];
+        const note = `${squareName(sel[0], sel[1])}${captured ? "x" : "-"}${squareName(r, c)}`;
+        setBoard(applyMove(board, { from: sel, to: [r, c] }));
+        setMoves(m => [...m, { ply: m.length + 1, t: "w", n: note }]);
         setSel(null);
         setLegal([]);
-        setTurn(turn === "w" ? "b" : "w");
+        setTurn("b");
         return;
       }
     }
@@ -599,7 +682,7 @@ function ChessBoard() {
 
   const reset = () => {
     setBoard(INITIAL.map(row => row.slice()));
-    setSel(null); setLegal([]); setTurn("w"); setMoves([]);
+    setSel(null); setLegal([]); setTurn("w"); setMoves([]); setThinking(false);
   };
 
   return (
@@ -644,7 +727,11 @@ function ChessBoard() {
         <div>
           <div className="ply">Ply {moves.length}</div>
           <div className="turn">
-            {turn === "w" ? <>White to <em>move</em></> : <>Black to <em>move</em></>}
+            {thinking
+              ? <>Engine <em>thinking…</em></>
+              : turn === "w"
+                ? <>Your move <em>(white)</em></>
+                : <>Engine to <em>move</em></>}
           </div>
         </div>
         <div className="moves">
