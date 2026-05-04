@@ -939,8 +939,19 @@ function WireGlobe({ size = 420 }) {
       return { lat, lng };
     }
 
-    function dotColor() {
-      return 'rgba(220,200,255,1.0)'; // pure bright white-violet, fully opaque
+    function dotColor(d) {
+      // Stable hash on lat/lng so the same point always gets the same color.
+      // ~8% amber + ~8% bright violet accents over a white-violet base reads
+      // as a luminous, varied surface rather than a flat dot pattern.
+      const h = Math.abs(((d.lat * 73 + d.lng * 37) | 0)) % 100;
+      if (h < 8)  return 'rgba(255,200,120,1)';   // amber accent
+      if (h < 16) return 'rgba(170,140,255,1)';   // bright violet accent
+      return 'rgba(225,210,255,1)';               // base white-violet
+    }
+    function dotRadius(d) {
+      // Tiny per-dot variation so the surface doesn't read as a uniform grid.
+      const h = Math.abs(((d.lat * 31 + d.lng * 17) | 0)) % 100;
+      return 0.40 + (h % 25) * 0.006;             // 0.40 – 0.55
     }
 
     const globe = Globe({ animateIn: false })(el);
@@ -979,11 +990,8 @@ function WireGlobe({ size = 420 }) {
         .pointLng('lng')
         .pointColor(dotColor)
         .pointAltitude(0.005)   // slightly elevated so dots sit ON the surface
-        .pointRadius(0.35)
+        .pointRadius(dotRadius)
         .pointsMerge(false);
-
-      // Dots are always full brightness — no day/night
-      setInterval(() => { /* no-op */ }, 60000);
     });
 
     if (globe.controls && globe.controls()) {
@@ -1047,15 +1055,34 @@ function WireGlobe({ size = 420 }) {
   const locColor = locState === "located" ? "rgba(255,180,84,1)" : locState === "denied" ? "rgba(255,80,80,0.9)" : "rgba(139,92,255,0.9)";
 
   return (
-    <div style={{ position:"relative", width:size, height:size }}>
-      <div ref={mountRef} style={{ width:size, height:size, borderRadius:"50%", overflow:"hidden", position:"relative", zIndex:1, cursor:"grab", background:"#0a0f1a" }} />
-      <div style={{ position:"absolute", bottom:14, right:14, zIndex:2, fontFamily:'"JetBrains Mono","SF Mono",monospace', fontSize:11, letterSpacing:"0.06em", textTransform:"uppercase", color:"rgba(255,255,255,0.9)", lineHeight:2.0, textAlign:"right", pointerEvents:"none", userSelect:"none", textShadow:"0 1px 4px rgba(0,0,0,0.9)" }}>
-        {hud.city && <span style={{display:"block",color:"rgba(255,200,100,1)",fontSize:12,textTransform:"none",letterSpacing:"0.04em",marginBottom:2,fontWeight:600}}>{hud.city}</span>}
-        {hud.lat != null && <><span style={{display:"block"}}>Lat <span style={{color:"rgba(255,200,100,1)"}}>{hud.lat.toFixed(2)}°</span></span><span style={{display:"block"}}>Lon <span style={{color:"rgba(255,200,100,1)"}}>{hud.lon.toFixed(2)}°</span></span></>}
-        {hud.localTime ? <span style={{display:"block"}}>Local <span style={{color:"rgba(255,200,100,1)"}}>{hud.localTime}</span></span> : <span style={{display:"block"}}>UTC <span style={{color:"rgba(255,200,100,1)"}}>{hud.utc}</span></span>}
+    <div className="wire-globe" style={{ width:size, height:size }}>
+      <div className="wire-globe-ring" aria-hidden="true" />
+      <span className="wire-globe-tick wg-n" aria-hidden="true" />
+      <span className="wire-globe-tick wg-e" aria-hidden="true" />
+      <span className="wire-globe-tick wg-s" aria-hidden="true" />
+      <span className="wire-globe-tick wg-w" aria-hidden="true" />
+      <span className="wire-globe-card wg-card-n" aria-hidden="true">N</span>
+      <span className="wire-globe-card wg-card-e" aria-hidden="true">E</span>
+      <span className="wire-globe-card wg-card-s" aria-hidden="true">S</span>
+      <span className="wire-globe-card wg-card-w" aria-hidden="true">W</span>
+      <div ref={mountRef} className="wire-globe-mount" style={{ width:size, height:size }} />
+      <div className="wire-globe-hud">
+        {hud.city && <span className="wg-hud-city">{hud.city}</span>}
+        {hud.lat != null && <>
+          <span>Lat <em>{hud.lat.toFixed(2)}°</em></span>
+          <span>Lon <em>{hud.lon.toFixed(2)}°</em></span>
+        </>}
+        {hud.localTime
+          ? <span>Local <em>{hud.localTime}</em></span>
+          : <span>UTC <em>{hud.utc}</em></span>}
       </div>
-      <button onClick={locate} disabled={locState==="locating"||locState==="located"} style={{ position:"absolute", bottom:14, left:14, zIndex:2, fontFamily:'"JetBrains Mono",monospace', fontSize:10, letterSpacing:"0.1em", textTransform:"uppercase", color:locColor, background:"rgba(5,8,14,0.75)", border:"1px solid "+locColor, borderRadius:99, padding:"6px 12px", cursor:locState==="located"?"default":"pointer", backdropFilter:"blur(8px)", transition:"all 0.2s ease" }}>
-        {locState==="idle"?"📍 ":""}{locLabel}
+      <button
+        className="wire-globe-locate"
+        onClick={locate}
+        disabled={locState==="locating"||locState==="located"}
+        style={{ color: locColor, borderColor: locColor }}
+      >
+        {locState==="idle" ? "📍 " : ""}{locLabel}
       </button>
     </div>
   );
@@ -1121,6 +1148,32 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   SplineScene — fixed-position 3D backdrop (the "flying balls").
+   Mounts <spline-viewer>, the custom element shipped by Spline's
+   web component runtime (loaded once in index.html). Pointer events
+   off so it never eats clicks; positioned behind the orb field so
+   the orbs' screen-blend gives it a colored wash.
+   ───────────────────────────────────────────────────────────────── */
+function SplineScene({ url = "https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.splinecode" }) {
+  // Skip on browsers that don't support custom elements at all (very old).
+  if (typeof customElements === "undefined") return null;
+  // Honor reduced-motion preferences — Spline scenes spin and float continuously.
+  const reduce = typeof window !== "undefined"
+    && window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) return null;
+  return (
+    <div className="spline-bg" aria-hidden="true">
+      <spline-viewer
+        url={url}
+        loading-anim-type="none"
+        events-target="global"
+      />
+    </div>
+  );
+}
+
 Object.assign(window, {
-  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters,
+  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters, SplineScene,
 });

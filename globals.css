@@ -74,6 +74,143 @@ html[data-font="modern"] .italic-emph {
 html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; filter: blur(60px); }
 
 /* ─────────────────────────────────────────────────────────────────────
+   SPLINE BACKDROP — the floating 3D-spheres scene mounted behind the
+   orb field. The orbs sit on top with `mix-blend-mode: screen` so they
+   color-wash the scene rather than hiding it.
+   ───────────────────────────────────────────────────────────────────── */
+.spline-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+.spline-bg spline-viewer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+}
+html[data-aesthetic="paper"] .spline-bg { opacity: 0.35; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   WIREGLOBE — instrument frame around the globe.gl canvas.
+   The mount div holds the WebGL canvas; the surrounding ring,
+   cardinal ticks, and HUD give it the feel of a real piece of
+   scientific gear rather than a floating circle.
+   ───────────────────────────────────────────────────────────────────── */
+.wire-globe { position: relative; }
+.wire-globe-mount {
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  cursor: grab;
+  background: radial-gradient(circle at 32% 32%, #16182a 0%, #0a0d18 55%, #050811 100%);
+  box-shadow:
+    0 0 60px -10px rgba(139, 92, 255, 0.35),
+    inset 0 0 80px -20px rgba(0, 0, 0, 0.7);
+}
+.wire-globe-mount:active { cursor: grabbing; }
+.wire-globe-ring {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 244, 255, 0.10);
+  pointer-events: none;
+  z-index: 3;
+}
+.wire-globe-ring::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(166, 132, 255, 0.18);
+  pointer-events: none;
+}
+.wire-globe-tick {
+  position: absolute;
+  background: rgba(166, 132, 255, 0.55);
+  pointer-events: none;
+  z-index: 3;
+}
+.wire-globe-tick.wg-n,
+.wire-globe-tick.wg-s { width: 1px; height: 10px; left: 50%; transform: translateX(-50%); }
+.wire-globe-tick.wg-n { top: -22px; }
+.wire-globe-tick.wg-s { bottom: -22px; }
+.wire-globe-tick.wg-e,
+.wire-globe-tick.wg-w { width: 10px; height: 1px; top: 50%; transform: translateY(-50%); }
+.wire-globe-tick.wg-e { right: -22px; }
+.wire-globe-tick.wg-w { left: -22px; }
+
+.wire-globe-card {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--violet);
+  pointer-events: none;
+  z-index: 3;
+}
+.wg-card-n { top: -36px; left: 50%; transform: translateX(-50%); }
+.wg-card-s { bottom: -36px; left: 50%; transform: translateX(-50%); }
+.wg-card-e { right: -34px; top: 50%; transform: translateY(-50%); }
+.wg-card-w { left: -34px; top: 50%; transform: translateY(-50%); }
+
+.wire-globe-hud {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(7, 8, 12, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 244, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 255, 0.75);
+  text-align: right;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1.55;
+}
+.wire-globe-hud em { color: var(--amber); font-style: normal; }
+.wire-globe-hud .wg-hud-city {
+  color: var(--lumen);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.wire-globe-locate {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(7, 8, 12, 0.65);
+  border: 1px solid;
+  border-radius: 99px;
+  padding: 6px 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--dur-quick) var(--ease-out);
+}
+.wire-globe-locate:disabled { cursor: default; }
+
+/* ─────────────────────────────────────────────────────────────────────
    WIREGLOBE — CSS 3D wireframe sphere
    ───────────────────────────────────────────────────────────────────── */
 .wireglobe-wrap {
