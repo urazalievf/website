@@ -941,17 +941,17 @@ function WireGlobe({ size = 420 }) {
 
     function dotColor(d) {
       // Stable hash on lat/lng so the same point always gets the same color.
-      // ~8% amber + ~8% bright violet accents over a white-violet base reads
+      // ~8% amber + ~8% bright violet accents over a near-white base reads
       // as a luminous, varied surface rather than a flat dot pattern.
       const h = Math.abs(((d.lat * 73 + d.lng * 37) | 0)) % 100;
-      if (h < 8)  return 'rgba(255,200,120,1)';   // amber accent
-      if (h < 16) return 'rgba(170,140,255,1)';   // bright violet accent
-      return 'rgba(225,210,255,1)';               // base white-violet
+      if (h < 8)  return 'rgba(255,215,150,1)';   // amber accent (brighter)
+      if (h < 16) return 'rgba(195,170,255,1)';   // bright violet accent
+      return 'rgba(250,248,255,1)';               // base near-white
     }
     function dotRadius(d) {
       // Tiny per-dot variation so the surface doesn't read as a uniform grid.
       const h = Math.abs(((d.lat * 31 + d.lng * 17) | 0)) % 100;
-      return 0.40 + (h % 25) * 0.006;             // 0.40 – 0.55
+      return 0.50 + (h % 25) * 0.008;             // 0.50 – 0.70
     }
 
     const globe = Globe({ animateIn: false })(el);
@@ -1061,10 +1061,6 @@ function WireGlobe({ size = 420 }) {
       <span className="wire-globe-tick wg-e" aria-hidden="true" />
       <span className="wire-globe-tick wg-s" aria-hidden="true" />
       <span className="wire-globe-tick wg-w" aria-hidden="true" />
-      <span className="wire-globe-card wg-card-n" aria-hidden="true">N</span>
-      <span className="wire-globe-card wg-card-e" aria-hidden="true">E</span>
-      <span className="wire-globe-card wg-card-s" aria-hidden="true">S</span>
-      <span className="wire-globe-card wg-card-w" aria-hidden="true">W</span>
       <div ref={mountRef} className="wire-globe-mount" style={{ width:size, height:size }} />
       <div className="wire-globe-hud">
         {hud.city && <span className="wg-hud-city">{hud.city}</span>}

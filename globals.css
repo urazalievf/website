@@ -143,20 +143,6 @@ html[data-aesthetic="paper"] .spline-bg { opacity: 0.35; }
 .wire-globe-tick.wg-e { right: -22px; }
 .wire-globe-tick.wg-w { left: -22px; }
 
-.wire-globe-card {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  color: var(--violet);
-  pointer-events: none;
-  z-index: 3;
-}
-.wg-card-n { top: -36px; left: 50%; transform: translateX(-50%); }
-.wg-card-s { bottom: -36px; left: 50%; transform: translateX(-50%); }
-.wg-card-e { right: -34px; top: 50%; transform: translateY(-50%); }
-.wg-card-w { left: -34px; top: 50%; transform: translateY(-50%); }
-
 .wire-globe-hud {
   position: absolute;
   bottom: 16px;
