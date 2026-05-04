@@ -2,24 +2,6 @@
 const { useState: gUseState, useEffect: gUseEffect, useRef: gUseRef, useMemo: gUseMemo } = React;
 
 /* ─────────────────────────────────────────────────────────────────
-   Single source of truth for "years in industry".
-   Bumping the constant or letting the calendar tick over is enough —
-   no more hand-edited "twelve years" sprinkled across pages.
-   ───────────────────────────────────────────────────────────────── */
-const CAREER_START_YEAR = 2014;
-const YEAR_WORDS = ["zero","one","two","three","four","five","six","seven","eight","nine",
-  "ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen",
-  "nineteen","twenty","twenty-one","twenty-two","twenty-three","twenty-four","twenty-five"];
-function yearsInIndustry() {
-  return Math.max(0, new Date().getFullYear() - CAREER_START_YEAR);
-}
-function yearsInIndustryWord(opts = {}) {
-  const n = yearsInIndustry();
-  const w = YEAR_WORDS[n] || String(n);
-  return opts.capitalize ? w.charAt(0).toUpperCase() + w.slice(1) : w;
-}
-
-/* ─────────────────────────────────────────────────────────────────
    OrbField — drifting blurred color blobs behind everything.
    Positions use a golden-angle distribution so they spread evenly
    instead of clumping. The whole field follows the cursor with a
@@ -1137,5 +1119,4 @@ function GoodreadsQuote({ num = "004" }) {
 
 Object.assign(window, {
   OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters,
-  CAREER_START_YEAR, yearsInIndustry, yearsInIndustryWord
 });

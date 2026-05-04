@@ -180,7 +180,6 @@ function HomeApp() {
                 <div className="tile-body">A short note + a link to the place I actually publish work — DataCamp.</div>
               </div>
               <div className="tile-foot">
-                <span className="tag">{window.CAREER_START_YEAR} — present</span>
                 <span className="tag tag--amber">DataCamp ↗</span>
                 <span className="tile-arrow" style={{marginLeft: 'auto'}}>↗</span>
               </div>
