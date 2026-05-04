@@ -10,7 +10,6 @@ function SiteNav({ active = "home" }) {
     { id: "projects", label: "Projects", href: "projects.html" },
     { id: "writing",  label: "Writing",  href: "writing.html" },
     { id: "rewards",  label: "Referrals",  href: "rewards.html" },
-    { id: "chess",    label: "Chess",    href: "chess.html" },
   ];
 
   return (
@@ -70,7 +69,6 @@ function SiteFooter() {
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="writing.html">Writing</a></li>
                 <li><a href="rewards.html">Referrals</a></li>
-                <li><a href="chess.html">Chess</a></li>
               </ul>
             </div>
             <div className="foot-col">
