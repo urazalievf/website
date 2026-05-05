@@ -53,6 +53,21 @@ function SiteFooter() {
     return () => clearInterval(t);
   }, []);
 
+  // Lazily register the <spline-viewer> custom element so the footer accent
+  // can mount. Idempotent across pages and across remounts of the footer.
+  useEffect(() => {
+    if (document.getElementById("spline-viewer-script")) return;
+    const s = document.createElement("script");
+    s.id = "spline-viewer-script";
+    s.type = "module";
+    s.src = "https://cdn.jsdelivr.net/npm/@splinetool/viewer/build/spline-viewer.js";
+    document.head.appendChild(s);
+  }, []);
+
+  const reduce = typeof window !== "undefined"
+    && window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const fmt = time.toLocaleTimeString("en-US", {
     hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Chicago"
   });
@@ -60,6 +75,15 @@ function SiteFooter() {
   return (
     <>
       <footer className="site-foot">
+        {!reduce && (
+          <div className="foot-spline" aria-hidden="true">
+            <spline-viewer
+              url="https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.splinecode"
+              loading-anim-type="none"
+              events-target="global"
+            />
+          </div>
+        )}
         <div className="container">
           <div className="foot-grid">
             <div className="foot-col">

@@ -1245,36 +1245,6 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   SplineScene — fixed-position 3D backdrop (the "flying balls").
-   Mounts <spline-viewer>, the custom element shipped by Spline's
-   web component runtime (loaded once in index.html). Pointer events
-   off so it never eats clicks; positioned behind the orb field so
-   the orbs' screen-blend gives it a colored wash.
-   ───────────────────────────────────────────────────────────────── */
-function SplineScene({ url = "https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.splinecode" }) {
-  // Skip on browsers that don't support custom elements at all (very old).
-  if (typeof customElements === "undefined") return null;
-  // Honor reduced-motion preferences — Spline scenes spin and float continuously.
-  const reduce = typeof window !== "undefined"
-    && window.matchMedia
-    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce) return null;
-  // Opt-out: <html data-no-spline> hides the backdrop site-wide for slow
-  // devices / debugging without touching JS or the per-page Tweaks panel.
-  if (typeof document !== "undefined"
-      && document.documentElement.hasAttribute("data-no-spline")) return null;
-  return (
-    <div className="spline-bg" aria-hidden="true">
-      <spline-viewer
-        url={url}
-        loading-anim-type="none"
-        events-target="global"
-      />
-    </div>
-  );
-}
-
 Object.assign(window, {
-  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters, SplineScene,
+  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters,
 });
