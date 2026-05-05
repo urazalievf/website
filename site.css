@@ -166,7 +166,7 @@ body::before {
   pointer-events: none;
   opacity: 0.55;
 }
-.foot-spline spline-viewer {
+.foot-spline canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -176,6 +176,8 @@ body::before {
 }
 html[data-aesthetic="paper"] .foot-spline { opacity: 0.35; }
 .site-foot > .container { position: relative; z-index: 1; }
+.foot-credit { color: var(--fg-faint); border-bottom: 0; opacity: 0.65; }
+.foot-credit:hover { opacity: 1; color: var(--violet-bright); border-bottom: 0; }
 .foot-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
