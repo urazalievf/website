@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, SplineScene */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
 
 const PROJ_DEFAULTS = /*EDITMODE-BEGIN*/{
   "aesthetic": "glass",
@@ -19,7 +19,6 @@ function ProjectsApp() {
 
   return (
     <>
-      <SplineScene />
       {t.showOrbs && <OrbField count={6} />}
       {t.showStatusBar && <StatusBar />}
       <SiteNav active="projects" />

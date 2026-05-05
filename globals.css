@@ -74,28 +74,6 @@ html[data-font="modern"] .italic-emph {
 html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; filter: blur(60px); }
 
 /* ─────────────────────────────────────────────────────────────────────
-   SPLINE BACKDROP — the floating 3D-spheres scene mounted behind the
-   orb field. The orbs sit on top with `mix-blend-mode: screen` so they
-   color-wash the scene rather than hiding it.
-   ───────────────────────────────────────────────────────────────────── */
-.spline-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 1;
-}
-.spline-bg spline-viewer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  background: transparent;
-}
-html[data-aesthetic="paper"] .spline-bg { opacity: 0.5; }
-
-/* ─────────────────────────────────────────────────────────────────────
    WIREGLOBE — instrument frame around the globe.gl canvas.
    The mount div holds the WebGL canvas; the surrounding ring,
    cardinal ticks, and HUD give it the feel of a real piece of

@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, SplineScene */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp */
 
 const RW_DEFAULTS = /*EDITMODE-BEGIN*/{
   "aesthetic": "glass",
@@ -16,7 +16,6 @@ function RewardsApp() {
 
   return (
     <>
-      <SplineScene />
       {t.showOrbs && <OrbField count={6} />}
       {t.showStatusBar && <StatusBar />}
       <SiteNav active="rewards" />

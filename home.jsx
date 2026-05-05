@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, SplineScene */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, WineCard, WireGlobe, GoodreadsQuote, LiveCounters */
 const { useEffect: hUseEffect, useState: hUseState } = React;
 
 const HOME_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -6,8 +6,7 @@ const HOME_DEFAULTS = /*EDITMODE-BEGIN*/{
   "showStarfield": true,
   "font": "classic",
   "showOrbs": true,
-  "showStatusBar": true,
-  "showSpline": true
+  "showStatusBar": true
 }/*EDITMODE-END*/;
 
 /* ── Inline brand glyphs for the profiles strip ─────────────────────── */
@@ -106,7 +105,6 @@ function HomeApp() {
 
   return (
     <>
-      {tweaks.showSpline && <SplineScene />}
       {tweaks.showOrbs && <OrbField count={9} />}
       {tweaks.showStatusBar && <StatusBar />}
       <SiteNav active="home" />
@@ -337,12 +335,6 @@ function HomeApp() {
           />
         </TweakSection>
         <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="3D backdrop"
-            value={tweaks.showSpline ? "on" : "off"}
-            options={[{value: "on", label: "On"}, {value: "off", label: "Off"}]}
-            onChange={(v) => setTweak("showSpline", v === "on")}
-          />
           <TweakRadio
             label="Floating orbs"
             value={tweaks.showOrbs ? "on" : "off"}

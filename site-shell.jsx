@@ -1,5 +1,5 @@
 /* global React */
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 /* ─────────────────────────────────────────────────────────────────
    SiteNav — sticky pill nav with brand, link list, and CTA
@@ -53,6 +53,36 @@ function SiteFooter() {
     return () => clearInterval(t);
   }, []);
 
+  const reduce = typeof window !== "undefined"
+    && window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Drive the 3D footer accent with @splinetool/runtime instead of
+  // <spline-viewer>. The viewer wrapper injects a fixed "Built with Spline"
+  // badge for free-tier scenes; the runtime renders the same scene without
+  // it, so we attribute Spline ourselves in foot-meta below.
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    if (reduce) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let app;
+    let cancelled = false;
+    import("https://cdn.jsdelivr.net/npm/@splinetool/runtime/+esm")
+      .then((mod) => {
+        if (cancelled) return;
+        app = new mod.Application(canvas);
+        return app.load("https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.splinecode");
+      })
+      .catch((err) => { console.warn("Spline runtime failed:", err); });
+    return () => {
+      cancelled = true;
+      if (app && typeof app.dispose === "function") {
+        try { app.dispose(); } catch (_e) { /* ignore */ }
+      }
+    };
+  }, [reduce]);
+
   const fmt = time.toLocaleTimeString("en-US", {
     hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Chicago"
   });
@@ -60,6 +90,11 @@ function SiteFooter() {
   return (
     <>
       <footer className="site-foot">
+        {!reduce && (
+          <div className="foot-spline" aria-hidden="true">
+            <canvas ref={canvasRef} />
+          </div>
+        )}
         <div className="container">
           <div className="foot-grid">
             <div className="foot-col">
@@ -100,7 +135,22 @@ function SiteFooter() {
 
           <div className="foot-meta">
             <span>© {time.getFullYear()} — F.U.</span>
-            <span>{fmt} CT · <span style={{ color: "var(--violet)" }}>● online</span></span>
+            <span>
+              {fmt} CT · <span style={{ color: "var(--violet)" }}>● online</span>
+              {!reduce && (
+                <>
+                  {" · "}
+                  <a
+                    className="foot-credit"
+                    href="https://spline.design"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Footer scene · Spline ↗
+                  </a>
+                </>
+              )}
+            </span>
           </div>
         </div>
       </footer>
