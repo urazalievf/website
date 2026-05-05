@@ -18,7 +18,6 @@ FEEDS = [
 ]
 LOOKBACK_DAYS = 14
 JSX_PATH = Path("rewards-cards.jsx")
-STOPWORDS = {"card", "cards", "the", "and", "of", "for", "blue", "gold", "platinum"}
 
 
 def load_cards(path: Path):
@@ -54,19 +53,20 @@ def parse_feed(name: str, url: str):
     return out
 
 
-def card_tokens(brand: str, name: str):
-    tokens = re.split(r"[\s\-]+", f"{brand} {name}")
-    return [t.lower() for t in tokens if len(t) >= 4 and t.lower() not in STOPWORDS]
+def normalize(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
 
 
 def matches(item, brand: str, name: str) -> bool:
-    title = item["title"].lower()
-    tokens = card_tokens(brand, name)
-    if not tokens:
+    # The card name is what distinguishes one card from another within an
+    # issuer's lineup ("Sapphire Reserve", "Gold Card", "Bilt 2.0"). Require
+    # it to appear as a contiguous phrase in the title — brand alone matches
+    # too many unrelated articles ("Chase Sapphire Reserve" vs every Chase
+    # card; "Apple gift card" vs the Apple Card).
+    name_norm = normalize(name)
+    if not name_norm:
         return False
-    return all(t in title for t in tokens[:2]) or (
-        brand.lower().split()[0] in title and any(t in title for t in tokens)
-    )
+    return name_norm in normalize(item["title"])
 
 
 def main() -> int:
