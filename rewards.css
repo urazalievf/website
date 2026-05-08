@@ -161,6 +161,14 @@
   color: var(--fg-muted);
   text-align: right;
 }
+@media (max-width: 540px) {
+  .rw-section-head {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .rw-section-head .stamp-line { text-align: left; }
+  .rw-hero { padding: 24px 0 16px; }
+}
 
 .rw-list {
   display: grid;
@@ -356,6 +364,19 @@
   .rw-bonus { display: flex; gap: 12px; align-items: baseline; }
   .rw-cta { width: max-content; }
 }
+@media (max-width: 480px) {
+  .rw-card { grid-template-columns: 1fr; padding: 16px; gap: 12px; }
+  .rw-mark, .rw-mark.m-img, .rw-mark.m-img.m-square { grid-column: 1; }
+  .rw-body, .rw-bonus, .rw-cta { grid-column: 1; }
+  .rw-body .name { font-size: 20px; }
+  .rw-bonus .amt { font-size: 26px; }
+  .rw-cta {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: inline-flex;
+  }
+}
 
 /* ─────────────────────────────────────────────────────────────────
    COUPON CARD — variant
@@ -417,6 +438,10 @@ html[data-aesthetic="paper"] .rw-coupon-code {
   .rw-coupon { grid-template-columns: 56px 1fr; padding-right: 16px; }
   .rw-coupon-code { grid-column: 2; }
   .rw-tear { display: none; }
+}
+@media (max-width: 480px) {
+  .rw-coupon { grid-template-columns: 1fr; padding: 16px; }
+  .rw-coupon-code { grid-column: 1; width: max-content; max-width: 100%; }
 }
 
 /* ─────────────────────────────────────────────────────────────────

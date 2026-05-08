@@ -79,7 +79,7 @@ html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; fil
    cardinal ticks, and HUD give it the feel of a real piece of
    scientific gear rather than a floating circle.
    ───────────────────────────────────────────────────────────────────── */
-.wire-globe { position: relative; }
+.wire-globe { position: relative; max-width: 100%; }
 .wire-globe-mount {
   border-radius: 50%;
   overflow: hidden;
@@ -263,7 +263,10 @@ html[data-aesthetic="paper"] .wg-ring { border-color: rgba(94,71,166,0.55); }
 html[data-aesthetic="paper"] .wg-ring.wg-mer { border-color: rgba(176,108,40,0.45); }
 
 @media (max-width: 900px) {
-  .wireglobe-wrap { transform: scale(0.78); }
+  .wireglobe-wrap { transform: scale(0.78); transform-origin: center top; }
+}
+@media (max-width: 540px) {
+  .wireglobe-wrap { transform: scale(0.62); }
 }
 
 @keyframes orb-drift-1 {

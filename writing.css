@@ -63,6 +63,16 @@
   .wr-row { grid-template-columns: 70px 1fr 28px; }
   .wr-row .summary, .wr-row .meta { display: none; }
 }
+@media (max-width: 540px) {
+  .wr-row {
+    grid-template-columns: 1fr 28px;
+    gap: 6px var(--s-3);
+    padding: 18px 4px;
+  }
+  .wr-row .date { grid-column: 1 / -1; }
+  .wr-row .title { font-size: 22px; }
+  .wr-row .arr { grid-row: 2; }
+}
 
 /* Subscribe / now band */
 .wr-callouts {
@@ -153,4 +163,12 @@
 
 @media (max-width: 900px) {
   .wr-callouts { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .wr-sub { padding: var(--s-5) var(--s-4); }
+  .wr-sub h3 { font-size: clamp(28px, 8vw, 40px); }
+  .wr-sub form { flex-direction: column; }
+  .wr-sub input { width: 100%; min-width: 0; }
+  .wr-sub .btn { width: 100%; justify-content: center; }
+  .wr-side { padding: var(--s-4); }
 }

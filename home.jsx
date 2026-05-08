@@ -94,6 +94,39 @@ function HomeApp() {
     else document.body.classList.remove("no-stars");
   }, [tweaks]);
 
+  // Globe size needs to match the viewport — at 420px on a 360px phone the
+  // canvas overflows the column and shoves the page sideways. Bucketing
+  // (rather than tracking every pixel) keeps the WebGL scene from
+  // re-instantiating on every resize tick.
+  const pickGlobeSize = () => {
+    if (typeof window === "undefined") return 420;
+    const w = window.innerWidth;
+    if (w < 420) return 240;
+    if (w < 560) return 280;
+    if (w < 768) return 320;
+    if (w < 980) return 380;
+    return 420;
+  };
+  const [globeSize, setGlobeSize] = hUseState(pickGlobeSize);
+  hUseEffect(() => {
+    let frame = null;
+    const onResize = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setGlobeSize((prev) => {
+          const next = pickGlobeSize();
+          return next === prev ? prev : next;
+        });
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // local clock for the now-band
   const [time, setTime] = hUseState(() => new Date());
   hUseEffect(() => {
@@ -131,7 +164,7 @@ function HomeApp() {
               </div>
             </div>
             <div className="hero-globe">
-              <WireGlobe size={420} />
+              <WireGlobe key={globeSize} size={globeSize} />
             </div>
           </div>
 

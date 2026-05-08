@@ -2,7 +2,9 @@
 const { useState, useEffect, useRef } = React;
 
 /* ─────────────────────────────────────────────────────────────────
-   SiteNav — sticky pill nav with brand, link list, and CTA
+   SiteNav — sticky pill nav with brand, link list, and CTA.
+   On narrow viewports the link list collapses into a hamburger
+   drawer that opens a full-screen sheet with the same links + CTA.
    ───────────────────────────────────────────────────────────────── */
 function SiteNav({ active = "home" }) {
   const links = [
@@ -12,14 +14,44 @@ function SiteNav({ active = "home" }) {
     { id: "rewards",  label: "Referrals",  href: "rewards.html" },
   ];
 
+  const [open, setOpen] = useState(false);
+
+  // Close on Escape; lock body scroll while open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  // Snap closed when the viewport grows past the mobile breakpoint —
+  // otherwise an open drawer survives a desktop resize and traps the
+  // scrollable area off-screen.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(min-width: 861px)");
+    const onChange = (e) => { if (e.matches) setOpen(false); };
+    if (mq.addEventListener) mq.addEventListener("change", onChange);
+    else mq.addListener(onChange);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", onChange);
+      else mq.removeListener(onChange);
+    };
+  }, []);
+
   return (
-    <nav className="nav">
+    <nav className={"nav" + (open ? " is-open" : "")}>
       <div className="nav-inner glass glass--pill">
         <a className="nav-brand" href="index.html">
           <span className="dot" />
           <span>Feruz Urazaliev</span>
         </a>
-        <div className="nav-links">
+        <div className="nav-links" id="primary-nav">
           {links.map(l => (
             <a
               key={l.id}
@@ -38,6 +70,60 @@ function SiteNav({ active = "home" }) {
         >
           Subscribe
         </a>
+        <button
+          type="button"
+          className={"nav-burger" + (open ? " is-active" : "")}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          onClick={() => setOpen(o => !o)}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
+      </div>
+
+      {/* Mobile drawer — rendered always so the height transition can
+          run smoothly; gated by the .is-open modifier on the parent. */}
+      <div
+        id="mobile-menu"
+        className="nav-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        hidden={!open}
+      >
+        <div
+          className="nav-drawer-backdrop"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+        <div className="nav-drawer-panel glass">
+          <ul className="nav-drawer-links">
+            {links.map(l => (
+              <li key={l.id}>
+                <a
+                  href={l.href}
+                  className={"nav-drawer-link " + (active === l.id ? "is-active" : "")}
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="lbl">{l.label}</span>
+                  <span className="arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            className="nav-drawer-cta"
+            href="https://medium.feruzurazaliev.com/subscribe"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => setOpen(false)}
+          >
+            Subscribe ↗
+          </a>
+        </div>
       </div>
     </nav>
   );
