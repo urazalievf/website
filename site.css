@@ -18,7 +18,32 @@ body {
   background-attachment: fixed;
   background-size: 140% 140%;
   background-position: 30% 20%;
+  /* Two declarations: browsers without `clip` support fall through to
+     `hidden`. `clip` is preferred because it doesn't create a scroll
+     container, which would otherwise interfere with position: sticky on
+     descendants in some browsers. */
   overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* ─── Mobile-friendly defaults — apply everywhere, not just below a
+       breakpoint. Prevents accidental horizontal scroll on phones. ─── */
+img, video, picture, svg:not([width]) {
+  max-width: 100%;
+  height: auto;
+}
+input, textarea, select, button {
+  max-width: 100%;
+}
+/* Let flex / grid children shrink below their content min-size so long
+   strings (URLs, emails) don't burst the page on mobile. */
+.foot-col, .foot-col li, .foot-col a,
+.hero-stamp, .now-band, .hero-now,
+.proj-row, .wr-row, .rw-card, .rw-coupon,
+.bio-spec, .spec, .nav-inner, .nav-brand,
+.tile, .tile-body, .read-now, .listen-row,
+.gb-entry, .gb-form, .wine-card {
+  min-width: 0;
 }
 
 /* tiny stars layer — subtle, low-contrast */

@@ -53,6 +53,13 @@
   font-variation-settings: "opsz" 144, "wght" 300;
   color: var(--lumen-2);
 }
+/* Hero name — uses a tight clamp because the full string ("Feruz
+   Urazaliev") needs to render on a single line down to a 320px viewport. */
+.hero h1.hero-name {
+  font-size: clamp(36px, 10vw, 120px);
+  letter-spacing: -0.04em;
+}
+.hero h1.hero-name span { font-weight: 700; }
 
 .hero-side {
   display: flex;
@@ -299,6 +306,10 @@
   .tile.tile-sm { grid-column: span 6; }
   .tile.tile-wide { grid-column: span 12; }
   .offgrid-grid { grid-template-columns: 1fr 1fr; }
+  /* Tablet hero — give the globe a bit more breathing room and let the
+     copy column stretch so the now-band doesn't crush its labels. */
+  .hero { padding-top: clamp(60px, 10vh, 120px); }
+  .hero-now { gap: var(--s-3); padding: 14px 18px; }
 }
 @media (max-width: 760px) {
   .hero { padding-top: clamp(48px, 10vh, 96px); }
