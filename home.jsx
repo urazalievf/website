@@ -94,6 +94,39 @@ function HomeApp() {
     else document.body.classList.remove("no-stars");
   }, [tweaks]);
 
+  // Globe size needs to match the viewport — at 420px on a 360px phone the
+  // canvas overflows the column and shoves the page sideways. Bucketing
+  // (rather than tracking every pixel) keeps the WebGL scene from
+  // re-instantiating on every resize tick.
+  const pickGlobeSize = () => {
+    if (typeof window === "undefined") return 420;
+    const w = window.innerWidth;
+    if (w < 420) return 240;
+    if (w < 560) return 280;
+    if (w < 768) return 320;
+    if (w < 980) return 380;
+    return 420;
+  };
+  const [globeSize, setGlobeSize] = hUseState(pickGlobeSize);
+  hUseEffect(() => {
+    let frame = null;
+    const onResize = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setGlobeSize((prev) => {
+          const next = pickGlobeSize();
+          return next === prev ? prev : next;
+        });
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // local clock for the now-band
   const [time, setTime] = hUseState(() => new Date());
   hUseEffect(() => {
@@ -103,9 +136,13 @@ function HomeApp() {
   const fmt  = time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Chicago" });
   const date = time.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" });
 
+  // Trim the orb field on small screens — nine floating orbs read as
+  // "page is flying around" on a phone, and they cost GPU besides.
+  const orbCount = globeSize <= 280 ? 4 : globeSize <= 380 ? 6 : 9;
+
   return (
     <>
-      {tweaks.showOrbs && <OrbField count={9} />}
+      {tweaks.showOrbs && <OrbField count={orbCount} />}
       {tweaks.showStatusBar && <StatusBar />}
       <SiteNav active="home" />
 
@@ -120,8 +157,8 @@ function HomeApp() {
 
           <div className="hero-grid hero-grid--globe">
             <div className="hero-text">
-              <h1>
-                <span style={{fontWeight: 700, letterSpacing: "-0.04em", fontSize: "clamp(48px, 7vw, 120px)"}}>Feruz Urazaliev</span>
+              <h1 className="hero-name">
+                <span>Feruz Urazaliev</span>
               </h1>
               <p className="lead" style={{marginTop: "var(--s-4)", maxWidth: "52ch"}}>
                 Building data things. Metalcore on repeat. Occasionally losing at chess.
@@ -131,7 +168,7 @@ function HomeApp() {
               </div>
             </div>
             <div className="hero-globe">
-              <WireGlobe size={420} />
+              <WireGlobe key={globeSize} size={globeSize} />
             </div>
           </div>
 

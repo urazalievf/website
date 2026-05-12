@@ -7,7 +7,7 @@
 
 :root {
   --nav-h: 64px;
-  --container-pad: clamp(20px, 4vw, 48px);
+  --container-pad: clamp(16px, 4vw, 48px);
 }
 
 html, body { margin: 0; }
@@ -18,7 +18,32 @@ body {
   background-attachment: fixed;
   background-size: 140% 140%;
   background-position: 30% 20%;
+  /* Two declarations: browsers without `clip` support fall through to
+     `hidden`. `clip` is preferred because it doesn't create a scroll
+     container, which would otherwise interfere with position: sticky on
+     descendants in some browsers. */
   overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* ─── Mobile-friendly defaults — apply everywhere, not just below a
+       breakpoint. Prevents accidental horizontal scroll on phones. ─── */
+img, video, picture, svg:not([width]) {
+  max-width: 100%;
+  height: auto;
+}
+input, textarea, select, button {
+  max-width: 100%;
+}
+/* Let flex / grid children shrink below their content min-size so long
+   strings (URLs, emails) don't burst the page on mobile. */
+.foot-col, .foot-col li, .foot-col a,
+.hero-stamp, .now-band, .hero-now,
+.proj-row, .wr-row, .rw-card, .rw-coupon,
+.bio-spec, .spec, .nav-inner, .nav-brand,
+.tile, .tile-body, .read-now, .listen-row,
+.gb-entry, .gb-form, .wine-card {
+  min-width: 0;
 }
 
 /* tiny stars layer — subtle, low-contrast */
@@ -66,6 +91,10 @@ body::before {
   align-items: center;
   padding: 10px 14px 10px 18px;
   border-radius: var(--r-pill);
+  position: relative;
+  /* Stays above the mobile drawer backdrop so the burger can dismiss
+     the menu without the backdrop intercepting the click. */
+  z-index: 2;
 }
 .nav-brand {
   display: inline-flex;
@@ -150,6 +179,174 @@ body::before {
   transform: translateY(-1px);
 }
 
+/* ─── Hamburger toggle (mobile only) ─── */
+.nav-burger {
+  display: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  margin-right: -6px;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--lumen);
+  transition: background var(--dur-quick) var(--ease-out);
+}
+.nav-burger:hover { background: rgba(255,255,255,0.06); }
+.nav-burger:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+.nav-burger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform var(--dur-base) var(--ease-out),
+              opacity var(--dur-quick) var(--ease-out);
+  transform-origin: center;
+}
+.nav-burger.is-active span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.nav-burger.is-active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-burger.is-active span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* ─── Mobile drawer ─── */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  /* Sits inside the nav stacking context but below .nav-inner so the
+     pill (with the burger / close button) remains tappable. */
+  z-index: 1;
+  display: none;
+}
+.nav.is-open .nav-drawer { display: block; }
+.nav-drawer[hidden] { display: none; }
+.nav-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 7, 11, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: drawer-fade var(--dur-base) var(--ease-out);
+}
+html[data-aesthetic="paper"] .nav-drawer-backdrop {
+  background: rgba(21, 23, 26, 0.35);
+}
+.nav-drawer-panel {
+  position: absolute;
+  /* Sits just below the mobile pill (12px top + ~56px pill + 8px gap). */
+  top: 76px;
+  left: 12px;
+  right: 12px;
+  max-width: 460px;
+  margin-inline: auto;
+  padding: 14px;
+  border-radius: var(--r-4);
+  display: grid;
+  gap: 6px;
+  animation: drawer-in var(--dur-base) var(--ease-out);
+  max-height: calc(100vh - 92px);
+  max-height: calc(100dvh - 92px);
+  overflow-y: auto;
+}
+.nav-drawer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.nav-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--lumen-2);
+  border-bottom: 0;
+  transition: background var(--dur-quick) var(--ease-out),
+              color var(--dur-quick) var(--ease-out);
+  min-height: 48px;
+}
+.nav-drawer-link:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--lumen);
+  border-bottom: 0;
+}
+html[data-aesthetic="paper"] .nav-drawer-link:hover {
+  background: rgba(21,23,26,0.05);
+}
+.nav-drawer-link.is-active {
+  background: rgba(139, 92, 255, 0.12);
+  color: var(--lumen);
+}
+.nav-drawer-link.is-active::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 10px var(--violet-glow);
+  margin-right: -2px;
+}
+.nav-drawer-link .lbl { flex: 1; }
+.nav-drawer-link .arr { color: var(--fg-faint); font-family: var(--font-display); }
+.nav-drawer-cta {
+  margin-top: 6px;
+  padding: 14px 18px;
+  border-radius: var(--r-pill);
+  background: var(--violet);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 0;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-drawer-cta:hover {
+  background: var(--violet-bright);
+  color: #fff;
+  border-bottom: 0;
+}
+@keyframes drawer-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes drawer-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-drawer-backdrop,
+  .nav-drawer-panel { animation: none; }
+  .nav-burger span { transition: none; }
+}
+
 /* ─── Footer ─── */
 .site-foot {
   margin-top: var(--s-9);
@@ -199,6 +396,8 @@ html[data-aesthetic="paper"] .foot-spline { opacity: 0.35; }
   font-size: var(--fs-mono-sm);
   color: var(--lumen-2);
   border-bottom: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .foot-col a:hover { color: var(--violet-bright); border-bottom: 0; }
 
@@ -437,6 +636,7 @@ html[data-aesthetic="paper"] .foot-spline { opacity: 0.35; }
 }
 
 /* ─── Eyebrow ─── */
+.eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -460,19 +660,72 @@ a.unstyle, .nav-brand, .nav-link, .nav-cta, .btn,
 
 /* ─── Responsive ─── */
 @media (max-width: 860px) {
+  .nav {
+    top: 12px;
+    margin-top: 12px;
+    width: calc(100% - 24px);
+  }
   .nav-inner {
-    grid-template-columns: auto 1fr auto;
-    gap: 10px;
-    padding: 8px 8px 8px 14px;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+    padding: 6px 6px 6px 14px;
   }
   .nav-links { display: none; }
+  .nav-cta {
+    padding: 8px 14px;
+    font-size: var(--fs-mono-xs);
+  }
+  .nav-burger { display: inline-flex; }
+  .nav-brand span:not(.dot) {
+    /* Keep the brand on a single line; truncate if absolutely needed. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .section-head {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: var(--s-3);
   }
+  .section-head h2 {
+    font-size: clamp(36px, 9vw, 64px);
+  }
+
   .foot-grid {
     grid-template-columns: 1fr 1fr;
   }
+  .foot-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 540px) {
+  .nav { width: calc(100% - 16px); }
+  .nav-inner { padding: 6px 6px 6px 12px; }
+  .nav-brand { font-size: 11px; gap: 8px; }
+  .nav-cta {
+    /* Tuck the CTA into the drawer at very narrow widths so the header
+       has breathing room for the brand + burger. */
+    display: none;
+  }
+  .foot-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+  .now-band {
+    padding: 12px 16px;
+    gap: var(--s-2);
+  }
+  .now-band .now-time {
+    margin-left: 0;
+  }
+  .page-head {
+    padding: clamp(60px, 10vh, 100px) 0 var(--s-5);
+  }
+  .marquee-item { font-size: clamp(60px, 18vw, 110px); }
 }
 
 /* ─── Reveal anim ─── */

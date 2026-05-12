@@ -129,8 +129,15 @@ html[data-aesthetic="paper"] .social-tile.s-medium { color: #1a1a1a; }
 html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
 
 @media (max-width: 760px) {
-  .bio-hero { grid-template-columns: 1fr; }
-  .bio-spec { grid-template-columns: 100px 1fr; }
+  .bio-hero { grid-template-columns: 1fr; gap: var(--s-5); }
+  .bio-spec { grid-template-columns: 100px 1fr; gap: 8px var(--s-3); }
+  .socials-card { padding: 14px 18px; }
+  .socials { gap: 22px; }
+}
+@media (max-width: 480px) {
+  .bio-spec { grid-template-columns: 1fr; gap: 4px; }
+  .bio-spec dt { padding-top: 10px; }
+  .bio-spec dt:first-of-type { padding-top: 0; }
 }
 
 /* Quote */

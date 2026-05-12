@@ -32,7 +32,7 @@
   .hero-grid--globe .hero-globe { justify-self: center; margin-top: var(--s-5); }
 }
 @media (max-width: 560px) {
-  .hero-grid--globe .hero-globe { transform: scale(0.7); margin-top: 0; }
+  .hero-grid--globe .hero-globe { margin-top: var(--s-3); }
 }
 /* .hero-stamp moved to site.css so inner pages get it too */
 
@@ -53,6 +53,13 @@
   font-variation-settings: "opsz" 144, "wght" 300;
   color: var(--lumen-2);
 }
+/* Hero name — uses a tight clamp because the full string ("Feruz
+   Urazaliev") needs to render on a single line down to a 320px viewport. */
+.hero h1.hero-name {
+  font-size: clamp(36px, 10vw, 120px);
+  letter-spacing: -0.04em;
+}
+.hero h1.hero-name span { font-weight: 700; }
 
 .hero-side {
   display: flex;
@@ -299,12 +306,38 @@
   .tile.tile-sm { grid-column: span 6; }
   .tile.tile-wide { grid-column: span 12; }
   .offgrid-grid { grid-template-columns: 1fr 1fr; }
+  /* Tablet hero — give the globe a bit more breathing room and let the
+     copy column stretch so the now-band doesn't crush its labels. */
+  .hero { padding-top: clamp(60px, 10vh, 120px); }
+  .hero-now { gap: var(--s-3); padding: 14px 18px; }
 }
 @media (max-width: 760px) {
-  .hero-grid { grid-template-columns: 1fr; }
+  .hero { padding-top: clamp(48px, 10vh, 96px); }
+  .hero-grid { grid-template-columns: 1fr; gap: var(--s-5); }
+  .hero h1 { font-size: clamp(48px, 13vw, 96px); }
+  .hero-stamp { gap: 12px; font-size: 10px; }
   .tiles { grid-template-columns: 1fr; }
-  .tile.tile-lg, .tile.tile-md, .tile.tile-sm, .tile.tile-wide { grid-column: span 12; }
-  .quote-block { grid-template-columns: 1fr; }
+  .tile { min-height: 220px; padding: 20px; }
+  .tile.tile-lg, .tile.tile-md, .tile.tile-sm, .tile.tile-wide {
+    grid-column: span 12;
+    min-height: 220px;
+  }
+  .tile-title { font-size: clamp(28px, 7vw, 40px); margin: var(--s-4) 0 var(--s-3); }
+  .quote-block {
+    grid-template-columns: 1fr;
+    padding: var(--s-5) var(--s-4);
+  }
   .quote-block .quote-mark { display: none; }
-  .hero-now { grid-template-columns: 1fr; }
+  .hero-now {
+    grid-template-columns: 1fr;
+    padding: 14px 16px;
+  }
+  .offgrid-grid { grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+  .offgrid-tile { min-height: 144px; padding: 14px; }
+  .socials-card { padding: 14px 18px; }
+  .socials { gap: 18px; }
+}
+@media (max-width: 480px) {
+  .offgrid-grid { grid-template-columns: 1fr; }
+  .hero-grid--globe .hero-globe { transform: scale(0.6); margin-top: -20px; margin-bottom: -20px; }
 }
