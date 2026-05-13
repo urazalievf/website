@@ -72,7 +72,7 @@ function ProjectsApp() {
             padding: "var(--s-5)",
             borderRadius: "var(--r-3)",
             display: "grid",
-            gridTemplateColumns: "auto 1fr auto",
+            gridTemplateColumns: "auto minmax(0, 1fr) auto",
             gap: "var(--s-4)",
             alignItems: "center",
             maxWidth: 720,
@@ -89,8 +89,9 @@ function ProjectsApp() {
               fontSize: 36,
               color: "#fff",
               boxShadow: "0 8px 24px var(--violet-glow)",
+              flexShrink: 0,
             }}>D</div>
-            <div>
+            <div style={{minWidth: 0}}>
               <div style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--fs-mono-xs)",
@@ -102,10 +103,12 @@ function ProjectsApp() {
                 fontFamily: "var(--font-display)",
                 fontVariationSettings: '"opsz" 144',
                 fontWeight: 380,
-                fontSize: 26,
+                fontSize: "clamp(18px, 4.5vw, 26px)",
                 color: "var(--lumen)",
                 letterSpacing: "-0.02em",
                 marginTop: 2,
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
               }}>
                 datacamp.com/portfolio/<em style={{color: "var(--amber)"}}>urazalievf</em>
               </div>
@@ -120,6 +123,8 @@ function ProjectsApp() {
               padding: "10px 14px",
               border: "1px solid var(--hairline-strong)",
               borderRadius: "var(--r-pill)",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}>Open ↗</a>
           </div>
         </section>
