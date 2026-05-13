@@ -1,0 +1,25 @@
+name: Design rules
+
+# Enforces the load-bearing rules from DESIGN.md (overflow guards,
+# mobile breakpoints, canonical breakpoint values). The check is a
+# pure-Node script, no install step.
+
+on:
+  pull_request:
+    paths:
+      - '**.css'
+      - '.github/scripts/check-design.mjs'
+      - '.github/workflows/design-rules.yml'
+      - 'DESIGN.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run design-rules check
+        run: node .github/scripts/check-design.mjs
