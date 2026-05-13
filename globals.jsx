@@ -981,7 +981,10 @@ function LiveCounters() {
   return (
     <div className="counter-strip glass" style={{
       display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)",
+      // minmax(0, 1fr) lets each cell shrink below its content min-width;
+      // without it the 28-56px display-font numbers expand the grid past
+      // the viewport on a 360px phone.
+      gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
       gap: "var(--s-4)",
       padding: "var(--s-4)",
       borderRadius: "var(--r-3)",

@@ -707,9 +707,26 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
 .listen-foot:hover { color: var(--lumen); border-bottom: 0; }
 
 @media (max-width: 540px) {
-  .listen-tabs { width: 100%; overflow-x: auto; }
+  /* min-width: 0 keeps the scroller from being expanded to fit its
+     children (the tabs would otherwise force their natural width onto
+     the document). max-width: 100% is the defensive pair. */
+  .listen-tabs {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+  }
   .listen-tab { white-space: nowrap; }
   .listen-row { grid-template-columns: 28px 40px 1fr auto; gap: 10px; }
+  /* LiveCounters: 4 cells of mono numbers don't fit at 360px even with
+     minmax(0, 1fr). Drop to 2x2. The .counter-strip selector matches
+     the className on the inline-styled grid; we re-declare the grid
+     template here with higher specificity than the inline style by
+     using !important sparingly. */
+  .counter-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    row-gap: var(--s-3);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────

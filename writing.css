@@ -65,12 +65,20 @@
 }
 @media (max-width: 540px) {
   .wr-row {
-    grid-template-columns: 1fr 28px;
+    /* minmax(0, 1fr) lets the title column shrink below its content
+       min-width — Medium post titles can contain unbreakable tokens
+       (URLs, long compound words) that would otherwise extend the row
+       past the viewport. */
+    grid-template-columns: minmax(0, 1fr) 28px;
     gap: 6px var(--s-3);
     padding: 18px 4px;
   }
   .wr-row .date { grid-column: 1 / -1; }
-  .wr-row .title { font-size: 22px; }
+  .wr-row .title {
+    font-size: 22px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
   .wr-row .arr { grid-row: 2; }
 }
 
