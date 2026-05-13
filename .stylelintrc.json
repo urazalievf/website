@@ -1,0 +1,13 @@
+{
+  "extends": ["stylelint-config-recommended"],
+  "rules": {
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null,
+    "function-no-unknown": null,
+    "selector-type-no-unknown": [true, { "ignoreTypes": ["/^[a-z]+-[a-z]+$/"] }],
+    "declaration-block-no-duplicate-properties": [true, {
+      "ignore": ["consecutive-duplicates-with-different-values"]
+    }]
+  },
+  "ignoreFiles": ["node_modules/**", "playwright-report/**", "test-results/**", "css/**"]
+}

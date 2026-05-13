@@ -1,13 +1,24 @@
 name: Design rules
 
-# Enforces the load-bearing rules from DESIGN.md (overflow guards,
-# mobile breakpoints, canonical breakpoint values). The check is a
-# pure-Node script, no install step.
+# Enforces the responsive rules from DESIGN.md.
+#  - design-check: dependency-free Node script for the project-specific
+#    rules (overflow guards, mobile breakpoints, canonical px values).
+#  - stylelint: catches generic CSS errors (invalid selectors, broken
+#    declarations, duplicate properties).
+#  - responsive: Playwright smoke test that loads each page at
+#    360 / 768 / 1280 and asserts no horizontal scroll, plus the
+#    hamburger / desktop-nav swap below 860px.
 
 on:
   pull_request:
     paths:
       - '**.css'
+      - '**.html'
+      - '**.jsx'
+      - 'package.json'
+      - '.stylelintrc.json'
+      - 'playwright.config.mjs'
+      - 'tests/**'
       - '.github/scripts/check-design.mjs'
       - '.github/workflows/design-rules.yml'
       - 'DESIGN.md'
@@ -17,9 +28,40 @@ permissions:
   contents: read
 
 jobs:
-  check:
+  design-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run design-rules check
-        run: node .github/scripts/check-design.mjs
+      - run: node .github/scripts/check-design.mjs
+
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint:css
+
+  responsive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm install --no-audit --no-fund
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - run: npm run test:responsive
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
