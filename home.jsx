@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, WineCard, WireGlobe, GoodreadsQuote, LiveCounters */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions */
 const { useEffect: hUseEffect, useState: hUseState } = React;
 
 const HOME_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -201,10 +201,19 @@ function HomeApp() {
           </div>
         </section>
 
+        {/* GITHUB CONTRIBUTIONS ─────────────────────────────────── */}
+        <section data-screen-label="GitHub">
+          <div className="hero-stamp">
+            <span><span className="num">003</span> / GitHub</span>
+            <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>commits, every day green-ish</span>
+          </div>
+          <GitHubContributions user="urazalievf" />
+        </section>
+
         {/* TILES — three doors ─────────────────────────────────── */}
         <section data-screen-label="Sections">
           <div className="hero-stamp" style={{ marginBottom: 16 }}>
-            <span><span className="num">003</span> / The doors</span>
+            <span><span className="num">004</span> / The doors</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— pick one</span>
           </div>
 
@@ -272,13 +281,13 @@ function HomeApp() {
 
         {/* QUOTE ─ rotating Taleb quotes ──────────────────────── */}
         <section data-screen-label="Quote">
-          <GoodreadsQuote num="004" user="urazaliev_f" />
+          <GoodreadsQuote num="005" user="urazaliev_f" />
         </section>
 
         {/* READING NOW ─────────────────────────────────────────── */}
         <section data-screen-label="Reading">
           <div className="hero-stamp" style={{ marginBottom: 4 }}>
-            <span><span className="num">005</span> / Reading right now</span>
+            <span><span className="num">006</span> / Reading right now</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— live shelf</span>
           </div>
           <ReadingNow />
@@ -287,7 +296,7 @@ function HomeApp() {
         {/* LISTENING ───────────────────────────────────────────── */}
         <section data-screen-label="Listening">
           <div className="hero-stamp">
-            <span><span className="num">006</span> / Listening</span>
+            <span><span className="num">007</span> / Listening</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>Last.fm scrobbles</span>
           </div>
           <ListeningCarousel />
@@ -296,7 +305,7 @@ function HomeApp() {
         {/* CHESS BOARD ─────────────────────────────────────────── */}
         <section data-screen-label="Chess">
           <div className="hero-stamp">
-            <span><span className="num">007</span> / Chess board</span>
+            <span><span className="num">008</span> / Chess board</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>have a go</span>
           </div>
           <ChessBoard />
@@ -305,7 +314,7 @@ function HomeApp() {
         {/* TASTING NOTE ────────────────────────────────────────── */}
         <section data-screen-label="Wine">
           <div className="hero-stamp">
-            <span><span className="num">008</span> / Tasting note</span>
+            <span><span className="num">009</span> / Tasting note</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>most recent</span>
           </div>
           <WineCard />
@@ -314,7 +323,7 @@ function HomeApp() {
         {/* OFF-GRID — branded logbooks ─────────────────────────── */}
         <section data-screen-label="Off-grid">
           <div className="hero-stamp">
-            <span><span className="num">009</span> / Off-grid</span>
+            <span><span className="num">010</span> / Off-grid</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>logbooks I keep for fun</span>
           </div>
           <div className="morelinks">

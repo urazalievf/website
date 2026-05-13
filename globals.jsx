@@ -1245,6 +1245,102 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   GitHubContributions — heat-map of daily contributions for the last
+   rolling year. Pulled from a CORS-friendly proxy of GitHub's
+   contribution graph (jogruber). Fails silent if the proxy is down.
+   ───────────────────────────────────────────────────────────────── */
+function GitHubContributions({ user = "urazalievf" }) {
+  const [data, setData] = gUseState(null);
+  const [failed, setFailed] = gUseState(false);
+
+  gUseEffect(() => {
+    const ctrl = new AbortController();
+    fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`, { signal: ctrl.signal })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("bad response"))))
+      .then((d) => {
+        if (d && Array.isArray(d.contributions)) setData(d);
+        else setFailed(true);
+      })
+      .catch((e) => { if (e?.name !== "AbortError") setFailed(true); });
+    return () => ctrl.abort();
+  }, [user]);
+
+  if (failed) return null;
+
+  // Bucket contributions into Sun-Sat week columns, padding the first
+  // column so day-of-week rows line up.
+  const days = data?.contributions ?? [];
+  let weeks = [];
+  if (days.length) {
+    const firstDate = new Date(days[0].date + "T00:00:00Z");
+    const lead = firstDate.getUTCDay();
+    const padded = [...Array.from({ length: lead }, () => null), ...days];
+    for (let i = 0; i < padded.length; i += 7) weeks.push(padded.slice(i, i + 7));
+  }
+  while (weeks.length < 53) weeks.push([]);
+  weeks = weeks.slice(-53);
+
+  // Month labels — emit a label the first week we see a new month.
+  let lastMonth = -1;
+  const monthLabels = weeks.map((week) => {
+    const firstDay = week.find(Boolean);
+    if (!firstDay) return "";
+    const d = new Date(firstDay.date + "T00:00:00Z");
+    const m = d.getUTCMonth();
+    if (m === lastMonth) return "";
+    lastMonth = m;
+    return d.toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+  });
+
+  const total = data?.total?.lastYear ?? days.reduce((a, d) => a + (d?.count || 0), 0);
+  const loading = !data;
+
+  return (
+    <div className="gh-contrib glass">
+      <div className="gh-head">
+        <span className="gh-total">
+          {loading ? "Loading contributions…" : `${total.toLocaleString()} contributions in the last year`}
+        </span>
+        <a className="gh-link" href={`https://github.com/${user}`} target="_blank" rel="noreferrer">
+          @{user} ↗
+        </a>
+      </div>
+      <div className="gh-grid-wrap">
+        <div className="gh-months" aria-hidden="true">
+          {monthLabels.map((m, i) => (
+            <span key={i} className="gh-month">{m}</span>
+          ))}
+        </div>
+        <div className="gh-grid" role="img" aria-label={loading ? "Loading GitHub contributions" : `${total} GitHub contributions in the last year`}>
+          {weeks.flatMap((week, wi) =>
+            Array.from({ length: 7 }).map((_, di) => {
+              const day = week[di];
+              const key = `${wi}-${di}`;
+              if (!day) return <span key={key} className="gh-cell gh-cell--empty" />;
+              return (
+                <span
+                  key={key}
+                  className="gh-cell"
+                  data-level={day.level}
+                  title={`${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`}
+                />
+              );
+            })
+          )}
+        </div>
+      </div>
+      <div className="gh-legend">
+        <span>Less</span>
+        {[0, 1, 2, 3, 4].map((l) => (
+          <span key={l} className="gh-cell" data-level={l} />
+        ))}
+        <span>More</span>
+      </div>
+    </div>
+  );
+}
+
 Object.assign(window, {
-  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters,
+  OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions,
 });

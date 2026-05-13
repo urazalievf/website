@@ -942,3 +942,88 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   .read-now { grid-template-columns: 70px 1fr; }
   .read-now .r-pct { grid-column: 2; }
 }
+
+/* GitHub contributions heat-map on home */
+.gh-contrib {
+  margin-top: var(--s-5);
+  padding: 18px 22px 16px;
+  border-radius: var(--r-3);
+}
+.gh-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+}
+.gh-total { color: var(--lumen-2); }
+.gh-link {
+  color: var(--violet);
+  text-decoration: none;
+  border-bottom: 0;
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  font-size: var(--fs-mono-xs);
+}
+.gh-link:hover { color: var(--violet); border-bottom: 0; }
+.gh-grid-wrap {
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.gh-months {
+  display: grid;
+  grid-template-columns: repeat(53, 12px);
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: 6px;
+  min-width: max-content;
+  height: 12px;
+}
+.gh-month { white-space: nowrap; }
+.gh-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(53, 12px);
+  grid-template-rows: repeat(7, 12px);
+  gap: 3px;
+  min-width: max-content;
+}
+.gh-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  display: inline-block;
+  transition: transform var(--dur-quick) var(--ease-out);
+}
+.gh-cell:hover { transform: scale(1.25); }
+.gh-cell[data-level="0"] { background: rgba(255, 255, 255, 0.06); }
+.gh-cell[data-level="1"] { background: rgba(139, 92, 255, 0.28); }
+.gh-cell[data-level="2"] { background: rgba(139, 92, 255, 0.50); }
+.gh-cell[data-level="3"] { background: rgba(139, 92, 255, 0.75); }
+.gh-cell[data-level="4"] { background: rgba(139, 92, 255, 1.00); }
+.gh-cell--empty { background: transparent; }
+.gh-legend {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.gh-legend .gh-cell { width: 10px; height: 10px; }
+@media (max-width: 560px) {
+  .gh-contrib { padding: 14px 16px 12px; }
+  .gh-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
