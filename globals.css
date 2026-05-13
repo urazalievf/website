@@ -948,6 +948,13 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   margin-top: var(--s-5);
   padding: 18px 22px 16px;
   border-radius: var(--r-3);
+  /* Belt-and-suspenders: the inner .gh-grid is 53*12 + 52*3 = 792px wide
+     by construction (one column per week of the year) and lives in an
+     overflow-x: auto scroller, but on mobile the document still grew
+     past the viewport — pin the section itself to its block size so the
+     scroller can't leak. */
+  overflow: hidden;
+  contain: paint;
 }
 .gh-head {
   display: flex;
@@ -969,7 +976,13 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
 }
 .gh-link:hover { color: var(--violet); border-bottom: 0; }
 .gh-grid-wrap {
+  /* Explicit width + min-width: 0 guard against grid/flex contexts that
+     could expand this wrap to fit the 792px-wide grid inside. */
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: 4px;
   scrollbar-width: thin;
 }

@@ -49,7 +49,7 @@ for (const p of PAGES) {
             }
           }
           rows.sort((a, b) => b.right - a.right);
-          offenders = rows.slice(0, 8);
+          offenders = rows.slice(0, 15);
         }
         return { docW, bodyW, clientW, offenders };
       });
