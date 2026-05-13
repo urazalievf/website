@@ -11,9 +11,13 @@ const PAGES = [
 ];
 
 // Wait for the React-via-Babel boot to settle. Babel-standalone evaluates
-// JSX at runtime, so the DOM is empty until #root mounts content.
+// JSX at runtime, so the DOM is empty until #root mounts content. We
+// wait on .container (the <main> wrapper present on every page) rather
+// than `#root > *` because the first React-rendered child can be the
+// .orb-field, which is display:none on phones — Playwright's default
+// state: 'visible' would wait forever on a hidden element.
 async function waitForApp(page) {
-  await page.waitForSelector("#root > *", { timeout: 15_000 });
+  await page.waitForSelector("main.container", { timeout: 15_000 });
   // Give Babel one more frame to settle any synchronous layout effects.
   await page.waitForTimeout(150);
 }
