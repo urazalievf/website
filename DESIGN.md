@@ -63,7 +63,14 @@ row.
 WebGL and canvas scenes are sized off `window.innerWidth` buckets, not
 the raw pixel value, so the canvas doesn't re-instantiate on every
 resize tick. See `pickGlobeSize` in `home.jsx` and the orb-count
-ladder (4 → 6 → 9). Any new heavy scene follows the same pattern.
+ladder (4 → 6 → 9 on tablet+, hidden below 540px).
+
+The orb field is `display: none` below the phone breakpoint. The orbs
+are sized 360–740px square with a 48px blur halo and `scale(1.2)`
+drift animations — at a 360px viewport they overflowed the document
+even with `position: fixed` + `overflow: hidden` on `.orb-field`,
+because the animation transforms and blur extend the bounding box past
+the field's clip. Mobile gets the surface gradient instead.
 
 ## Mobile navigation
 

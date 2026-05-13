@@ -73,9 +73,17 @@ html[data-font="modern"] .italic-emph {
      wider than the screen, and the orb-field's overflow:hidden didn't
      reliably keep them from extending the document. Clamp the wrap to
      viewport dimensions so orbs can never measure wider than the screen
-     in the first place. */
+     in the first place. The inner .orb stretches via inset: 0 so this
+     clamp propagates. */
   max-width: 100vw;
   max-height: 100vh;
+}
+/* On phones the orbs add nothing the surface gradient doesn't already
+   provide, and the 48px blur halo around them was still leaking past
+   the viewport on Chromium even with the field clipped. Drop the
+   whole layer below the phone breakpoint. */
+@media (max-width: 540px) {
+  .orb-field { display: none; }
 }
 .orb {
   position: absolute;
@@ -1053,4 +1061,21 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
 @media (max-width: 540px) {
   .gh-contrib { padding: 14px 16px 12px; }
   .gh-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  /* Shrink the heat-map so 53 weeks fit in a 360px viewport without
+     horizontal scroll. 53*4 + 52*1 = 264px — comfortable inside the
+     content area (~284px after container + .gh-contrib padding). */
+  .gh-months {
+    grid-template-columns: repeat(53, 4px);
+    gap: 1px;
+    height: 4px;
+    font-size: 0; /* labels would overflow at 4px columns anyway */
+  }
+  .gh-grid {
+    grid-template-columns: repeat(53, 4px);
+    grid-template-rows: repeat(7, 4px);
+    gap: 1px;
+  }
+  .gh-cell { width: 4px; height: 4px; border-radius: 1px; }
+  .gh-cell:hover { transform: none; } /* hover scale is meaningless at 4px */
+  .gh-legend .gh-cell { width: 8px; height: 8px; }
 }
