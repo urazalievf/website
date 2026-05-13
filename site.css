@@ -11,6 +11,19 @@
 }
 
 html, body { margin: 0; }
+/* Two declarations on both root and body: browsers without `clip`
+   support fall through to `hidden`. `clip` is preferred because it
+   doesn't create a scroll container, which would otherwise interfere
+   with position: sticky on descendants in some browsers.
+   We pin it to <html> too because body's overflow-x doesn't
+   reliably propagate to documentElement.scrollWidth on every engine —
+   without the root guard, an oversize child (a wide canvas, a fixed
+   parallax layer that escapes its clip) can still push the document
+   width past the viewport on mobile. */
+html {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
 body {
   min-height: 100vh;
   background: var(--void);
@@ -18,10 +31,6 @@ body {
   background-attachment: fixed;
   background-size: 140% 140%;
   background-position: 30% 20%;
-  /* Two declarations: browsers without `clip` support fall through to
-     `hidden`. `clip` is preferred because it doesn't create a scroll
-     container, which would otherwise interfere with position: sticky on
-     descendants in some browsers. */
   overflow-x: hidden;
   overflow-x: clip;
 }

@@ -28,18 +28,27 @@ const CANONICAL = new Set([480, 540, 560, 720, 760, 860, 880, 900, 980, 1100]);
 
 const rules = [
   {
-    name: "site.css declares body overflow-x guard",
+    name: "site.css declares html and body overflow-x guards",
     run() {
       const css = stripComments(read("site.css"));
-      // Scan every selector list that ends with `body { ... }` so a
-      // grouped selector ("html, body { margin: 0 }") doesn't shadow
-      // the dedicated body block that holds the overflow guard.
-      const blocks = css.match(/(^|[\s,}])body\s*\{[^}]*\}/g) || [];
-      if (blocks.length === 0) return { ok: false, msg: "no body { ... } block found in site.css" };
-      const hasGuard = blocks.some((b) => /overflow-x:\s*(clip|hidden)/.test(b));
-      return hasGuard
-        ? { ok: true }
-        : { ok: false, msg: "body { overflow-x: clip | hidden } missing — phones will scroll sideways on any child overflow" };
+      // Scan every selector list that ends with the root or body so
+      // grouped selectors ("html, body { margin: 0 }") don't shadow
+      // the dedicated blocks that hold the overflow guard.
+      const bodyBlocks = css.match(/(^|[\s,}])body\s*\{[^}]*\}/g) || [];
+      const htmlBlocks = css.match(/(^|[\s,}])html\s*\{[^}]*\}/g) || [];
+      const re = /overflow-x:\s*(clip|hidden)/;
+      const bodyOk = bodyBlocks.some((b) => re.test(b));
+      const htmlOk = htmlBlocks.some((b) => re.test(b));
+      if (!bodyOk && !htmlOk) {
+        return { ok: false, msg: "html { overflow-x: clip } AND body { overflow-x: clip } both missing — phones will scroll sideways on any child overflow" };
+      }
+      if (!htmlOk) {
+        return { ok: false, msg: "html { overflow-x: clip | hidden } missing — body's overflow-x doesn't reliably propagate to documentElement on every engine, so a fixed/parallax child can still extend the document width" };
+      }
+      if (!bodyOk) {
+        return { ok: false, msg: "body { overflow-x: clip | hidden } missing — needed alongside the html guard for sticky-descendant compatibility" };
+      }
+      return { ok: true };
     },
   },
   {

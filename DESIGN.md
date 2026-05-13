@@ -32,10 +32,10 @@ New media queries should pick from the primary table above.
 ## Global overflow guards (site.css)
 
 These keep accidental child overflow from producing a sideways scroll
-on phones. The check script verifies they exist.
+on phones. The check script verifies all three exist.
 
 ```css
-body {
+html, body {
   overflow-x: hidden;   /* fallback */
   overflow-x: clip;     /* preferred — no scroll container */
 }
@@ -44,6 +44,13 @@ img, video, picture, svg:not([width]) {
   height: auto;
 }
 ```
+
+`html` carries the guard *as well as* `body` because body's overflow
+doesn't reliably propagate to `documentElement.scrollWidth` on every
+engine — without the root guard, an oversize child (a wide canvas, a
+fixed parallax layer that escapes its clipping container, an inline
+SVG with a width attribute) can still push the document width past
+the viewport on mobile.
 
 Long-content containers (rows with emails, URLs, tile bodies) get
 `min-width: 0` so flex/grid children can shrink below their content
