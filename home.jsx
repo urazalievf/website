@@ -201,19 +201,10 @@ function HomeApp() {
           </div>
         </section>
 
-        {/* GITHUB CONTRIBUTIONS ─────────────────────────────────── */}
-        <section data-screen-label="GitHub">
-          <div className="hero-stamp">
-            <span><span className="num">003</span> / GitHub</span>
-            <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>commits, every day green-ish</span>
-          </div>
-          <GitHubContributions user="urazalievf" />
-        </section>
-
         {/* TILES — three doors ─────────────────────────────────── */}
         <section data-screen-label="Sections">
           <div className="hero-stamp" style={{ marginBottom: 16 }}>
-            <span><span className="num">004</span> / The doors</span>
+            <span><span className="num">003</span> / The doors</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— pick one</span>
           </div>
 
@@ -281,16 +272,25 @@ function HomeApp() {
 
         {/* QUOTE ─ rotating Taleb quotes ──────────────────────── */}
         <section data-screen-label="Quote">
-          <GoodreadsQuote num="005" user="urazaliev_f" />
+          <GoodreadsQuote num="004" user="urazaliev_f" />
         </section>
 
         {/* READING NOW ─────────────────────────────────────────── */}
         <section data-screen-label="Reading">
           <div className="hero-stamp" style={{ marginBottom: 4 }}>
-            <span><span className="num">006</span> / Reading right now</span>
+            <span><span className="num">005</span> / Reading right now</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— live shelf</span>
           </div>
           <ReadingNow />
+        </section>
+
+        {/* GITHUB CONTRIBUTIONS ─────────────────────────────────── */}
+        <section data-screen-label="GitHub">
+          <div className="hero-stamp">
+            <span><span className="num">006</span> / GitHub</span>
+            <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>commits, every day green-ish</span>
+          </div>
+          <GitHubContributions user="urazalievf" />
         </section>
 
         {/* LISTENING ───────────────────────────────────────────── */}
