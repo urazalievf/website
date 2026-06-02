@@ -507,6 +507,124 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
 }
 
 /* ─────────────────────────────────────────────────────────────────────
+   CHESS DOSSIER — live snapshot card above the playable board
+   ───────────────────────────────────────────────────────────────────── */
+.chess-dossier {
+  padding: var(--s-5);
+  border-radius: var(--r-3);
+  display: grid;
+  gap: var(--s-4);
+  margin-bottom: var(--s-4);
+}
+.cd-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--lumen-3);
+  flex-wrap: wrap;
+}
+.cd-live { display: inline-flex; align-items: center; gap: 8px; }
+.cd-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--fg-faint);
+  transition: background var(--dur-quick) var(--ease-out);
+}
+.cd-dot.is-on  { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.6); }
+.cd-dot.is-off { background: var(--fg-faint); }
+.cd-id { display: inline-flex; align-items: center; gap: 8px; }
+.cd-id a {
+  color: var(--lumen);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--hairline-strong);
+  text-transform: none;
+  font-family: var(--font-mono);
+}
+.cd-id a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+.cd-flag { font-size: 14px; }
+.cd-since { color: var(--fg-faint); }
+
+.cd-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--hairline);
+}
+.cd-stat { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.cd-stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.cd-stat-val {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144;
+  font-weight: 380;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--lumen);
+  letter-spacing: -0.02em;
+}
+
+.cd-last {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: var(--tr-mono-up);
+  text-transform: uppercase;
+  color: var(--lumen-3);
+  flex-wrap: wrap;
+}
+.cd-last-lbl { color: var(--fg-faint); }
+.cd-last-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--lumen);
+  text-decoration: none;
+}
+.cd-last-row:hover { color: var(--amber); }
+.cd-last-row:hover .cd-arrow { transform: translateX(2px); }
+.cd-arrow { transition: transform var(--dur-quick) var(--ease-out); }
+.cd-result {
+  display: inline-grid; place-items: center;
+  min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+}
+.cd-r-W { background: rgba(74,222,128,0.15);  color: #4ade80; border: 1px solid rgba(74,222,128,0.4); }
+.cd-r-L { background: rgba(255,107,107,0.12); color: #ff8b8b; border: 1px solid rgba(255,107,107,0.35); }
+.cd-r-D { background: rgba(255,255,255,0.05); color: var(--lumen-3); border: 1px solid var(--hairline-strong); }
+.cd-vs   { color: var(--fg-faint); }
+.cd-opp  { color: var(--lumen); text-transform: none; font-family: var(--font-mono); }
+.cd-meta { color: var(--fg-faint); }
+.cd-last-empty { color: var(--fg-faint); }
+
+html[data-aesthetic="paper"] .cd-r-W { color: #2e8b57; background: rgba(46,139,87,0.10); border-color: rgba(46,139,87,0.45); }
+html[data-aesthetic="paper"] .cd-r-L { color: #b1422f; background: rgba(177,66,47,0.08);  border-color: rgba(177,66,47,0.40); }
+html[data-aesthetic="paper"] .cd-r-D { background: rgba(0,0,0,0.04); }
+
+@media (max-width: 540px) {
+  .cd-stats { grid-template-columns: repeat(2, 1fr); }
+  .cd-stat-val { font-size: 24px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
    LISTENING — list with tabs (recent / top artists / albums / tracks)
    ───────────────────────────────────────────────────────────────────── */
 .listen-carousel {

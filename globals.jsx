@@ -768,6 +768,126 @@ function ChessBoard() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   ChessDossier — live snapshot from the public Chess.com REST API.
+   Pulls /player, /player/stats, /player/is-online, and the latest
+   monthly archive to surface the most recent game. No auth needed.
+   ───────────────────────────────────────────────────────────────── */
+const CHESS_USER = "urazalievf";
+
+function codeToFlag(cc) {
+  if (!cc || cc.length !== 2) return "";
+  return cc.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt(0)));
+}
+
+function ChessDossier() {
+  const [data, setData] = gUseState({
+    online: null,
+    country: "",
+    joined: null,
+    rapid: null, blitz: null, bullet: null, puzzles: null,
+    lastGame: null,
+  });
+
+  gUseEffect(() => {
+    const base = `https://api.chess.com/pub/player/${CHESS_USER}`;
+
+    fetch(base).then(r => r.json()).then(p => {
+      const cc = p?.country ? p.country.split("/").pop() : "";
+      setData(d => ({ ...d, country: cc, joined: p?.joined || null }));
+    }).catch(() => {});
+
+    fetch(`${base}/stats`).then(r => r.json()).then(s => {
+      setData(d => ({
+        ...d,
+        rapid:   s?.chess_rapid?.last?.rating  ?? null,
+        blitz:   s?.chess_blitz?.last?.rating  ?? null,
+        bullet:  s?.chess_bullet?.last?.rating ?? null,
+        puzzles: s?.tactics?.highest?.rating   ?? null,
+      }));
+    }).catch(() => {});
+
+    fetch(`${base}/is-online`).then(r => r.json()).then(o => {
+      setData(d => ({ ...d, online: !!o?.online }));
+    }).catch(() => {});
+
+    fetch(`${base}/games/archives`).then(r => r.json()).then(a => {
+      const urls = a?.archives || [];
+      if (!urls.length) return null;
+      return fetch(urls[urls.length - 1]).then(r => r.json()).then(arch => {
+        const games = arch?.games || [];
+        if (!games.length) return;
+        const g = games[games.length - 1];
+        const meIsWhite = g?.white?.username?.toLowerCase() === CHESS_USER;
+        const mine = meIsWhite ? g.white : g.black;
+        const opp  = meIsWhite ? g.black : g.white;
+        const draws = new Set(["agreed","stalemate","repetition","insufficient","50move","timevsinsufficient"]);
+        const result = mine?.result === "win" ? "W" : draws.has(mine?.result) ? "D" : "L";
+        setData(d => ({
+          ...d,
+          lastGame: {
+            result,
+            opponent:  opp?.username || "—",
+            gameUrl:   g.url || null,
+            timeClass: g.time_class || "—",
+            endTime:   g.end_time || null,
+          },
+        }));
+      });
+    }).catch(() => {});
+  }, []);
+
+  const stats = [
+    { key: "rapid",   lbl: "Rapid",   v: data.rapid   },
+    { key: "blitz",   lbl: "Blitz",   v: data.blitz   },
+    { key: "bullet",  lbl: "Bullet",  v: data.bullet  },
+    { key: "puzzles", lbl: "Puzzles", v: data.puzzles },
+  ];
+  const joinedYear = data.joined ? new Date(data.joined * 1000).getFullYear() : null;
+
+  return (
+    <div className="chess-dossier glass">
+      <div className="cd-head">
+        <span className="cd-live">
+          <span className={"cd-dot " + (data.online ? "is-on" : "is-off")} />
+          {data.online === null ? "Chess.com" : data.online ? "Online now" : "Offline"}
+        </span>
+        <span className="cd-id">
+          {data.country && <span className="cd-flag" aria-hidden="true">{codeToFlag(data.country)}</span>}
+          <a href={`https://www.chess.com/member/${CHESS_USER}`} target="_blank" rel="noreferrer">
+            {CHESS_USER}
+          </a>
+          {joinedYear && <span className="cd-since">· since {joinedYear}</span>}
+        </span>
+      </div>
+
+      <div className="cd-stats">
+        {stats.map(s => (
+          <div key={s.key} className="cd-stat">
+            <div className="cd-stat-lbl">{s.lbl}</div>
+            <div className="cd-stat-val">{s.v != null ? s.v : "—"}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="cd-last">
+        <span className="cd-last-lbl">Last game</span>
+        {data.lastGame ? (
+          <a className="cd-last-row" href={data.lastGame.gameUrl} target="_blank" rel="noreferrer">
+            <span className={"cd-result cd-r-" + data.lastGame.result}>{data.lastGame.result}</span>
+            <span className="cd-vs">vs</span>
+            <span className="cd-opp">{data.lastGame.opponent}</span>
+            <span className="cd-meta">{data.lastGame.timeClass} · {relativeTime(data.lastGame.endTime)}</span>
+            <span className="cd-arrow" aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span className="cd-last-empty">—</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    Guestbook — local-storage-backed
    ───────────────────────────────────────────────────────────────── */
 const GB_KEY = "fu-guestbook-v1";

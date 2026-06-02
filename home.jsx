@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, ChessDossier, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions */
 const { useEffect: hUseEffect, useState: hUseState } = React;
 
 const HOME_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -306,8 +306,9 @@ function HomeApp() {
         <section data-screen-label="Chess">
           <div className="hero-stamp">
             <span><span className="num">008</span> / Chess board</span>
-            <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>have a go</span>
+            <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>live dossier · have a go</span>
           </div>
+          <ChessDossier />
           <ChessBoard />
         </section>
 
