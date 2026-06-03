@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Bright gold V — for the dark "night" card -->
+    <linearGradient id="v_night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff5cc"/>
+      <stop offset="50%" stop-color="#ecc97e"/>
+      <stop offset="100%" stop-color="#a87830"/>
+    </linearGradient>
+    <!-- Deeper gold V — readable on the cream "day" card -->
+    <linearGradient id="v_day" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c074"/>
+      <stop offset="50%" stop-color="#b8841e"/>
+      <stop offset="100%" stop-color="#7c5417"/>
+    </linearGradient>
+    <linearGradient id="bg_night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a2f1f"/>
+      <stop offset="100%" stop-color="#160f07"/>
+    </linearGradient>
+    <linearGradient id="bg_day" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbf7ee"/>
+      <stop offset="100%" stop-color="#ece0c8"/>
+    </linearGradient>
+  </defs>
+  <style>
+    /* Night (dark "Reserve") by default; Day (light "Parchment") when the
+       OS / browser prefers a light scheme. */
+    .day { display: none; }
+    @media (prefers-color-scheme: light) {
+      .night { display: none; }
+      .day { display: inline; }
+    }
+  </style>
+  <!-- NIGHT — gold V on a warm-dark card -->
+  <g class="night">
+    <rect width="64" height="64" rx="14" fill="url(#bg_night)" stroke="rgba(236,201,126,0.4)" stroke-width="1.2"/>
+    <path d="M 13 13 L 25 13 L 32 37 L 39 13 L 51 13 L 32 52 Z" fill="url(#v_night)"/>
+    <path d="M 13 13 L 25 13 L 25 16 L 13 16 Z" fill="rgba(255,255,255,0.5)"/>
+    <path d="M 39 13 L 51 13 L 51 16 L 39 16 Z" fill="rgba(255,255,255,0.5)"/>
+  </g>
+  <!-- DAY — bronze-gold V on a parchment card -->
+  <g class="day">
+    <rect width="64" height="64" rx="14" fill="url(#bg_day)" stroke="rgba(154,107,30,0.5)" stroke-width="1.2"/>
+    <path d="M 13 13 L 25 13 L 32 37 L 39 13 L 51 13 L 32 52 Z" fill="url(#v_day)" stroke="rgba(90,60,16,0.45)" stroke-width="0.6"/>
+    <path d="M 13 13 L 25 13 L 25 16 L 13 16 Z" fill="rgba(255,255,255,0.55)"/>
+    <path d="M 39 13 L 51 13 L 51 16 L 39 16 Z" fill="rgba(255,255,255,0.55)"/>
+  </g>
+</svg>
