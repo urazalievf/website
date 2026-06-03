@@ -54,7 +54,7 @@ function RewardsBankingApp() {
           </p>
         </section>
 
-        <section data-screen-label="Bank list" style={{paddingBottom: 24}}>
+        <section className="reveal" data-screen-label="Bank list" style={{paddingBottom: 24}}>
           <div className="rw-section-head">
             <h2>What I <em>actually</em> bank with.</h2>
             <div className="stamp-line">As of this month</div>

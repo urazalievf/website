@@ -85,7 +85,7 @@ function WritingApp() {
           </div>
         </section>
 
-        <section data-screen-label="Index">
+        <section className="reveal" data-screen-label="Index">
           <div className="wr-list">
             {visible.map((p) => (
               <a key={p.href} className="wr-row" href={p.href} target="_blank" rel="noreferrer">
@@ -113,7 +113,7 @@ function WritingApp() {
           </div>
         </section>
 
-        <section data-screen-label="Subscribe" style={{ paddingBottom: 40 }}>
+        <section className="reveal" data-screen-label="Subscribe" style={{ paddingBottom: 40 }}>
           <div className="wr-callouts">
             <div className="wr-sub glass glass--violet">
               <div className="hero-stamp" style={{marginBottom: 4}}>

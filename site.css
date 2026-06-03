@@ -74,6 +74,19 @@ body::before {
   opacity: 0.55;
 }
 
+/* ─── Grain overlay — premium material feel (Cards Vault "Ultra") ─── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+html[data-aesthetic="paper"] body::after { display: none; }
+
 /* ─── Container ─── */
 .container {
   width: 100%;
@@ -306,7 +319,7 @@ html[data-aesthetic="paper"] .nav-drawer-link:hover {
   background: rgba(21,23,26,0.05);
 }
 .nav-drawer-link.is-active {
-  background: rgba(139, 92, 255, 0.12);
+  background: rgba(212, 169, 106, 0.12);
   color: var(--lumen);
 }
 .nav-drawer-link.is-active::before {
@@ -558,6 +571,50 @@ html[data-aesthetic="paper"] .foot-spline { opacity: 0.35; }
   color: var(--lumen);
 }
 
+/* ─── Cards Vault "Ultra" — gold primitives (used site-wide) ─── */
+@keyframes goldShimmer {
+  0%, 100% { background-position: 0% center; }
+  50%      { background-position: 200% center; }
+}
+.gold-text {
+  background: linear-gradient(120deg,#f5d77a 0%,#ecc97e 20%,#d4a96a 42%,#a87830 70%,#ecc97e 85%,#d4a96a 100%);
+  background-size: 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: goldShimmer 5s var(--ease-in-out) infinite;
+}
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(135deg,#c89850 0%,#ecc97e 48%,#c89850 100%);
+  background-size: 200%;
+  color: #1a0e00;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  box-shadow: 0 4px 20px rgba(212,169,106,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  transition: background-position 450ms var(--ease-out),
+              box-shadow 220ms var(--ease-out),
+              transform 140ms var(--ease-out);
+  white-space: nowrap;
+}
+.btn-gold:hover {
+  background-position: 100%;
+  box-shadow: 0 8px 32px rgba(212,169,106,0.56), 0 2px 8px rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+  color: #1a0e00;
+}
+
 /* ─── Tag ─── */
 .tag {
   display: inline-flex;
@@ -667,6 +724,113 @@ a.unstyle, .nav-brand, .nav-link, .nav-cta, .btn,
   border-bottom: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   CARDS VAULT "ULTRA" RESKIN — overrides the pill nav + footer above.
+   Keeps the .nav-inner / .nav-links / .nav-burger structure (and the
+   ≤860px hamburger swap the responsive tests assert) but restyles the
+   chrome into the dark gold "Ultra" bar.
+   ═══════════════════════════════════════════════════════════════════ */
+.nav-inner {
+  background: rgba(10, 9, 14, 0.72);
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 10px 34px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+/* Gold "V" brand mark */
+.brand-mark { width: 26px; height: 26px; flex-shrink: 0; display: block; }
+.nav-brand {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--lumen);
+  gap: 9px;
+}
+.nav-link {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  color: rgba(242, 242, 244, 0.6);
+}
+.nav-link:hover { color: var(--lumen); background: rgba(255, 255, 255, 0.05); }
+.nav-link.is-active {
+  color: #1a0e00;
+  font-weight: 600;
+  background: linear-gradient(135deg, #c89850, #ecc97e);
+  box-shadow:
+    0 4px 18px rgba(212, 169, 106, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.nav-link.is-active::before { display: none; }
+.nav-cta {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  background: linear-gradient(135deg, #c89850 0%, #ecc97e 48%, #c89850 100%);
+  background-size: 200%;
+  color: #1a0e00;
+  box-shadow: 0 4px 20px rgba(212, 169, 106, 0.4), 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.nav-cta:hover {
+  background-position: 100%;
+  color: #1a0e00;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(212, 169, 106, 0.5);
+}
+/* Mobile drawer — match Ultra type + gold active */
+.nav-drawer-link {
+  font-family: var(--font-sans);
+  text-transform: none;
+  letter-spacing: -0.005em;
+  font-size: 15px;
+}
+.nav-drawer-link.is-active {
+  background: linear-gradient(135deg, rgba(212, 169, 106, 0.18), rgba(236, 201, 126, 0.1));
+  color: var(--lumen);
+}
+.nav-drawer-cta {
+  font-family: var(--font-sans);
+  text-transform: none;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c89850, #ecc97e);
+  color: #1a0e00;
+}
+.nav-drawer-cta:hover { color: #1a0e00; background: linear-gradient(135deg, #ecc97e, #c89850); }
+
+/* ─── Ultra footer ─── */
+.foot-brand { margin-bottom: var(--s-5); display: grid; gap: 16px; max-width: 320px; }
+.foot-brand .foot-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--lumen);
+}
+.foot-brand .foot-tagline {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--lumen-3);
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+}
+.foot-status { display: inline-flex; align-items: center; gap: 8px; }
+.foot-status .tick {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 860px) {
   .nav {
@@ -740,7 +904,19 @@ a.unstyle, .nav-brand, .nav-link, .nav-cta, .btn,
 /* ─── Reveal anim ─── */
 .reveal {
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  transform: perspective(1100px) translateY(34px) rotateX(7deg);
+  filter: blur(7px);
+  transition:
+    opacity 900ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    filter 700ms ease;
+  will-change: opacity, transform;
 }
-.reveal.is-in { opacity: 1; transform: translateY(0); }
+.reveal.is-in {
+  opacity: 1;
+  transform: perspective(1100px) translateY(0) rotateX(0deg);
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}

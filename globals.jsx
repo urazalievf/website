@@ -12,12 +12,12 @@ function OrbField({ count = 6 }) {
 
   const orbs = gUseMemo(() => {
     const palette = [
-      "radial-gradient(circle, rgba(139,92,255,0.70), transparent 70%)",
-      "radial-gradient(circle, rgba(255,180,84,0.60), transparent 70%)",
-      "radial-gradient(circle, rgba(110,231,255,0.45), transparent 70%)",
-      "radial-gradient(circle, rgba(166,132,255,0.60), transparent 70%)",
+      "radial-gradient(circle, rgba(212,169,106,0.65), transparent 70%)",
+      "radial-gradient(circle, rgba(255,180,84,0.55), transparent 70%)",
+      "radial-gradient(circle, rgba(236,201,126,0.55), transparent 70%)",
+      "radial-gradient(circle, rgba(255,245,204,0.45), transparent 70%)",
       "radial-gradient(circle, rgba(255,210,138,0.55), transparent 70%)",
-      "radial-gradient(circle, rgba(139,92,255,0.55), transparent 70%)",
+      "radial-gradient(circle, rgba(168,120,48,0.55), transparent 70%)",
     ];
     // Golden-angle spread for even distribution across the viewport.
     const PHI = 0.61803398875;
@@ -1172,8 +1172,8 @@ function WireGlobe({ size = 420 }) {
       // as a luminous, varied surface rather than a flat dot pattern.
       const h = Math.abs(((d.lat * 73 + d.lng * 37) | 0)) % 100;
       if (h < 8)  return 'rgba(255,215,150,1)';   // amber accent (brighter)
-      if (h < 16) return 'rgba(195,170,255,1)';   // bright violet accent
-      return 'rgba(250,248,255,1)';               // base near-white
+      if (h < 16) return 'rgba(236,201,126,1)';   // bright gold accent
+      return 'rgba(252,248,240,1)';               // base warm near-white
     }
     function dotRadius(d) {
       // Tiny per-dot variation so the surface doesn't read as a uniform grid.
@@ -1279,7 +1279,7 @@ function WireGlobe({ size = 420 }) {
   };
 
   const locLabel = { idle: "locate me", locating: "…", located: "located ✓", denied: "denied" }[locState];
-  const locColor = locState === "located" ? "rgba(255,180,84,1)" : locState === "denied" ? "rgba(255,80,80,0.9)" : "rgba(139,92,255,0.9)";
+  const locColor = locState === "located" ? "rgba(255,180,84,1)" : locState === "denied" ? "rgba(255,80,80,0.9)" : "rgba(212,169,106,0.95)";
 
   return (
     <div className="wire-globe" style={{ width:size, height:size }}>
@@ -1467,3 +1467,37 @@ function GitHubContributions({ user = "urazalievf" }) {
 Object.assign(window, {
   OrbField, StatusBar, CountUp, ListeningCarousel, ChessBoard, Guestbook, WineCard, ReadingNow, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions,
 });
+
+/* ─────────────────────────────────────────────────────────────────
+   Reveal-on-scroll — any element with class "reveal" rises, un-blurs and
+   un-tilts (a 3D rotateX) as it scrolls into view (see .reveal in
+   site.css). Self-initialising so every page inherits the effect with no
+   per-page wiring. Honors prefers-reduced-motion; re-scans as the
+   React-via-Babel content mounts. */
+(function setupRevealOnScroll() {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  const reduce = window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const io = (!reduce && "IntersectionObserver" in window)
+    ? new IntersectionObserver((entries, obs) => {
+        for (const en of entries) {
+          if (en.isIntersecting) { en.target.classList.add("is-in"); obs.unobserve(en.target); }
+        }
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" })
+    : null;
+  const scan = () => {
+    document.querySelectorAll(".reveal:not(.is-in)").forEach((el) => {
+      if (!io) { el.classList.add("is-in"); return; }
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.95 && r.bottom > 0) el.classList.add("is-in");
+      else io.observe(el);
+    });
+  };
+  const start = () => {
+    scan();
+    let n = 0;
+    const id = setInterval(() => { scan(); if (++n > 10) clearInterval(id); }, 350);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();

@@ -191,7 +191,7 @@
 /* Subtle violet wash on the featured tile */
 .tile.is-featured {
   background:
-    radial-gradient(80% 100% at 100% 0%, rgba(139,92,255,0.18) 0%, transparent 60%),
+    radial-gradient(80% 100% at 100% 0%, rgba(212,169,106,0.18) 0%, transparent 60%),
     var(--glass-tint-violet);
 }
 .tile.is-featured::after {

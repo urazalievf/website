@@ -183,7 +183,7 @@ function HomeApp() {
         </section>
 
         {/* PROFILES STRIP ─────────────────────────────────────── */}
-        <section data-screen-label="Profiles" id="profiles">
+        <section className="reveal" data-screen-label="Profiles" id="profiles">
           <div className="hero-stamp">
             <span><span className="num">002</span> / Profiles</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>six places, one of me</span>
@@ -202,7 +202,7 @@ function HomeApp() {
         </section>
 
         {/* TILES — three doors ─────────────────────────────────── */}
-        <section data-screen-label="Sections">
+        <section className="reveal" data-screen-label="Sections">
           <div className="hero-stamp" style={{ marginBottom: 16 }}>
             <span><span className="num">003</span> / The doors</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— pick one</span>
@@ -271,12 +271,12 @@ function HomeApp() {
         </section>
 
         {/* QUOTE ─ rotating Taleb quotes ──────────────────────── */}
-        <section data-screen-label="Quote">
+        <section className="reveal" data-screen-label="Quote">
           <GoodreadsQuote num="004" user="urazaliev_f" />
         </section>
 
         {/* READING NOW ─────────────────────────────────────────── */}
-        <section data-screen-label="Reading">
+        <section className="reveal" data-screen-label="Reading">
           <div className="hero-stamp" style={{ marginBottom: 4 }}>
             <span><span className="num">005</span> / Reading right now</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— live shelf</span>
@@ -285,7 +285,7 @@ function HomeApp() {
         </section>
 
         {/* GITHUB CONTRIBUTIONS ─────────────────────────────────── */}
-        <section data-screen-label="GitHub">
+        <section className="reveal" data-screen-label="GitHub">
           <div className="hero-stamp">
             <span><span className="num">006</span> / GitHub</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>commits, every day green-ish</span>
@@ -294,7 +294,7 @@ function HomeApp() {
         </section>
 
         {/* LISTENING ───────────────────────────────────────────── */}
-        <section data-screen-label="Listening">
+        <section className="reveal" data-screen-label="Listening">
           <div className="hero-stamp">
             <span><span className="num">007</span> / Listening</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>Last.fm scrobbles</span>
@@ -303,7 +303,7 @@ function HomeApp() {
         </section>
 
         {/* CHESS BOARD ─────────────────────────────────────────── */}
-        <section data-screen-label="Chess">
+        <section className="reveal" data-screen-label="Chess">
           <div className="hero-stamp">
             <span><span className="num">008</span> / Chess board</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>live dossier · have a go</span>
@@ -313,7 +313,7 @@ function HomeApp() {
         </section>
 
         {/* TASTING NOTE ────────────────────────────────────────── */}
-        <section data-screen-label="Wine">
+        <section className="reveal" data-screen-label="Wine">
           <div className="hero-stamp">
             <span><span className="num">009</span> / Tasting note</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>most recent</span>
@@ -322,7 +322,7 @@ function HomeApp() {
         </section>
 
         {/* OFF-GRID — branded logbooks ─────────────────────────── */}
-        <section data-screen-label="Off-grid">
+        <section className="reveal" data-screen-label="Off-grid">
           <div className="hero-stamp">
             <span><span className="num">010</span> / Off-grid</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>logbooks I keep for fun</span>

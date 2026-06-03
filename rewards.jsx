@@ -48,7 +48,7 @@ function RewardsApp() {
           </div>
         </section>
 
-        <section data-screen-label="Routes">
+        <section className="reveal" data-screen-label="Routes">
           <div className="hero-stamp" style={{marginTop: 32, marginBottom: 16}}>
             <span><span className="num">006</span> / Pick a list</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>three doors</span>

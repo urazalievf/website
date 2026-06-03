@@ -13,6 +13,10 @@
 /* ─────────────────────────────────────────────────────────────────────
    FONT FACES
    ───────────────────────────────────────────────────────────────────── */
+/* Geist — the Cards Vault "Ultra" UI + display face. Loaded from Google
+   Fonts; falls back cleanly to the prior Helvetica stack if offline. */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap");
+
 @font-face {
   font-family: "Fraunces";
   src: url("fonts/Fraunces-VariableFont.ttf") format("truetype-variations");
@@ -69,19 +73,21 @@
   --void-5:      #3a3a4f;   /* hairline subtle */
 
   /* ─── LUMINOUS TEXT ─── */
-  --lumen:       #f5f4ff;   /* primary text — slight violet cast */
+  --lumen:       #f2f2f4;   /* primary text — neutral, Ultra ink */
   --lumen-2:     #d8d6e8;   /* sustained body */
   --lumen-3:     #9794ad;   /* meta, captions */
   --lumen-4:     #61607a;   /* hint text, disabled */
   --lumen-line:  rgba(245, 244, 255, 0.08);  /* default hairline */
   --lumen-line-strong: rgba(245, 244, 255, 0.18);
 
-  /* ─── ACCENT — VIOLET (primary punch) ─── */
-  --violet:       #8b5cff;   /* the accent */
-  --violet-bright:#a684ff;   /* hover */
-  --violet-deep:  #6a3ee0;   /* press */
-  --violet-glow:  rgba(139, 92, 255, 0.35);
-  --violet-wash:  rgba(139, 92, 255, 0.10);
+  /* ─── ACCENT — CHAMPAGNE GOLD (Cards Vault "Ultra")
+     Var names kept as --violet* so all ~96 existing references remap. ─── */
+  --violet:       #d4a96a;   /* the accent — champagne gold */
+  --violet-bright:#ecc97e;   /* hover — bright gold */
+  --violet-deep:  #a87830;   /* press — deep amber-gold */
+  --violet-glow:  rgba(212, 169, 106, 0.38);
+  --violet-wash:  rgba(212, 169, 106, 0.10);
+  --champagne:    #fff5cc;   /* brightest highlight for gold gradients */
 
   /* ─── SECONDARY — ICE CYAN (used sparingly, for data viz / chart) ─── */
   --ice:          #6ee7ff;
@@ -95,7 +101,7 @@
   /* Use these together: backdrop-filter + tint + border + inner highlight */
   --glass-tint:        rgba(255, 255, 255, 0.06);  /* base panel tint */
   --glass-tint-strong: rgba(255, 255, 255, 0.10);  /* heavier glass */
-  --glass-tint-violet: rgba(139, 92, 255, 0.10);   /* violet-cast glass */
+  --glass-tint-violet: rgba(212, 169, 106, 0.10);  /* gold-cast glass */
   --glass-blur:        24px;
   --glass-blur-strong: 40px;
   --glass-saturate:    1.8;
@@ -113,10 +119,10 @@
 
   --glass-border-violet:
     linear-gradient(135deg,
-      rgba(166, 132, 255, 0.55) 0%,
-      rgba(139, 92, 255, 0.06) 30%,
-      rgba(166, 132, 255, 0.06) 70%,
-      rgba(166, 132, 255, 0.45) 100%);
+      rgba(236, 201, 126, 0.55) 0%,
+      rgba(212, 169, 106, 0.06) 30%,
+      rgba(236, 201, 126, 0.06) 70%,
+      rgba(236, 201, 126, 0.45) 100%);
 
   /* Inner highlight — a rim of bright pixels along the top edge, plus a
      soft bottom shadow that suggests real thickness. */
@@ -140,24 +146,24 @@
   --hairline:     var(--lumen-line);
   --hairline-strong: var(--lumen-line-strong);
   --accent:       var(--violet);
-  --accent-fg:    #ffffff;
+  --accent-fg:    #1a0e00;   /* dark ink — text that sits on a gold fill */
 
-  --selection-bg: var(--violet);
-  --selection-fg: #ffffff;
+  --selection-bg: rgba(212, 169, 106, 0.32);
+  --selection-fg: #f2f2f4;
 
   /* ─── COSMIC GLOW BACKDROPS ─── */
   /* Big, slow violet aurora used behind hero sections. */
   --aurora:
-    radial-gradient(70% 55% at 18% 12%, rgba(139, 92, 255, 0.22) 0%, transparent 60%),
-    radial-gradient(45% 40% at 82% 88%, rgba(110, 231, 255, 0.10) 0%, transparent 65%),
-    radial-gradient(60% 50% at 50% 100%, rgba(139, 92, 255, 0.08) 0%, transparent 70%);
+    radial-gradient(70% 55% at 18% 12%, rgba(212, 169, 106, 0.17) 0%, transparent 60%),
+    radial-gradient(45% 40% at 82% 88%, rgba(120, 90, 210, 0.06) 0%, transparent 65%),
+    radial-gradient(60% 50% at 50% 100%, rgba(212, 169, 106, 0.08) 0%, transparent 70%);
 
   /* ─── TYPE FAMILIES ─── */
-  /* Display switched to Helvetica Neue / grotesk per user request */
-  --font-display: "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
+  /* Geist — the Cards Vault "Ultra" grotesk display + mono. */
+  --font-display: "Geist", "Helvetica Neue", Helvetica, "Arial", sans-serif;
   --font-serif:   "Instrument Serif", Georgia, serif;
-  --font-sans:    "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
-  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans:    "Geist", "Helvetica Neue", Helvetica, "Arial", sans-serif;
+  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* ─── TYPE SIZES ─── */
   --fs-mono-xs:   11px;
@@ -188,8 +194,8 @@
 
   --w-thin: 250; --w-regular: 400; --w-medium: 500; --w-semibold: 600; --w-bold: 700;
 
-  /* Display = Fraunces, low weight, high opsz — the signature voice */
-  --display-weight: 380;
+  /* Display = Geist grotesk, heavier weight for the Ultra voice */
+  --display-weight: 680;
   --display-opsz:   144;
 
   /* ─── SPACING ─── */
@@ -466,14 +472,14 @@ hr, .rule {
   background: linear-gradient(160deg,
     rgba(255, 255, 255, 0.10) 0%,
     rgba(255, 255, 255, 0.02) 55%,
-    rgba(139, 92, 255, 0.08) 100%);
+    rgba(212, 169, 106, 0.08) 100%);
   backdrop-filter: blur(16px) saturate(1.5);
   -webkit-backdrop-filter: blur(16px) saturate(1.5);
   position: relative;
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
     inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 8px 24px -10px rgba(139, 92, 255, 0.35);
+    0 8px 24px -10px rgba(212, 169, 106, 0.35);
   color: var(--lumen);
 }
 .glass-icon::after {

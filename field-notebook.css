@@ -21,21 +21,21 @@ html[data-aesthetic="paper"] {
   --lumen-line:  rgba(21, 23, 26, 0.10);
   --lumen-line-strong: rgba(21, 23, 26, 0.25);
 
-  /* Cobalt — the single mark */
-  --violet:       #1f3fc4;
-  --violet-bright:#3252d8;
-  --violet-deep:  #1a36a8;
-  --violet-glow:  rgba(31, 63, 196, 0.30);
-  --violet-wash:  rgba(31, 63, 196, 0.12);
+  /* Antique gold — the single mark ("Parchment" light variant) */
+  --violet:       #9a6b1e;
+  --violet-bright:#c4901f;
+  --violet-deep:  #7c5417;
+  --violet-glow:  rgba(154, 107, 30, 0.30);
+  --violet-wash:  rgba(154, 107, 30, 0.12);
 
   /* Glass becomes ink-washed paper */
   --glass-tint:        rgba(21, 23, 26, 0.02);
   --glass-tint-strong: rgba(21, 23, 26, 0.04);
-  --glass-tint-violet: rgba(31, 63, 196, 0.05);
+  --glass-tint-violet: rgba(154, 107, 30, 0.06);
 
-  /* Aurora becomes a quiet wash */
+  /* Aurora becomes a quiet warm wash */
   --aurora:
-    radial-gradient(70% 55% at 18% 12%, rgba(31, 63, 196, 0.05) 0%, transparent 60%),
+    radial-gradient(70% 55% at 18% 12%, rgba(154, 107, 30, 0.07) 0%, transparent 60%),
     radial-gradient(45% 40% at 82% 88%, rgba(21, 23, 26, 0.03) 0%, transparent 65%);
 
   /* Refractive border becomes a flat hairline */
@@ -45,8 +45,8 @@ html[data-aesthetic="paper"] {
       rgba(21, 23, 26, 0.10) 100%);
   --glass-border-violet:
     linear-gradient(135deg,
-      rgba(31, 63, 196, 0.5) 0%,
-      rgba(31, 63, 196, 0.2) 100%);
+      rgba(154, 107, 30, 0.5) 0%,
+      rgba(154, 107, 30, 0.2) 100%);
 }
 
 /* Field-notebook surface treatments */
@@ -72,7 +72,9 @@ html[data-aesthetic="paper"] .nav-inner {
   backdrop-filter: blur(12px);
 }
 html[data-aesthetic="paper"] .nav-link.is-active {
-  background: rgba(31,63,196,0.06);
+  background: rgba(154,107,30,0.12);
+  color: var(--lumen);
+  box-shadow: none;
 }
 html[data-aesthetic="paper"] .nav-link:hover {
   background: rgba(21,23,26,0.04);

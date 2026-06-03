@@ -1,4 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
+/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp */
 
 const RC_DEFAULTS = /*EDITMODE-BEGIN*/{
   "aesthetic": "glass",
@@ -240,12 +240,217 @@ const CARDS = [
   },
 ];
 
+/* ─── Cards Vault "Ultra" — presentation layer ──────────────────────
+   Real issuer card art, rendered in a 3D mouse-tilting card frame with a
+   cursor-tracked gloss. The CARDS data above is the source of truth and
+   is intentionally left untouched. */
+
+/* Issuer brand gradients — used as the card backdrop while art loads and
+   as the fallback when a card has no image. */
+const ISSUER_GRAD = {
+  "American Express": ["#3a3f52", "#10131c"],
+  "Chase":            ["#0b3aa0", "#091a4e"],
+  "Capital One":      ["#7a1420", "#380a10"],
+  "Bilt":             ["#16162c", "#0a0a16"],
+  "Apple":            ["#2b2b30", "#0e0e10"],
+  "Rakuten":          ["#7a1535", "#380a1a"],
+};
+function rcGrad(card) {
+  const key = Object.keys(ISSUER_GRAD).find((k) => card.brand.startsWith(k));
+  return ISSUER_GRAD[key] || ["#2a2a3a", "#101018"];
+}
+
+/* 3D tilt — rotates a card toward the cursor and tracks a gloss highlight. */
+function useCardTilt(str = 16) {
+  const ref = React.useRef(null);
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    el.style.transition = "transform 80ms ease";
+    el.style.transform = `perspective(900px) rotateX(${(y - 0.5) * -str}deg) rotateY(${(x - 0.5) * str}deg)`;
+    el.style.setProperty("--gx", `${x * 100}%`);
+    el.style.setProperty("--gy", `${y * 100}%`);
+  };
+  const onLeave = () => {
+    const el = ref.current; if (!el) return;
+    el.style.transition = "transform 700ms cubic-bezier(0.16,1,0.3,1)";
+    el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+  };
+  return { ref, onMove, onLeave };
+}
+
+/* Reveal-on-scroll — elements rise + un-blur + un-tilt (a 3D rotateX) as
+   they enter the viewport. IntersectionObserver-driven, with an immediate
+   reveal for anything already in view on mount (so the hero animates in). */
+function useReveal(opts = {}) {
+  const { delay = 0, y = 34 } = opts;
+  const ref = React.useRef(null);
+  const [shown, setShown] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.92 && r.bottom > 0) { setShown(true); return; }
+    if (!("IntersectionObserver" in window)) { setShown(true); return; }
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setShown(true); io.disconnect(); }
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const style = {
+    opacity: shown ? 1 : 0,
+    transform: shown
+      ? "perspective(1100px) translateY(0) rotateX(0deg)"
+      : `perspective(1100px) translateY(${y}px) rotateX(7deg)`,
+    filter: shown ? "none" : "blur(7px)",
+    transition: `opacity 900ms cubic-bezier(0.16,1,0.3,1) ${delay}ms,`
+      + ` transform 900ms cubic-bezier(0.16,1,0.3,1) ${delay}ms,`
+      + ` filter 700ms ease ${delay}ms`,
+    willChange: "opacity, transform",
+  };
+  return [ref, style];
+}
+
+/* Subtle scroll parallax — drifts an element against the scroll so the
+   hero card sits on its own depth plane. Runs on a different element than
+   the card tilt so the two transforms never fight. */
+function useParallax(speed = 0.05) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current; if (!el) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = el.getBoundingClientRect();
+        const fromCenter = (r.top + r.height / 2) - window.innerHeight / 2;
+        el.style.transform = `translateY(${(-fromCenter * speed).toFixed(1)}px)`;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, [speed]);
+  return ref;
+}
+
+function UCardArt({ card, className }) {
+  const { ref, onMove, onLeave } = useCardTilt(16);
+  const [g0, g1] = rcGrad(card);
+  return (
+    <div
+      className={"rc-cardart " + (className || "")}
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ background: `linear-gradient(142deg, ${g0}, ${g1})` }}
+    >
+      {card.image
+        ? <img className="rc-cardart-img" src={card.image} alt={card.brand + " " + card.name} loading="lazy" />
+        : (
+          <div className="rc-cardart-fallback">
+            <span className="rc-cardart-issuer">{card.brand}</span>
+            <span className="rc-cardart-name">{card.name}</span>
+          </div>
+        )}
+      <span className="rc-cardart-gloss" aria-hidden="true" />
+    </div>
+  );
+}
+
+/* Hero card that cycles through the wallet every few seconds. */
+function FeaturedCard() {
+  const [active, setActive] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+  React.useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setActive((a) => (a + 1) % CARDS.length), 4200);
+    return () => clearInterval(id);
+  }, [paused]);
+  const c = CARDS[active];
+  const stageRef = useParallax(0.045);
+  return (
+    <div className="rc-featured" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div className="rc-featured-stage" ref={stageRef}>
+        <UCardArt key={active} card={c} className="rc-cardart--hero" />
+        <div className="rc-featured-badge">
+          <span className="rc-fb-dot" aria-hidden="true" />
+          <div>
+            <p className="rc-fb-amt">{c.welcome === "—" ? "Daily Cash" : c.welcome}</p>
+            <p className="rc-fb-sub">{(c.af === "$0" ? "no annual fee" : "AF " + c.af) + " · " + c.brand}</p>
+          </div>
+        </div>
+      </div>
+      <div className="rc-featured-dots">
+        {CARDS.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={"Show card " + (i + 1)}
+            onClick={() => setActive(i)}
+            className={"rc-dot" + (i === active ? " is-on" : "")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* One card in the showcase — art, copy, perks, welcome offer, apply CTA. */
+function CardRow({ card, index = 0 }) {
+  const [ref, style] = useReveal({ delay: Math.min(index, 6) * 55, y: 42 });
+  return (
+    <div ref={ref} style={style}>
+      <a className="rc-card" href={card.href} target="_blank" rel="noreferrer">
+        <div className="rc-card-art-wrap">
+          <UCardArt card={card} className="rc-cardart--row" />
+        </div>
+        <div className="rc-card-body">
+          <p className="rc-card-brand">{card.brand} · referral</p>
+          <h3 className="rc-card-name">{card.name}</h3>
+          <p className="rc-card-desc">{card.desc}</p>
+          {card.benefits && card.benefits.length > 0 && (
+            <ul className="rc-card-benefits">
+              {card.benefits.map((b, i) => <li key={i}>{b}</li>)}
+            </ul>
+          )}
+        </div>
+        <div className="rc-card-bonus">
+          <span className="rc-bonus-label">Welcome offer</span>
+          <span className="rc-bonus-amt gold-text">{card.welcome === "—" ? "—" : card.welcome}</span>
+          <span className="rc-bonus-af">{card.af === "$0" ? "no annual fee" : "AF " + card.af}</span>
+          <span className="btn-gold rc-apply">Apply →</span>
+        </div>
+      </a>
+    </div>
+  );
+}
+
+/* Headline KPIs derived from the wallet. */
+function rcKpis() {
+  const issuers = new Set(CARDS.map((c) => c.brand.split("·")[0].trim())).size;
+  const noFee = CARDS.filter((c) => c.af === "$0").length;
+  return [
+    { l: "Cards", n: CARDS.length },
+    { l: "Issuers", n: issuers },
+    { l: "No annual fee", n: noFee },
+    { l: "Edition", v: "2026" },
+  ];
+}
+
 function RewardsCardsApp() {
   const [t, setTweak] = useTweaks(RC_DEFAULTS);
   React.useEffect(() => {
     document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
     document.documentElement.setAttribute("data-font", t.font);
   }, [t]);
+
+  const [heroRef, heroStyle] = useReveal({ y: 30 });
+  const [headRef, headStyle] = useReveal({ y: 26 });
+  const [fineRef, fineStyle] = useReveal({ y: 24 });
 
   return (
     <>
@@ -254,54 +459,48 @@ function RewardsCardsApp() {
       <SiteNav active="rewards" />
 
       <main className="container">
-        <section className="rw-hero" data-screen-label="Cards Hero">
-          <div className="hero-stamp">
-            <span><span className="num">005</span> / Rewards / Credit cards</span>
-            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-mono)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
-            <span style={{color:'var(--lumen-2)'}}>{CARDS.length} cards</span>
-          </div>
-          <h1>Get a <em>card</em>.</h1>
-          <p className="lead">
-            Cards I actually carry — in roughly the order I'd recommend them. Each link is a referral that earns me a small bonus and gets you a welcome offer. Welcome offers rotate, so the numbers below are a recent baseline; the issuer's page will show what's actually live the day you apply.
-          </p>
-        </section>
-
-        <section data-screen-label="Cards list" style={{paddingBottom: 24}}>
-          <div className="rw-section-head">
-            <h2>The <em>{CARDS.length}</em> in my wallet.</h2>
-            <div className="stamp-line">credit pull required · 5/24 applies</div>
-          </div>
-          <div className="rw-list">
-            {CARDS.map((c) => (
-              <a key={c.brand + c.name} className="rw-card glass" href={c.href} target="_blank" rel="noreferrer">
-                <div className={"rw-mark " + (c.image ? "m-img" : (c.color || "m-violet"))}>
-                  {c.image
-                    ? <img src={c.image} alt={c.brand + " " + c.name} loading="lazy" />
-                    : (c.mark || c.brand[0])}
-                </div>
-                <div className="rw-body">
-                  <div className="brand">{c.brand} · referral</div>
-                  <div className="name">{c.name}</div>
-                  <div className="desc">{c.desc}</div>
-                  {c.benefits && c.benefits.length > 0 && (
-                    <ul className="benefits">
-                      {c.benefits.map((b, i) => <li key={i}>{b}</li>)}
-                    </ul>
-                  )}
-                </div>
-                <div className="rw-bonus">
-                  <div className="label">Welcome offer</div>
-                  <div className="amt"><em>{c.welcome === "—" ? "—" : c.welcome}</em></div>
-                  <div className="label">{c.af === "$0" ? "no annual fee" : "AF " + c.af}</div>
-                </div>
-                <span className="rw-cta">Apply →</span>
-              </a>
-            ))}
+        {/* HERO ─────────────────────────────────────────────── */}
+        <section className="rc-hero" data-screen-label="Cards Hero">
+          <div className="rc-hero-grid">
+            <div className="rc-hero-text" ref={heroRef} style={heroStyle}>
+              <p className="rc-eyebrow">Credit-card intelligence · Referrals</p>
+              <h1 className="rc-h1">Every reward,<br /><span className="gold-text">owned.</span></h1>
+              <p className="lead rc-lead">
+                The cards I actually carry — in roughly the order I'd recommend them. Each link is a referral: it earns me a small bonus and gets you the welcome offer. Offers rotate, so treat the numbers as a recent baseline and confirm on the issuer's page the day you apply.
+              </p>
+              <div className="rc-cta-row">
+                <a className="btn-gold" href="#cards">Browse the vault ↓</a>
+                <a className="btn rc-ghost" href="rewards.html">← Back to referrals</a>
+              </div>
+              <div className="rc-kpis">
+                {rcKpis().map((k) => (
+                  <div className="rc-kpi" key={k.l}>
+                    <p className="l">{k.l}</p>
+                    <p className="v">{k.n != null ? <CountUp to={k.n} /> : k.v}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rc-hero-card">
+              <FeaturedCard />
+            </div>
           </div>
         </section>
 
-        <section style={{paddingBottom: 40}}>
-          <div className="rw-fineprint glass">
+        {/* CARDS ─────────────────────────────────────────────── */}
+        <section id="cards" data-screen-label="Cards list">
+          <div className="rc-section-head" ref={headRef} style={headStyle}>
+            <h2>The <span className="gold-text">{CARDS.length}</span> in my wallet.</h2>
+            <span className="rc-stamp">credit pull required · 5/24 applies</span>
+          </div>
+          <div className="rc-list">
+            {CARDS.map((c, i) => <CardRow key={c.brand + c.name} card={c} index={i} />)}
+          </div>
+        </section>
+
+        {/* FINEPRINT ─────────────────────────────────────────── */}
+        <section className="rc-fineprint-wrap">
+          <div className="rc-fineprint glass" ref={fineRef} style={fineStyle}>
             <strong>About 5/24.</strong> Chase will deny most applications if you've opened five or more cards across all banks in the last 24 months. If you're new to this, start with Chase. <strong>About welcome offers.</strong> Issuers rotate sign-up bonuses constantly — the figures above are a recent snapshot, not a guarantee. Click through and the issuer's page will show the live offer at the moment you apply. <strong>About credit pulls.</strong> Each application is a hard pull (~5 point dip, recovers in months). Don't apply for these on a whim if you're about to get a mortgage.
           </div>
         </section>

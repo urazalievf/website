@@ -2,6 +2,33 @@
 const { useState, useEffect, useRef } = React;
 
 /* ─────────────────────────────────────────────────────────────────
+   VaultMark — the gold "V" monogram on a dark card, the Cards Vault
+   "Ultra" brand mark. Used in the nav and footer. `uid` keeps the
+   gradient ids unique when the mark renders more than once per page.
+   ───────────────────────────────────────────────────────────────── */
+function VaultMark({ size = 26, uid = "vm" }) {
+  return (
+    <svg className="brand-mark" width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id={uid + "_bg"} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#3a2f1f" />
+          <stop offset="100%" stopColor="#1a140a" />
+        </linearGradient>
+        <linearGradient id={uid + "_v"} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#fff5cc" />
+          <stop offset="50%" stopColor="#ecc97e" />
+          <stop offset="100%" stopColor="#a87830" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="14" fill={`url(#${uid}_bg)`} stroke="rgba(236,201,126,0.4)" strokeWidth="1.2" />
+      <path d="M 13 13 L 25 13 L 32 37 L 39 13 L 51 13 L 32 52 Z" fill={`url(#${uid}_v)`} />
+      <path d="M 13 13 L 25 13 L 25 16 L 13 16 Z" fill="rgba(255,255,255,0.5)" />
+      <path d="M 39 13 L 51 13 L 51 16 L 39 16 Z" fill="rgba(255,255,255,0.5)" />
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    SiteNav — sticky pill nav with brand, link list, and CTA.
    On narrow viewports the link list collapses into a hamburger
    drawer that opens a full-screen sheet with the same links + CTA.
@@ -48,7 +75,7 @@ function SiteNav({ active = "home" }) {
     <nav className={"nav" + (open ? " is-open" : "")}>
       <div className="nav-inner glass glass--pill">
         <a className="nav-brand" href="index.html">
-          <span className="dot" />
+          <VaultMark size={26} uid="navmark" />
           <span>Feruz Urazaliev</span>
         </a>
         <div className="nav-links" id="primary-nav">
@@ -139,36 +166,6 @@ function SiteFooter() {
     return () => clearInterval(t);
   }, []);
 
-  const reduce = typeof window !== "undefined"
-    && window.matchMedia
-    && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // Drive the 3D footer accent with @splinetool/runtime instead of
-  // <spline-viewer>. The viewer wrapper injects a fixed "Built with Spline"
-  // badge for free-tier scenes; the runtime renders the same scene without
-  // it, so we attribute Spline ourselves in foot-meta below.
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    if (reduce) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    let app;
-    let cancelled = false;
-    import("https://cdn.jsdelivr.net/npm/@splinetool/runtime/+esm")
-      .then((mod) => {
-        if (cancelled) return;
-        app = new mod.Application(canvas);
-        return app.load("https://prod.spline.design/Lqu1KhxLD6g3YGtG/scene.splinecode");
-      })
-      .catch((err) => { console.warn("Spline runtime failed:", err); });
-    return () => {
-      cancelled = true;
-      if (app && typeof app.dispose === "function") {
-        try { app.dispose(); } catch (_e) { /* ignore */ }
-      }
-    };
-  }, [reduce]);
-
   const fmt = time.toLocaleTimeString("en-US", {
     hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Chicago"
   });
@@ -176,12 +173,16 @@ function SiteFooter() {
   return (
     <>
       <footer className="site-foot">
-        {!reduce && (
-          <div className="foot-spline" aria-hidden="true">
-            <canvas ref={canvasRef} />
-          </div>
-        )}
         <div className="container">
+          <div className="foot-brand">
+            <span className="foot-logo">
+              <VaultMark size={28} uid="footmark" /> Feruz Urazaliev
+            </span>
+            <p className="foot-tagline">
+              Data engineer in Chicago. Building data things, reading too much,
+              losing at chess. Consider this the vault.
+            </p>
+          </div>
           <div className="foot-grid">
             <div className="foot-col">
               <h6>Site</h6>
@@ -220,22 +221,10 @@ function SiteFooter() {
           </div>
 
           <div className="foot-meta">
-            <span>© {time.getFullYear()} — F.U.</span>
-            <span>
-              {fmt} CT · <span style={{ color: "var(--violet)" }}>● online</span>
-              {!reduce && (
-                <>
-                  {" · "}
-                  <a
-                    className="foot-credit"
-                    href="https://spline.design"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Footer scene · Spline ↗
-                  </a>
-                </>
-              )}
+            <span>© {time.getFullYear()} — F.U. · All rights reserved</span>
+            <span className="foot-status">
+              <span className="tick" aria-hidden="true" />
+              {fmt} CT · online · Status: operational
             </span>
           </div>
         </div>
