@@ -26,6 +26,60 @@ const BANKS = [
     mark: "S",
     color: "m-mid",
   },
+  {
+    brand: "Capital One",
+    name: "360 Checking",
+    desc: "No-fee everyday checking with early direct deposit and a huge fee-free ATM network. The referral bonus is the easy kind — two paychecks and you're done.",
+    benefits: [
+      "$300 bonus after 2 direct deposits of $500+ within 75 days",
+      "No monthly fees, no minimums, no overdraft fees",
+      "70,000+ fee-free Capital One, MoneyPass & Allpoint ATMs",
+      "Paid up to 2 days early with direct deposit",
+    ],
+    bonus: "$300",
+    small: "2 direct deposits",
+    href: "https://i.capitalone.com/JTFXUL5rz",
+    cta: "Get $300",
+    image: null,
+    mark: "C",
+    color: "m-rose",
+  },
+  {
+    brand: "Capital One",
+    name: "360 Performance Savings",
+    desc: "High-yield savings with a tiered referral bonus — park $5k for 90 days for $75, or scale up to $1,500 at $100k. Pairs with the 360 Checking above.",
+    benefits: [
+      "$75 / $300 / $750 / $1,500 for $5k / $20k / $50k / $100k deposited",
+      "Deposit within 15 days, hold 90 days — that's it",
+      "No monthly fees, no minimum balance",
+      "Competitive APY on every dollar, no tiers",
+    ],
+    bonus: "$75–$1,500",
+    small: "by deposit size",
+    href: "https://i.capitalone.com/JiRSYrs3T",
+    cta: "Get the bonus",
+    image: null,
+    mark: "C",
+    color: "m-sand",
+  },
+  {
+    brand: "Robinhood",
+    name: "Brokerage",
+    desc: "Commission-free stocks, ETFs, options and crypto in one app. Sign up through the link, fund the account, and Robinhood drops a gift stock in for both of us.",
+    benefits: [
+      "$5–$200 in fractional gift stock after signup + deposit",
+      "Commission-free trades, no account minimum",
+      "IRA with a 1% match on contributions",
+      "4%+ APY on uninvested cash with Gold",
+    ],
+    bonus: "$5–$200",
+    small: "gift stock",
+    href: "https://join.robinhood.com/feruzu",
+    cta: "Get gift stock",
+    image: null,
+    mark: "R",
+    color: "m-emerald",
+  },
 ];
 
 function RewardsBankingApp() {
@@ -50,7 +104,7 @@ function RewardsBankingApp() {
           </div>
           <h1>Open an <em>account</em>.</h1>
           <p className="lead">
-            The bank I actually use. Linked checking and brokerage in one place — fee-free, with global ATM rebates and no foreign transaction friction. Open through the link and we both get a referral credit.
+            The accounts I actually use. Schwab for the checking + brokerage core, Capital One 360 for no-fee checking and high-yield savings, Robinhood for the play money. Open through a link and we both get a referral credit.
           </p>
         </section>
 
@@ -61,7 +115,7 @@ function RewardsBankingApp() {
           </div>
           <div className="rw-list">
             {BANKS.map((b) => (
-              <a key={b.brand} className="rw-card glass" href={b.href} target="_blank" rel="noreferrer">
+              <a key={b.brand + b.name} className="rw-card glass" href={b.href} target="_blank" rel="noreferrer">
                 <div className={"rw-mark " + (b.image ? "m-img m-square" : b.color)}>
                   {b.image ? <img src={b.image} alt={b.brand} loading="lazy" /> : b.mark}
                 </div>
@@ -88,7 +142,7 @@ function RewardsBankingApp() {
 
         <section style={{paddingBottom: 40}}>
           <div className="rw-fineprint glass">
-            <strong>What you'll need to open.</strong> Your Social Security or Tax Identification Number, your employer's name and mailing address (if applicable), and your email + mobile phone number. The whole thing takes about ten minutes online.
+            <strong>What you'll need to open.</strong> Your Social Security or Tax Identification Number, your employer's name and mailing address (if applicable), and your email + mobile phone number. Each one takes about ten minutes online. Bonus terms are as of September 2026 — the issuer's page is the source of truth.
           </div>
         </section>
       </main>

@@ -101,7 +101,7 @@ const CARDS = [
       "Priority Pass + Sapphire Lounge access",
       "Points Boost — up to 2x value on select redemptions",
     ],
-    href: "https://www.referyourchasecard.com/19w/EFBD3HA3XO",
+    href: "https://www.referyourchasecard.com/19y/3ZJAAHD6W1",
   },
   {
     brand: "Chase",
@@ -146,7 +146,7 @@ const CARDS = [
       "Automatic Silver Elite status; 15 Elite Night Credits/yr",
       "$100 statement credit on Marriott stays of two nights+",
     ],
-    href: "https://www.referyourchasecard.com/252u/EFC1HSUR2M",
+    href: "https://www.referyourchasecard.com/252x/AX34ADN18M",
   },
   {
     brand: "Chase · Amazon",
