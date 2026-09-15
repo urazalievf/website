@@ -361,7 +361,7 @@
   .rw-mark.m-img { width: 80px; height: 52px; }
   .rw-mark.m-img.m-square { width: 56px; height: 56px; }
   .rw-bonus, .rw-cta { grid-column: 2; text-align: left; }
-  .rw-bonus { display: flex; gap: 12px; align-items: baseline; }
+  .rw-bonus { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
   .rw-cta { width: max-content; }
 }
 @media (max-width: 480px) {

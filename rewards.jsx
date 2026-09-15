@@ -25,7 +25,7 @@ function RewardsApp() {
           <div className="hero-stamp">
             <span><span className="num">005</span> / Referrals</span>
             <span>three lists</span>
-            <span style={{color:'var(--lumen-2)'}}>cards I actually carry, the bank I actually use, codes I actually share</span>
+            <span style={{color:'var(--lumen-2)'}}>cards I actually carry, accounts I actually use, codes I actually share</span>
           </div>
           <h1>A short list of <em>things worth signing up for</em>.</h1>
           <p className="lead">
@@ -42,7 +42,7 @@ function RewardsApp() {
               <div className="label">Cards in wallet</div>
             </div>
             <div className="rw-stat glass">
-              <div className="num"><em><CountUp to={27} /></em></div>
+              <div className="num"><em><CountUp to={30} /></em></div>
               <div className="label">Active referrals</div>
             </div>
           </div>
@@ -58,9 +58,9 @@ function RewardsApp() {
             <a className="rw-route glass" href="rewards-banking.html">
               <span className="num">01 / Banking</span>
               <h3>Open an <em>account</em>.</h3>
-              <div className="desc">Schwab Investor Checking + Brokerage — fee-free, global ATM rebates, no foreign transaction fees. The setup I built around.</div>
-              <div className="meta"><span>1 account</span><span>·</span><span>USD</span></div>
-              <span className="arrow">See the bank <span className="arr">→</span></span>
+              <div className="desc">Schwab Investor Checking + Brokerage, Capital One 360 Checking ($300) and Performance Savings (up to $1,500), Robinhood (gift stock). Fee-free accounts with real sign-up bonuses.</div>
+              <div className="meta"><span>4 accounts</span><span>·</span><span>USD</span></div>
+              <span className="arrow">See accounts <span className="arr">→</span></span>
             </a>
 
             <a className="rw-route glass" href="rewards-cards.html">
