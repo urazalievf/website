@@ -8,9 +8,8 @@
   gap: 16px;
 }
 .rw-hero h1 {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: clamp(48px, 7vw, 96px);
   line-height: 0.96;
   letter-spacing: -0.035em;
@@ -75,16 +74,15 @@
 .rw-route > * { position: relative; z-index: 1; }
 
 .rw-route .num {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 13px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--violet);
 }
 .rw-route h3 {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 38px;
   letter-spacing: -0.025em;
   line-height: 1;
@@ -103,14 +101,14 @@
 }
 .rw-route .meta {
   display: flex; gap: 8px; flex-wrap: wrap;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--fg-muted);
 }
 .rw-route .arrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 13px;
   letter-spacing: var(--tr-mono-up);
   color: var(--amber);
@@ -119,7 +117,7 @@
   gap: 6px;
 }
 .rw-route .arrow .arr {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
   font-size: 18px;
   transition: transform var(--dur-quick) var(--ease-out);
@@ -142,9 +140,8 @@
   margin-bottom: var(--s-4);
 }
 .rw-section-head h2 {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: clamp(32px, 4vw, 48px);
   line-height: 1;
   letter-spacing: -0.025em;
@@ -154,7 +151,7 @@
 }
 .rw-section-head h2 em { color: var(--amber); font-style: italic; }
 .rw-section-head .stamp-line {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -243,7 +240,7 @@
   box-shadow: 0 0 8px var(--violet-glow);
 }
 .rw-body .meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -256,8 +253,7 @@
   width: 64px; height: 64px;
   border-radius: 14px;
   display: grid; place-items: center;
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
+  font-family: var(--font-sans);
   font-weight: 400;
   font-size: 32px;
   color: #fff;
@@ -283,16 +279,15 @@
 
 .rw-body { display: grid; gap: 6px; min-width: 0; }
 .rw-body .brand {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--fg-muted);
 }
 .rw-body .name {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 24px;
   line-height: 1.05;
   color: var(--lumen);
@@ -313,16 +308,15 @@
   white-space: nowrap;
 }
 .rw-bonus .label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--fg-muted);
 }
 .rw-bonus .amt {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 32px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -333,7 +327,7 @@
 .rw-bonus .amt .small { font-size: 0.55em; color: var(--lumen-3); margin-left: 2px; }
 
 .rw-cta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -392,7 +386,7 @@
   overflow: hidden;
 }
 .rw-coupon-code {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 14px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -451,7 +445,7 @@ html[data-aesthetic="paper"] .rw-coupon-code {
   margin-top: var(--s-6);
   padding: var(--s-4);
   border-radius: var(--r-3);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12px;
   line-height: 1.6;
   color: var(--fg-muted);
@@ -460,7 +454,7 @@ html[data-aesthetic="paper"] .rw-coupon-code {
 .rw-fineprint strong {
   color: var(--lumen-2);
   font-weight: 500;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 /* Stat row across rewards index */
@@ -477,9 +471,8 @@ html[data-aesthetic="paper"] .rw-coupon-code {
   gap: 4px;
 }
 .rw-stat .num {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 56px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -488,7 +481,7 @@ html[data-aesthetic="paper"] .rw-coupon-code {
 }
 .rw-stat .num em { color: var(--amber); font-style: italic; }
 .rw-stat .label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;

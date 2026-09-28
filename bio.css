@@ -29,7 +29,7 @@
 .bio-portrait .stamp {
   position: absolute;
   left: 14px; bottom: 14px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -47,7 +47,6 @@
 .bio-intro h1 em {
   font-style: italic;
   color: var(--violet);
-  font-variation-settings: "opsz" 144;
 }
 .bio-intro .lead {
   max-width: 60ch;
@@ -66,14 +65,14 @@
   border-top: var(--border);
 }
 .bio-spec dt {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--fg-faint);
 }
 .bio-spec dd {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   color: var(--lumen);
   margin: 0;
@@ -149,7 +148,7 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
 .bio-quote .pull-quote { font-size: clamp(24px, 2.6vw, 40px); }
 .bio-quote em.tag-em { color: var(--violet); font-style: italic; }
 .bio-quote .attrib {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -201,16 +200,15 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
 }
 .link-tile .lt-row {
   display: flex; align-items: baseline; justify-content: space-between;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
 }
 .link-tile .lt-row .num { color: var(--violet); }
 .link-tile .lt-row .lt-host { color: var(--lumen-4); }
 .link-tile h5 {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 26px;
   line-height: 1;
   color: var(--lumen);
@@ -223,7 +221,7 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
 }
 .link-tile .cta {
   margin-top: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -252,7 +250,7 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
   border-radius: var(--r-3);
 }
 .read-card h6 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -270,7 +268,7 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
 }
 .read-card .item:first-of-type { border-top: 0; padding-top: 6px; }
 .read-card .item .idx {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   color: var(--fg-faint);
 }
@@ -295,7 +293,7 @@ html[data-aesthetic="paper"] .social-tile.s-goodreads { color: #553B08; }
   color: var(--lumen);
 }
 .read-card .item .meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   color: var(--fg-muted);

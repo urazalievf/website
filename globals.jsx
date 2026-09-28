@@ -122,11 +122,31 @@ function OrbField({ count = 6 }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   StatusBar — clock, location, weather (live via Open-Meteo after locate)
+   StatusBar — clock, location, weather (live via Open-Meteo; Chicago
+   until the visitor locates themselves on the globe)
    ───────────────────────────────────────────────────────────────── */
+const HOME_COORDS = { lat: 41.88, lon: -87.63 }; // Chicago
+
+// Open-Meteo (free, no key) → "53°F · clear", or null
+async function fetchWeather(lat, lon) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
+  const r = await fetch(url);
+  const d = await r.json();
+  const cw = d.current_weather;
+  if (!cw) return null;
+  const wc = cw.weathercode;
+  // WMO weather codes → simple labels
+  const label = wc === 0 ? "clear" : wc <= 3 ? "partly cloudy" : wc <= 9 ? "foggy"
+    : wc <= 19 ? "drizzle" : wc <= 29 ? "rain" : wc <= 39 ? "snow"
+    : wc <= 49 ? "foggy" : wc <= 59 ? "drizzle" : wc <= 69 ? "rain"
+    : wc <= 79 ? "snow" : wc <= 84 ? "showers" : wc <= 94 ? "thunderstorm" : "stormy";
+  return `${Math.round(cw.temperature)}°F · ${label}`;
+}
+
 function StatusBar() {
   const [t, setT] = gUseState(() => new Date());
   const [loc, setLoc] = gUseState(null); // { city, timeZone, weather }
+  const [homeWeather, setHomeWeather] = gUseState(null);
 
   gUseEffect(() => {
     const i = setInterval(() => setT(new Date()), 30_000);
@@ -134,25 +154,20 @@ function StatusBar() {
   }, []);
 
   gUseEffect(() => {
+    let cancelled = false;
+    fetchWeather(HOME_COORDS.lat, HOME_COORDS.lon)
+      .then(w => { if (!cancelled) setHomeWeather(w); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  gUseEffect(() => {
     const onLocated = async (e) => {
       const { lat, lon, city, timeZone } = e.detail;
       setLoc({ city, timeZone, weather: null });
-      // Fetch weather from Open-Meteo (free, no key)
       try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
-        const r = await fetch(url);
-        const d = await r.json();
-        const cw = d.current_weather;
-        if (cw) {
-          const wc = cw.weathercode;
-          // WMO weather codes → simple labels
-          const label = wc === 0 ? "clear" : wc <= 3 ? "partly cloudy" : wc <= 9 ? "foggy"
-            : wc <= 19 ? "drizzle" : wc <= 29 ? "rain" : wc <= 39 ? "snow"
-            : wc <= 49 ? "foggy" : wc <= 59 ? "drizzle" : wc <= 69 ? "rain"
-            : wc <= 79 ? "snow" : wc <= 84 ? "showers" : wc <= 94 ? "thunderstorm" : "stormy";
-          const icon = wc === 0 ? "☀" : wc <= 3 ? "⛅" : wc <= 9 ? "🌫" : wc <= 69 ? "🌧" : wc <= 79 ? "❄" : wc <= 84 ? "🌦" : "⛈";
-          setLoc(l => ({ ...l, weather: `${icon} ${Math.round(cw.temperature)}°F · ${label}` }));
-        }
+        const weather = await fetchWeather(lat, lon);
+        if (weather) setLoc(l => ({ ...l, weather }));
       } catch(e) {}
     };
     window.addEventListener("user-located", onLocated);
@@ -164,10 +179,7 @@ function StatusBar() {
   const time = t.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone });
   const date = t.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "2-digit" });
 
-  // Default weather if no location yet
-  const day = t.getDate();
-  const defaultWeathers = ["◐ 47°F · low clouds","☀ 53°F · clear","❄ 38°F · flurries","☁ 44°F · overcast","☂ 41°F · drizzle"];
-  const weather = loc?.weather || defaultWeathers[day % defaultWeathers.length];
+  const weather = loc ? loc.weather : homeWeather;
 
   return (
     <div className="statusbar">
@@ -181,13 +193,15 @@ function StatusBar() {
         <span className="val violet">{time} {loc ? "" : "CT"}</span>
         <span className="val" style={{color: "var(--lumen-3)"}}>· {date}</span>
       </span>
-      <span className="seg hide-sm">
-        <span className="label-name">Weather</span>
-        <span className="val amber">{weather}</span>
-      </span>
+      {weather && (
+        <span className="seg hide-sm">
+          <span className="label-name">Weather</span>
+          <span className="val amber">{weather}</span>
+        </span>
+      )}
       {loc?.city && (
         <span className="seg hide-sm">
-          <span className="label-name">📍</span>
+          <span className="label-name">Location</span>
           <span className="val" style={{color:"var(--violet)"}}>{loc.city}</span>
         </span>
       )}
@@ -759,7 +773,7 @@ function ChessBoard() {
           <button type="button" className="chess-reset" onClick={reset}>↻ Reset</button>
           <button type="button" className="chess-reset" onClick={takeBack} disabled={thinking || history.length === 0}>↶ Take back</button>
         </div>
-        <a className="link-amber" href="https://www.chess.com/" target="_blank" rel="noreferrer" style={{borderBottom:0, fontFamily:"var(--font-mono)", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", color:"var(--violet)"}}>
+        <a className="link-amber" href="https://www.chess.com/" target="_blank" rel="noreferrer" style={{borderBottom:0, fontFamily:"var(--font-sans)", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", color:"var(--violet)"}}>
           Real game on Chess.com →
         </a>
       </div>
@@ -893,7 +907,7 @@ function ChessDossier() {
 const GB_KEY = "fu-guestbook-v1";
 const GB_SEED = [
   { name: "Olivia", msg: "Came for the chess, stayed for the wine notes. The Saturday flight idea is good.", at: Date.now() - 86400000 * 2 },
-  { name: "Marco",  msg: "Antifragile re-read squad ✦ keep going.",                              at: Date.now() - 86400000 * 5 },
+  { name: "Marco",  msg: "Antifragile re-read squad, keep going.",                              at: Date.now() - 86400000 * 5 },
   { name: "Ana",    msg: "The orbs are perfect. Don't change them.",                            at: Date.now() - 86400000 * 9 },
 ];
 
@@ -1114,8 +1128,7 @@ function LiveCounters() {
         return (
           <div key={c.key} style={{display: "flex", flexDirection: "column", gap: 4, alignItems: "center", textAlign: "center"}}>
             <div style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: '"opsz" 144',
+              fontFamily: "var(--font-sans)",
               fontSize: "clamp(28px, 4vw, 56px)",
               lineHeight: 1,
               color: "var(--lumen)",
@@ -1124,7 +1137,7 @@ function LiveCounters() {
               <CountUp to={c.n} decimals={0} />
             </div>
             <div style={{
-              fontFamily: "var(--font-mono)",
+              fontFamily: "var(--font-sans)",
               fontSize: "var(--fs-mono-xs)",
               letterSpacing: "var(--tr-mono-up)",
               textTransform: "uppercase",
@@ -1278,7 +1291,7 @@ function WireGlobe({ size = 420 }) {
     );
   };
 
-  const locLabel = { idle: "locate me", locating: "…", located: "located ✓", denied: "denied" }[locState];
+  const locLabel = { idle: "locate me", locating: "…", located: "located", denied: "denied" }[locState];
   const locColor = locState === "located" ? "rgba(255,180,84,1)" : locState === "denied" ? "rgba(255,80,80,0.9)" : "rgba(139,92,255,0.9)";
 
   return (
@@ -1301,7 +1314,7 @@ function WireGlobe({ size = 420 }) {
         disabled={locState==="locating"||locState==="located"}
         style={{ color: locColor, borderColor: locColor }}
       >
-        {locState==="idle" ? "📍 " : ""}{locLabel}
+        {locLabel}
       </button>
     </div>
   );
@@ -1335,7 +1348,7 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
           href={`https://www.goodreads.com/${user}`}
           target="_blank"
           rel="noreferrer"
-          style={{marginLeft: 'auto', color: 'var(--fg-faint)', borderBottom: 0, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: 'var(--tr-mono-up)', textTransform: 'uppercase'}}
+          style={{marginLeft: 'auto', color: 'var(--fg-faint)', borderBottom: 0, fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: 'var(--tr-mono-up)', textTransform: 'uppercase'}}
         >—— {idx + 1} / {TALEB_QUOTES.length} · Goodreads ↗</a>
       </div>
       <p className="pull-quote">{q.text}</p>
@@ -1345,7 +1358,7 @@ function GoodreadsQuote({ num = "004", user = "urazaliev_f" }) {
           type="button"
           onClick={cycle}
           style={{
-            fontFamily: "var(--font-mono)",
+            fontFamily: "var(--font-sans)",
             fontSize: "var(--fs-mono-xs)",
             letterSpacing: "var(--tr-mono-up)",
             textTransform: "uppercase",

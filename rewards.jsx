@@ -1,27 +1,14 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp */
-
-const RW_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar, CountUp */
 
 function RewardsApp() {
-  const [t, setTweak] = useTweaks(RW_DEFAULTS);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
-    document.documentElement.setAttribute("data-font", t.font);
-  }, [t]);
-
   return (
     <>
-      {t.showOrbs && <OrbField count={6} />}
-      {t.showStatusBar && <StatusBar />}
+      <OrbField count={6} />
+      <StatusBar />
       <SiteNav active="rewards" />
 
       <main className="container">
-        <section className="rw-hero" data-screen-label="Rewards Hero">
+        <section className="rw-hero">
           <div className="hero-stamp">
             <span><span className="num">005</span> / Referrals</span>
             <span>three lists</span>
@@ -48,7 +35,7 @@ function RewardsApp() {
           </div>
         </section>
 
-        <section data-screen-label="Routes">
+        <section>
           <div className="hero-stamp" style={{marginTop: 32, marginBottom: 16}}>
             <span><span className="num">006</span> / Pick a list</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>three doors</span>
@@ -89,43 +76,6 @@ function RewardsApp() {
       </main>
 
       <SiteFooter />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={t.aesthetic}
-            options={[{value:"glass",label:"Glass"},{value:"paper",label:"Paper"}]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={t.font}
-            options={[
-              { value: "classic",   label: "Fraunces - classic" },
-              { value: "editorial", label: "Instrument Serif - quieter" },
-              { value: "modern",    label: "Bricolage - grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={t.showOrbs ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={t.showStatusBar ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

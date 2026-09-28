@@ -1,60 +1,11 @@
 /* =====================================================================
    FERUZ — "GLASSWORK" DESIGN SYSTEM
    ---------------------------------------------------------------------
-   A web3-inspired editorial system. Deep cosmic base, glass surfaces
-   (iOS 26 / visionOS-style refractive panels), saturated violet accent
-   with cyan secondary, oversized Fraunces serif display, Bricolage sans
-   body, JetBrains Mono for figures and metadata.
-
-   Mental model: a darkroom gallery where every panel is etched glass
-   floating over a deep field. Light passes through. Type is sharp.
+   Deep cosmic base, glass surfaces, saturated violet accent with cyan
+   secondary. One typeface throughout — Helvetica — with weight and size
+   carrying the hierarchy: bold display, regular body, tracked uppercase
+   labels for metadata.
    ===================================================================== */
-
-/* ─────────────────────────────────────────────────────────────────────
-   FONT FACES
-   ───────────────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: "Fraunces";
-  src: url("fonts/Fraunces-VariableFont.ttf") format("truetype-variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Fraunces";
-  src: url("fonts/Fraunces-Italic-VariableFont.ttf") format("truetype-variations");
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("fonts/BricolageGrotesque-VariableFont_opszwdthwght.ttf") format("truetype-variations");
-  font-weight: 200 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype-variations");
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Instrument Serif";
-  src: url("fonts/InstrumentSerif-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Instrument Serif";
-  src: url("fonts/InstrumentSerif-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
 
 /* ─────────────────────────────────────────────────────────────────────
    TOKENS
@@ -152,12 +103,8 @@
     radial-gradient(45% 40% at 82% 88%, rgba(110, 231, 255, 0.10) 0%, transparent 65%),
     radial-gradient(60% 50% at 50% 100%, rgba(139, 92, 255, 0.08) 0%, transparent 70%);
 
-  /* ─── TYPE FAMILIES ─── */
-  /* Display switched to Helvetica Neue / grotesk per user request */
-  --font-display: "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
-  --font-serif:   "Instrument Serif", Georgia, serif;
-  --font-sans:    "Helvetica Neue", "HelveticaNeue", Helvetica, "Arial", sans-serif;
-  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* ─── TYPE FAMILY ─── */
+  --font-sans: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
 
   /* ─── TYPE SIZES ─── */
   --fs-mono-xs:   11px;
@@ -188,9 +135,8 @@
 
   --w-thin: 250; --w-regular: 400; --w-medium: 500; --w-semibold: 600; --w-bold: 700;
 
-  /* Display = Fraunces, low weight, high opsz — the signature voice */
-  --display-weight: 380;
-  --display-opsz:   144;
+  /* Headings and display figures */
+  --display-weight: 700;
 
   /* ─── SPACING ─── */
   --s-1:  4px;   --s-2: 8px;   --s-3: 16px;  --s-4: 24px;
@@ -248,6 +194,9 @@
    ───────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Form controls default to the UA font, not the page's */
+button, input, textarea, select { font-family: inherit; }
+
 ::selection { color: var(--selection-fg); background: var(--selection-bg); }
 
 html, body {
@@ -261,12 +210,11 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
-/* DISPLAY — Fraunces, low weight, high opsz, tight tracking. */
+/* DISPLAY — bold, tight tracking. */
 h1, h2, h3, .display {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: var(--display-weight);
   font-style: normal;
-  font-variation-settings: "opsz" var(--display-opsz);
   line-height: var(--lh-display);
   letter-spacing: var(--tr-display);
   color: var(--lumen);
@@ -279,10 +227,9 @@ h3, .display-3 { font-size: var(--fs-h3); }
 
 /* Italic display variant — used for a single word inside a headline */
 .italic-emph, em.display, .display em {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: var(--display-weight);
-  font-variation-settings: "opsz" var(--display-opsz);
 }
 
 /* SUBHEADINGS — sans, structural */
@@ -298,7 +245,7 @@ h4 { font-size: var(--fs-h4); }
 h5 { font-size: var(--fs-h5); }
 h6 { font-size: var(--fs-h6); }
 
-/* PROSE — Bricolage sans, sustained */
+/* PROSE */
 p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: pretty; }
 .lead {
   font-size: var(--fs-lead);
@@ -309,7 +256,7 @@ p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: 
 
 /* LABEL / KICKER — mono uppercase, tracked, the system's metadata voice */
 .label, .kicker {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   font-weight: var(--w-medium);
   text-transform: uppercase;
@@ -322,7 +269,7 @@ p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: 
 
 /* INDEX — tiny mono, used as a number stamp */
 .index {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   font-weight: var(--w-medium);
   letter-spacing: var(--tr-mono-up);
@@ -332,7 +279,7 @@ p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: 
 
 /* FIGURE / NUMERIC — for prices, balances, addresses */
 .figure {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-md);
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
@@ -341,7 +288,7 @@ p { margin: 0; line-height: var(--lh-normal); color: var(--fg-body); text-wrap: 
 
 /* MONO INLINE / CODE */
 code, pre, .mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-md);
   letter-spacing: 0;
   color: var(--lumen);
@@ -354,9 +301,9 @@ pre {
   overflow: auto;
 }
 
-/* PULL QUOTE — Instrument Serif italic, oversized */
+/* PULL QUOTE — italic, oversized */
 .pull-quote {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: 400;
   font-size: clamp(28px, 3.4vw, 52px);

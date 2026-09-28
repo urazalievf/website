@@ -1,11 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
-
-const RB_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar */
 
 const BANKS = [
   {
@@ -22,7 +15,7 @@ const BANKS = [
     small: "fee-free",
     href: "https://www.schwab.com/client-referral?refrid=REFERAPCN8RGZ",
     cta: "Get one",
-    image: null,
+    image: "images/Schwab.png",
     mark: "S",
     color: "m-mid",
   },
@@ -40,7 +33,7 @@ const BANKS = [
     small: "2 direct deposits",
     href: "https://i.capitalone.com/JTFXUL5rz",
     cta: "Get $300",
-    image: null,
+    image: "images/Capital-One.svg",
     mark: "C",
     color: "m-rose",
   },
@@ -58,7 +51,7 @@ const BANKS = [
     small: "by deposit size",
     href: "https://i.capitalone.com/JiRSYrs3T",
     cta: "Get the bonus",
-    image: null,
+    image: "images/Capital-One.svg",
     mark: "C",
     color: "m-sand",
   },
@@ -76,30 +69,24 @@ const BANKS = [
     small: "gift stock",
     href: "https://join.robinhood.com/feruzu",
     cta: "Get gift stock",
-    image: null,
+    image: "images/Robinhood.png",
     mark: "R",
     color: "m-emerald",
   },
 ];
 
 function RewardsBankingApp() {
-  const [t, setTweak] = useTweaks(RB_DEFAULTS);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
-    document.documentElement.setAttribute("data-font", t.font);
-  }, [t]);
-
   return (
     <>
-      {t.showOrbs && <OrbField count={5} />}
-      {t.showStatusBar && <StatusBar />}
+      <OrbField count={5} />
+      <StatusBar />
       <SiteNav active="rewards" />
 
       <main className="container">
-        <section className="rw-hero" data-screen-label="Banking Hero">
+        <section className="rw-hero">
           <div className="hero-stamp">
             <span><span className="num">005</span> / Rewards / Banking</span>
-            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-mono)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
+            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-sans)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
             <span style={{color:'var(--lumen-2)'}}>{BANKS.length} account{BANKS.length === 1 ? '' : 's'}</span>
           </div>
           <h1>Open an <em>account</em>.</h1>
@@ -108,7 +95,7 @@ function RewardsBankingApp() {
           </p>
         </section>
 
-        <section data-screen-label="Bank list" style={{paddingBottom: 24}}>
+        <section style={{paddingBottom: 24}}>
           <div className="rw-section-head">
             <h2>What I <em>actually</em> bank with.</h2>
             <div className="stamp-line">As of this month</div>
@@ -148,43 +135,6 @@ function RewardsBankingApp() {
       </main>
 
       <SiteFooter />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={t.aesthetic}
-            options={[{value:"glass",label:"Glass"},{value:"paper",label:"Paper"}]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={t.font}
-            options={[
-              { value: "classic",   label: "Fraunces - classic" },
-              { value: "editorial", label: "Instrument Serif - quieter" },
-              { value: "modern",    label: "Bricolage - grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={t.showOrbs ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={t.showStatusBar ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

@@ -45,12 +45,10 @@
 .hero h1 .em {
   font-style: italic;
   color: var(--violet);
-  font-variation-settings: "opsz" 144;
   text-shadow: 0 0 40px var(--violet-glow);
 }
 .hero h1 .light {
   font-weight: 300;
-  font-variation-settings: "opsz" 144, "wght" 300;
   color: var(--lumen-2);
 }
 /* Hero name — uses a tight clamp because the full string ("Feruz
@@ -94,12 +92,12 @@
   color: var(--violet);
 }
 .hero-now .now-text {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   color: var(--lumen-2);
 }
 .hero-now .now-meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -139,7 +137,7 @@
 
 .tile-head {
   display: flex; justify-content: space-between; align-items: flex-start;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -148,7 +146,7 @@
 .tile-head .kind { color: var(--fg-faint); }
 
 .tile-arrow {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 24px;
   color: var(--lumen-3);
   transition: transform var(--dur-base) var(--ease-spring), color var(--dur-quick) var(--ease-out);
@@ -157,9 +155,8 @@
 }
 
 .tile-title {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: clamp(36px, 4vw, 56px);
   line-height: 0.96;
   letter-spacing: -0.025em;
@@ -205,6 +202,11 @@
   filter: blur(20px);
 }
 
+/* ─── Profiles ─── */
+/* Clears the sticky nav (16px offset + ~60px pill) when the strip is
+   scrolled to, so it never sits half under the header. */
+#profiles { scroll-margin-top: 88px; }
+
 /* ─── Off-grid (mini-tiles for hobbies/socials) ─── */
 .offgrid {
   margin-top: var(--s-7);
@@ -233,9 +235,8 @@
 }
 .offgrid-tile .glass-icon {
   width: 36px; height: 36px;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 18px;
-  font-variation-settings: "opsz" 144;
 }
 .offgrid-tile .glass-icon.brand-icon svg {
   width: 22px;
@@ -244,7 +245,7 @@
   display: block;
 }
 .offgrid-tile .name {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -258,7 +259,7 @@
   margin-top: auto;
 }
 .offgrid-tile .num {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   color: var(--violet);
@@ -283,7 +284,7 @@
   font-style: italic;
 }
 .quote-block .attrib {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -291,7 +292,7 @@
   margin-top: var(--s-4);
 }
 .quote-block .quote-mark {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
   font-size: 200px;
   line-height: 0.5;
