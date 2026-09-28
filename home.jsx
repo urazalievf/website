@@ -1,13 +1,5 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, ChessDossier, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions */
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar, CountUp, ListeningCarousel, Guestbook, ReadingNow, ChessBoard, ChessDossier, WineCard, WireGlobe, GoodreadsQuote, LiveCounters, GitHubContributions */
 const { useEffect: hUseEffect, useState: hUseState } = React;
-
-const HOME_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "showStarfield": true,
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
 
 /* ── Inline brand glyphs for the profiles strip ─────────────────────── */
 const ProfileIcon = ({ name }) => {
@@ -85,14 +77,6 @@ const OFFGRID = [
 ];
 
 function HomeApp() {
-  const [tweaks, setTweak] = useTweaks(HOME_DEFAULTS);
-
-  hUseEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", tweaks.aesthetic);
-    document.documentElement.setAttribute("data-font", tweaks.font);
-    if (!tweaks.showStarfield) document.body.classList.add("no-stars");
-    else document.body.classList.remove("no-stars");
-  }, [tweaks]);
 
   // Globe size needs to match the viewport — at 420px on a 360px phone the
   // canvas overflows the column and shoves the page sideways. Bucketing
@@ -140,15 +124,25 @@ function HomeApp() {
   // "page is flying around" on a phone, and they cost GPU besides.
   const orbCount = globeSize <= 280 ? 4 : globeSize <= 380 ? 6 : 9;
 
+  // A plain #profiles jump parks the strip under the sticky nav. Center
+  // it instead; scroll-margin-top in home.css offsets for the nav.
+  const scrollToProfiles = (e) => {
+    const el = document.getElementById("profiles");
+    if (!el) return;
+    e.preventDefault();
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  };
+
   return (
     <>
-      {tweaks.showOrbs && <OrbField count={orbCount} />}
-      {tweaks.showStatusBar && <StatusBar />}
+      <OrbField count={orbCount} />
+      <StatusBar />
       <SiteNav active="home" />
 
       <main className="container">
         {/* HERO ─────────────────────────────────────────────── */}
-        <section className="hero" data-screen-label="Hero">
+        <section className="hero">
           <div className="hero-stamp">
             <span><span className="num">001</span> / Personal site</span>
             <span>Edition 03 — 2026</span>
@@ -164,7 +158,7 @@ function HomeApp() {
                 Building data things. Metalcore on repeat. Occasionally losing at chess.
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: "var(--s-4)" }}>
-                <a className="btn btn-primary" href="#profiles">Profiles ↓</a>
+                <a className="btn btn-primary" href="#profiles" onClick={scrollToProfiles}>Profiles ↓</a>
               </div>
             </div>
             <div className="hero-globe">
@@ -183,7 +177,7 @@ function HomeApp() {
         </section>
 
         {/* PROFILES STRIP ─────────────────────────────────────── */}
-        <section data-screen-label="Profiles" id="profiles">
+        <section id="profiles">
           <div className="hero-stamp">
             <span><span className="num">002</span> / Profiles</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>six places, one of me</span>
@@ -202,7 +196,7 @@ function HomeApp() {
         </section>
 
         {/* TILES — three doors ─────────────────────────────────── */}
-        <section data-screen-label="Sections">
+        <section>
           <div className="hero-stamp" style={{ marginBottom: 16 }}>
             <span><span className="num">003</span> / The doors</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— pick one</span>
@@ -271,12 +265,12 @@ function HomeApp() {
         </section>
 
         {/* QUOTE ─ rotating Taleb quotes ──────────────────────── */}
-        <section data-screen-label="Quote">
+        <section>
           <GoodreadsQuote num="004" user="urazaliev_f" />
         </section>
 
         {/* READING NOW ─────────────────────────────────────────── */}
-        <section data-screen-label="Reading">
+        <section>
           <div className="hero-stamp" style={{ marginBottom: 4 }}>
             <span><span className="num">005</span> / Reading right now</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>—— live shelf</span>
@@ -285,7 +279,7 @@ function HomeApp() {
         </section>
 
         {/* GITHUB CONTRIBUTIONS ─────────────────────────────────── */}
-        <section data-screen-label="GitHub">
+        <section>
           <div className="hero-stamp">
             <span><span className="num">006</span> / GitHub</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>commits, every day green-ish</span>
@@ -294,7 +288,7 @@ function HomeApp() {
         </section>
 
         {/* LISTENING ───────────────────────────────────────────── */}
-        <section data-screen-label="Listening">
+        <section>
           <div className="hero-stamp">
             <span><span className="num">007</span> / Listening</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>Last.fm scrobbles</span>
@@ -303,7 +297,7 @@ function HomeApp() {
         </section>
 
         {/* CHESS BOARD ─────────────────────────────────────────── */}
-        <section data-screen-label="Chess">
+        <section>
           <div className="hero-stamp">
             <span><span className="num">008</span> / Chess board</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>live dossier · have a go</span>
@@ -313,7 +307,7 @@ function HomeApp() {
         </section>
 
         {/* TASTING NOTE ────────────────────────────────────────── */}
-        <section data-screen-label="Wine">
+        <section>
           <div className="hero-stamp">
             <span><span className="num">009</span> / Tasting note</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>most recent</span>
@@ -322,7 +316,7 @@ function HomeApp() {
         </section>
 
         {/* OFF-GRID — branded logbooks ─────────────────────────── */}
-        <section data-screen-label="Off-grid">
+        <section>
           <div className="hero-stamp">
             <span><span className="num">010</span> / Off-grid</span>
             <span style={{marginLeft: 'auto', color: 'var(--fg-faint)'}}>logbooks I keep for fun</span>
@@ -355,53 +349,6 @@ function HomeApp() {
       </main>
 
       <SiteFooter />
-
-      {/* Tweaks panel */}
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={tweaks.aesthetic}
-            options={[
-              { value: "glass", label: "Glass" },
-              { value: "paper", label: "Paper" },
-            ]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={tweaks.font}
-            options={[
-              { value: "classic",   label: "Fraunces · classic editorial" },
-              { value: "editorial", label: "Instrument Serif · quieter" },
-              { value: "modern",    label: "Bricolage · modern grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={tweaks.showOrbs ? "on" : "off"}
-            options={[{value: "on", label: "On"}, {value: "off", label: "Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Stars"
-            value={tweaks.showStarfield ? "on" : "off"}
-            options={[{value: "on", label: "On"}, {value: "off", label: "Off"}]}
-            onChange={(v) => setTweak("showStarfield", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={tweaks.showStatusBar ? "on" : "off"}
-            options={[{value: "on", label: "On"}, {value: "off", label: "Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

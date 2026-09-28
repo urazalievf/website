@@ -1,20 +1,7 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar */
 const { useState: wUseState, useMemo: wUseMemo, useEffect: wUseEffect } = React;
 
-const WR_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
-
 function WritingApp() {
-  const [t, setTweak] = useTweaks(WR_DEFAULTS);
-  wUseEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
-    document.documentElement.setAttribute("data-font", t.font);
-  }, [t]);
-
   const [posts, setPosts] = wUseState([]);
   const [loading, setLoading] = wUseState(true);
 
@@ -55,12 +42,12 @@ function WritingApp() {
 
   return (
     <>
-      {t.showOrbs && <OrbField count={6} />}
-      {t.showStatusBar && <StatusBar />}
+      <OrbField count={6} />
+      <StatusBar />
       <SiteNav active="writing" />
 
       <main className="container">
-        <section className="wr-hero" data-screen-label="Writing Hero">
+        <section className="wr-hero">
           <div className="hero-stamp" style={{marginBottom:16}}>
             <span><span className="num">004</span> / Writing</span>
             <span>{loading ? '…' : posts.length + ' entries'}</span>
@@ -85,7 +72,7 @@ function WritingApp() {
           </div>
         </section>
 
-        <section data-screen-label="Index">
+        <section>
           <div className="wr-list">
             {visible.map((p) => (
               <a key={p.href} className="wr-row" href={p.href} target="_blank" rel="noreferrer">
@@ -99,21 +86,21 @@ function WritingApp() {
               </a>
             ))}
             {!loading && visible.length === 0 && (
-              <div style={{padding: '60px 14px', fontFamily: 'var(--font-mono)', color: 'var(--fg-faint)', textAlign: 'center'}}>
+              <div style={{padding: '60px 14px', fontFamily: 'var(--font-sans)', color: 'var(--fg-faint)', textAlign: 'center'}}>
                 {posts.length === 0
                   ? 'Could not load posts from Medium right now — try refresh.'
                   : `Nothing here under "${filter}" — yet.`}
               </div>
             )}
             {loading && (
-              <div style={{padding: '60px 14px', fontFamily: 'var(--font-mono)', color: 'var(--fg-faint)', textAlign: 'center'}}>
+              <div style={{padding: '60px 14px', fontFamily: 'var(--font-sans)', color: 'var(--fg-faint)', textAlign: 'center'}}>
                 Loading posts from Medium…
               </div>
             )}
           </div>
         </section>
 
-        <section data-screen-label="Subscribe" style={{ paddingBottom: 40 }}>
+        <section style={{ paddingBottom: 40 }}>
           <div className="wr-callouts">
             <div className="wr-sub glass glass--violet">
               <div className="hero-stamp" style={{marginBottom: 4}}>
@@ -145,43 +132,6 @@ function WritingApp() {
       </main>
 
       <SiteFooter />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={t.aesthetic}
-            options={[{value:"glass",label:"Glass"},{value:"paper",label:"Paper"}]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={t.font}
-            options={[
-              { value: "classic",   label: "Fraunces - classic" },
-              { value: "editorial", label: "Instrument Serif - quieter" },
-              { value: "modern",    label: "Bricolage - grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={t.showOrbs ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={t.showStatusBar ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

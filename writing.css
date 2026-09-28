@@ -1,6 +1,6 @@
 .wr-hero { padding: clamp(80px, 12vh, 140px) 0 var(--s-6); }
 .wr-hero h1 { font-size: clamp(60px, 10vw, 160px); line-height: 0.94; letter-spacing: -0.035em; }
-.wr-hero h1 em { color: var(--violet); font-style: italic; font-variation-settings: "opsz" 144; }
+.wr-hero h1 em { color: var(--violet); font-style: italic; }
 .wr-hero .lead { max-width: 60ch; font-size: 18px; color: var(--lumen-2); margin-top: var(--s-4); }
 
 .wr-list {
@@ -21,16 +21,15 @@
 .wr-row:hover { background: rgba(255,255,255,0.025); color: var(--lumen); }
 .wr-row:hover .arr { color: var(--violet); transform: translate(4px, -4px); }
 .wr-row .date {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--violet);
 }
 .wr-row .title {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 28px;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -44,7 +43,7 @@
   color: var(--lumen-3);
 }
 .wr-row .meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -53,7 +52,7 @@
 }
 .wr-row .meta .draft { color: var(--violet); }
 .wr-row .arr {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 22px;
   color: var(--lumen-3);
   text-align: right;
@@ -110,7 +109,7 @@
   border: 1px solid var(--hairline-strong);
   background: rgba(255,255,255,0.03);
   color: var(--lumen);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   outline: none;
   transition: border-color var(--dur-quick) var(--ease-out);
@@ -124,7 +123,7 @@
   display: flex; flex-direction: column; gap: 14px;
 }
 .wr-side h6 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -134,7 +133,7 @@
 .wr-side .bullet {
   display: grid; grid-template-columns: 18px 1fr;
   gap: 10px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   color: var(--lumen-2);
   align-items: baseline;
@@ -150,7 +149,7 @@
   margin-top: var(--s-5);
 }
 .tag-filter {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;

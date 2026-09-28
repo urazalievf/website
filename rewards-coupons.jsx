@@ -1,11 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
-
-const RP_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar */
 
 const COUPONS = [
   /* SHOPPING ─────────────────────────────────────────────────────── */
@@ -157,7 +150,7 @@ function CouponCard({ c }) {
           <div style={{marginTop: 10}}>
             <button type="button" onClick={copy} className={"rw-coupon-code " + (copied ? "is-copied" : "")}>
               <span>{c.code}</span>
-              <span className="copy-tip">{copied ? "✓ COPIED" : "CLICK TO COPY"}</span>
+              <span className="copy-tip">{copied ? "COPIED" : "CLICK TO COPY"}</span>
             </button>
           </div>
         )}
@@ -173,12 +166,6 @@ function CouponCard({ c }) {
 }
 
 function RewardsCouponsApp() {
-  const [t, setTweak] = useTweaks(RP_DEFAULTS);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
-    document.documentElement.setAttribute("data-font", t.font);
-  }, [t]);
-
   // Group coupons by category for sectioned rendering
   const grouped = React.useMemo(() => {
     const map = new Map();
@@ -191,15 +178,15 @@ function RewardsCouponsApp() {
 
   return (
     <>
-      {t.showOrbs && <OrbField count={5} />}
-      {t.showStatusBar && <StatusBar />}
+      <OrbField count={5} />
+      <StatusBar />
       <SiteNav active="rewards" />
 
       <main className="container">
-        <section className="rw-hero" data-screen-label="Coupons Hero">
+        <section className="rw-hero">
           <div className="hero-stamp">
             <span><span className="num">005</span> / Rewards / Coupons</span>
-            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-mono)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
+            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-sans)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
             <span style={{color:'var(--lumen-2)'}}>{COUPONS.length} codes — click to copy</span>
           </div>
           <h1>Save a few <em>dollars</em>.</h1>
@@ -209,7 +196,7 @@ function RewardsCouponsApp() {
         </section>
 
         {grouped.map(([group, items]) => (
-          <section key={group} data-screen-label={group + " coupons"} style={{paddingBottom: 12}}>
+          <section key={group} style={{paddingBottom: 12}}>
             <div className="rw-section-head">
               <h2><em>{group}</em></h2>
               <div className="stamp-line">{items.length} {items.length === 1 ? "code" : "codes"}</div>
@@ -228,43 +215,6 @@ function RewardsCouponsApp() {
       </main>
 
       <SiteFooter />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={t.aesthetic}
-            options={[{value:"glass",label:"Glass"},{value:"paper",label:"Paper"}]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={t.font}
-            options={[
-              { value: "classic",   label: "Fraunces - classic" },
-              { value: "editorial", label: "Instrument Serif - quieter" },
-              { value: "modern",    label: "Bricolage - grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={t.showOrbs ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={t.showStatusBar ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

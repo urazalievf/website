@@ -1,11 +1,4 @@
-/* global React, ReactDOM, SiteNav, SiteFooter, useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakSelect, OrbField, StatusBar */
-
-const RC_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "aesthetic": "glass",
-  "font": "classic",
-  "showOrbs": true,
-  "showStatusBar": true
-}/*EDITMODE-END*/;
+/* global React, ReactDOM, SiteNav, SiteFooter, OrbField, StatusBar */
 
 /* CARDS — referrals + the perks I'd actually call out for each one.
    Each entry: image (optional, falls back to letter mark), brand, name,
@@ -241,23 +234,17 @@ const CARDS = [
 ];
 
 function RewardsCardsApp() {
-  const [t, setTweak] = useTweaks(RC_DEFAULTS);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-aesthetic", t.aesthetic);
-    document.documentElement.setAttribute("data-font", t.font);
-  }, [t]);
-
   return (
     <>
-      {t.showOrbs && <OrbField count={5} />}
-      {t.showStatusBar && <StatusBar />}
+      <OrbField count={5} />
+      <StatusBar />
       <SiteNav active="rewards" />
 
       <main className="container">
-        <section className="rw-hero" data-screen-label="Cards Hero">
+        <section className="rw-hero">
           <div className="hero-stamp">
             <span><span className="num">005</span> / Rewards / Credit cards</span>
-            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-mono)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
+            <a href="rewards.html" style={{color:'var(--violet)', borderBottom:0, fontFamily:'var(--font-sans)', fontSize:11, letterSpacing:'var(--tr-mono-up)', textTransform:'uppercase'}}>back to all</a>
             <span style={{color:'var(--lumen-2)'}}>{CARDS.length} cards</span>
           </div>
           <h1>Get a <em>card</em>.</h1>
@@ -266,7 +253,7 @@ function RewardsCardsApp() {
           </p>
         </section>
 
-        <section data-screen-label="Cards list" style={{paddingBottom: 24}}>
+        <section style={{paddingBottom: 24}}>
           <div className="rw-section-head">
             <h2>The <em>{CARDS.length}</em> in my wallet.</h2>
             <div className="stamp-line">credit pull required · 5/24 applies</div>
@@ -308,43 +295,6 @@ function RewardsCardsApp() {
       </main>
 
       <SiteFooter />
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection title="Aesthetic">
-          <TweakRadio
-            label="System"
-            value={t.aesthetic}
-            options={[{value:"glass",label:"Glass"},{value:"paper",label:"Paper"}]}
-            onChange={(v) => setTweak("aesthetic", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect
-            label="Display font"
-            value={t.font}
-            options={[
-              { value: "classic",   label: "Fraunces - classic" },
-              { value: "editorial", label: "Instrument Serif - quieter" },
-              { value: "modern",    label: "Bricolage - grotesque" },
-            ]}
-            onChange={(v) => setTweak("font", v)}
-          />
-        </TweakSection>
-        <TweakSection title="Atmosphere">
-          <TweakRadio
-            label="Floating orbs"
-            value={t.showOrbs ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showOrbs", v === "on")}
-          />
-          <TweakRadio
-            label="Status bar"
-            value={t.showStatusBar ? "on" : "off"}
-            options={[{value:"on",label:"On"},{value:"off",label:"Off"}]}
-            onChange={(v) => setTweak("showStatusBar", v === "on")}
-          />
-        </TweakSection>
-      </TweaksPanel>
     </>
   );
 }

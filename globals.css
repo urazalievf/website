@@ -1,5 +1,5 @@
 /* =====================================================================
-   GLOBALS — additive layer for: amber duotone, orbs, font swap, status bar
+   GLOBALS — additive layer for: amber duotone, orbs, status bar
    Loaded after site.css on every page.
    ===================================================================== */
 
@@ -24,33 +24,6 @@ html[data-aesthetic="paper"] {
   --duotone:      linear-gradient(110deg, var(--violet) 0%, var(--amber) 100%);
   --duotone-soft: linear-gradient(110deg, rgba(31,63,196,0.10) 0%, rgba(196,122,24,0.12) 100%);
 }
-
-/* ─────────────────────────────────────────────────────────────────────
-   FONT SWAP — Tweaks-driven via [data-font] on <html>
-   ───────────────────────────────────────────────────────────────────── */
-html[data-font="editorial"] {
-  --font-display: "Instrument Serif", Georgia, serif;
-  --display-weight: 400;
-  --display-opsz: 14;
-}
-html[data-font="modern"] {
-  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
-  --display-weight: 700;
-  --display-opsz: 14;
-  --tr-display: -0.04em;
-}
-html[data-font="modern"] h1,
-html[data-font="modern"] h2,
-html[data-font="modern"] h3,
-html[data-font="modern"] .display {
-  font-variation-settings: "wght" 700, "wdth" 100, "opsz" 14;
-}
-html[data-font="modern"] em.display, html[data-font="modern"] .display em,
-html[data-font="modern"] .italic-emph {
-  font-style: italic;
-  font-variation-settings: "wght" 700, "wdth" 100, "opsz" 14;
-}
-/* default ("classic") leaves Fraunces in place */
 
 /* ─────────────────────────────────────────────────────────────────────
    FLOATING ORBS — animated background layer behind everything
@@ -128,7 +101,7 @@ html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; fil
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(245, 244, 255, 0.06);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10.5px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -153,7 +126,7 @@ html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; fil
   bottom: 16px;
   left: 16px;
   z-index: 2;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -264,7 +237,7 @@ html[data-aesthetic="paper"] .orb { mix-blend-mode: multiply; opacity: 0.18; fil
   right: -4px; bottom: -8px;
   display: grid;
   gap: 2px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -322,7 +295,7 @@ html[data-aesthetic="paper"] .wg-ring.wg-mer { border-color: rgba(176,108,40,0.4
   align-items: center;
   gap: 24px;
   padding: 8px 22px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -445,7 +418,7 @@ html[data-aesthetic="paper"] .chess-cell .piece.black { color: #15171a; text-sha
 
 .chess-side {
   display: flex; flex-direction: column; gap: 12px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -453,9 +426,8 @@ html[data-aesthetic="paper"] .chess-cell .piece.black { color: #15171a; text-sha
   min-width: 180px;
 }
 .chess-side .turn {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 32px;
   line-height: 1;
   color: var(--lumen);
@@ -465,7 +437,7 @@ html[data-aesthetic="paper"] .chess-cell .piece.black { color: #15171a; text-sha
 .chess-side .turn em { color: var(--amber); font-style: italic; }
 .chess-side .ply { color: var(--violet); }
 .chess-side .moves {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--lumen);
   letter-spacing: 0;
   text-transform: none;
@@ -486,7 +458,7 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   align-self: flex-start;
 }
 .chess-reset {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -521,7 +493,7 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   align-items: center;
   justify-content: space-between;
   gap: var(--s-3);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -543,7 +515,7 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   text-decoration: none;
   border-bottom: 1px dashed var(--hairline-strong);
   text-transform: none;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 .cd-id a:hover { color: var(--amber); border-bottom-color: var(--amber); }
 .cd-flag { font-size: 14px; }
@@ -558,16 +530,15 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
 }
 .cd-stat { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
 .cd-stat-lbl {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
   color: var(--fg-faint);
 }
 .cd-stat-val {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 28px;
   line-height: 1;
   color: var(--lumen);
@@ -580,7 +551,7 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   gap: var(--s-3);
   padding-top: var(--s-3);
   border-top: 1px solid var(--hairline);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -604,14 +575,14 @@ html[data-aesthetic="paper"] .chess-side .moves { background: rgba(0,0,0,0.04); 
   border-radius: var(--r-pill);
   font-weight: 600;
   font-size: 11px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   letter-spacing: 0;
 }
 .cd-r-W { background: rgba(74,222,128,0.15);  color: #4ade80; border: 1px solid rgba(74,222,128,0.4); }
 .cd-r-L { background: rgba(255,107,107,0.12); color: #ff8b8b; border: 1px solid rgba(255,107,107,0.35); }
 .cd-r-D { background: rgba(255,255,255,0.05); color: var(--lumen-3); border: 1px solid var(--hairline-strong); }
 .cd-vs   { color: var(--fg-faint); }
-.cd-opp  { color: var(--lumen); text-transform: none; font-family: var(--font-mono); }
+.cd-opp  { color: var(--lumen); text-transform: none; font-family: var(--font-sans); }
 .cd-meta { color: var(--fg-faint); }
 .cd-last-empty { color: var(--fg-faint); }
 
@@ -650,7 +621,7 @@ html[data-aesthetic="paper"] .cd-r-D { background: rgba(0,0,0,0.04); }
   border: 0;
   background: transparent;
   color: var(--fg-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -682,7 +653,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   border: var(--border);
   background: transparent;
   color: var(--fg-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -704,7 +675,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   flex-direction: column;
 }
 .listen-empty {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -730,7 +701,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   border-bottom: 0;
 }
 .listen-row .lr-rank {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   color: var(--fg-faint);
   letter-spacing: var(--tr-mono-up);
@@ -753,9 +724,8 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   display: block;
 }
 .listen-row .lr-fallback {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
-  font-variation-settings: "opsz" 144;
   font-size: 22px;
   color: var(--lumen);
   opacity: 0.75;
@@ -776,7 +746,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   text-overflow: ellipsis;
 }
 .listen-row .lr-sub {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -786,7 +756,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   text-overflow: ellipsis;
 }
 .listen-row .lr-trailing {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   color: var(--fg-faint);
   letter-spacing: var(--tr-mono-up);
@@ -814,7 +784,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   margin-top: 14px;
   padding-top: 14px;
   border-top: var(--border);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -880,17 +850,15 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   position: absolute;
   inset: 38% 0 auto 0;
   text-align: center;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
   font-size: 26px;
-  font-variation-settings: "opsz" 144;
   color: #6a1f2a;
 }
-.wine-card .w-meta { font-family: var(--font-mono); font-size: var(--fs-mono-xs); letter-spacing: var(--tr-mono-up); text-transform: uppercase; color: var(--fg-muted); }
+.wine-card .w-meta { font-family: var(--font-sans); font-size: var(--fs-mono-xs); letter-spacing: var(--tr-mono-up); text-transform: uppercase; color: var(--fg-muted); }
 .wine-card .w-name {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 32px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -906,7 +874,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
 }
 .wine-card .w-rating {
   text-align: right;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 .wine-card .w-stars {
   font-size: 18px;
@@ -914,8 +882,7 @@ html[data-aesthetic="paper"] .listen-tab.is-on {
   color: var(--amber);
 }
 .wine-card .w-score {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
+  font-family: var(--font-sans);
   font-size: 48px;
   line-height: 1;
   color: var(--lumen);
@@ -961,7 +928,7 @@ html[data-aesthetic="paper"] .gb-form input, html[data-aesthetic="paper"] .gb-fo
 }
 .gb-form textarea { font-family: var(--font-sans); }
 .gb-form button {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -991,7 +958,7 @@ html[data-aesthetic="paper"] .gb-form input, html[data-aesthetic="paper"] .gb-fo
 }
 html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
 .gb-entry .who {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
   letter-spacing: var(--tr-mono-up);
   color: var(--violet);
@@ -1006,7 +973,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   line-height: 1.5;
 }
 .gb-entry .when {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   color: var(--fg-faint);
   letter-spacing: var(--tr-mono-up);
@@ -1022,9 +989,8 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
    COUNTERS — animated mono numbers
    ───────────────────────────────────────────────────────────────────── */
 .counter {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
 }
@@ -1044,9 +1010,8 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   border-radius: 4px;
   background: linear-gradient(135deg, #2a1f4a 0%, #6a3ee0 100%);
   display: grid; place-items: center;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-style: italic;
-  font-variation-settings: "opsz" 144;
   font-size: 28px;
   color: var(--lumen);
   box-shadow: -2px 4px 14px rgba(0,0,0,0.4), inset 4px 0 0 rgba(255,255,255,0.08);
@@ -1058,9 +1023,8 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   background: rgba(0,0,0,0.4);
 }
 .read-now .r-title {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 144;
-  font-weight: 380;
+  font-family: var(--font-sans);
+  font-weight: var(--display-weight);
   font-size: 26px;
   line-height: 1.05;
   color: var(--lumen);
@@ -1068,7 +1032,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
 }
 .read-now .r-title em { color: var(--amber); font-style: italic; }
 .read-now .r-author {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -1089,7 +1053,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   background: var(--duotone);
 }
 .read-now .r-pct {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
   color: var(--violet);
@@ -1119,7 +1083,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   align-items: baseline;
   gap: var(--s-4);
   margin-bottom: 14px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-sm);
 }
 .gh-total { color: var(--lumen-2); }
@@ -1147,7 +1111,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   display: grid;
   grid-template-columns: repeat(53, 12px);
   gap: 3px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
@@ -1186,7 +1150,7 @@ html[data-aesthetic="paper"] .gb-entry { background: rgba(0,0,0,0.02); }
   gap: 6px;
   align-items: center;
   justify-content: flex-end;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-mono-xs);
   letter-spacing: var(--tr-mono-up);
   text-transform: uppercase;
